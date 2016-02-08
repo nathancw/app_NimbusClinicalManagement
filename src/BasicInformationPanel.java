@@ -197,6 +197,7 @@ public class BasicInformationPanel extends JPanel {
 		
 		  //Radio buttons?
 		  maleRadioButton.setFocusable(false);
+		  maleRadioButton.setEnabled(true);
 		  femaleRadioButton.setFocusable(false);
 		
 	}
