@@ -25,6 +25,12 @@ public class BasicInformationPanel extends JPanel {
 	private JTextField mobilephonetextField;
 	private JTextField emailtextField;
 	private JTextField faxtextField;
+	
+	private JRadioButton maleRadioButton;
+
+	
+	private JRadioButton  femaleRadioButton;
+	
 
 	/**
 	 * Create the panel.
@@ -54,11 +60,11 @@ public class BasicInformationPanel extends JPanel {
 		JLabel lblSex = new JLabel("Sex:");
 		BasicPanel.add(lblSex, "cell 2 0,alignx left");
 		
-		JRadioButton maleRadioButton = new JRadioButton("Male");
+		maleRadioButton = new JRadioButton("Male");
 		BasicPanel.add(maleRadioButton, "cell 3 0,alignx left");
 		
-		JRadioButton rdbtnFemale = new JRadioButton("Female");
-		BasicPanel.add(rdbtnFemale, "cell 4 0,alignx left");
+		femaleRadioButton = new JRadioButton("Female");
+		BasicPanel.add(femaleRadioButton, "cell 4 0,alignx left");
 		
 		JLabel lblPatientId = new JLabel("Patient ID:");
 		BasicPanel.add(lblPatientId, "cell 5 0,alignx left");
