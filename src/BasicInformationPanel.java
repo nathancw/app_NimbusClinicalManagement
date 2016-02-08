@@ -196,7 +196,8 @@ public class BasicInformationPanel extends JPanel {
 		  faxtextField.setEditable(false);
 		
 		  //Radio buttons?
-		
+		  maleRadioButton.setFocusable(false);
+		  femaleRadioButton.setFocusable(false);
 		
 	}
 	
