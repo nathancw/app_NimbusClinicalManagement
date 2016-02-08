@@ -100,12 +100,9 @@ public class InformationFrame extends JFrame {
 				 
 				
 				 String selectedValue = (String)categoriesList.getSelectedValue();
-				 System.out.println("Selected:" + selectedValue); 
-				 
-				 //Create a new searchPanel and add it to the datapanel at 0,0
-				 //SearchPanel searchPanel = new SearchPanel();
-				 //dataPanel.add(searchPanel,"cell 0 0,alignx center,aligny center");
-				 
+				 System.out.println("Selected:" + selectedValue); 		 
+				 /////////////////////////////////////////////////////////////////
+				 ///Selecting Which Frame to show below///////////////////////////
 				 if(selectedValue.equals("Search For Patient")){
 					 dataPanel.removeAll();
 					 SearchPanel searchPanel = new SearchPanel();
@@ -115,7 +112,7 @@ public class InformationFrame extends JFrame {
 					 
 				 }
 				 
-				 if(selectedValue.equals("View Patient Information")){
+				 else if(selectedValue.equals("View Patient Information")){
 					 dataPanel.removeAll();
 					 BasicInformationPanel basicInfo = new BasicInformationPanel();
 					 dataPanel.add(basicInfo,"cell 0 0,grow");

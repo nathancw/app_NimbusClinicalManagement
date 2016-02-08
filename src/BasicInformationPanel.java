@@ -167,7 +167,31 @@ public class BasicInformationPanel extends JPanel {
 		//TODO: Add formats to all the text fields. EX: Phone text field only length of number. DOB field. May require deleting it ans addin as new field. Specify length for the other fields as well.
 		//add more buttons to edit. can seteditable to false to grey out the text fields.
 
+		//Set All fields uneditable
+		setAllUnEditable();
 
 	}
 
+	public void setAllUnEditable(){
+		
+		  firstNameField.setEditable(false);
+		  lastNameField.setEditable(false);
+		  middleNameField.setEditable(false);
+		  dobTextField.setEditable(false);
+		  agetextField.setEditable(false);
+		  addresstextField.setEditable(false);
+		  citytextField.setEditable(false);
+		  statetextField.setEditable(false);
+		  ziptextField.setEditable(false);
+		  patientidtextField.setEditable(false);
+		  homephonetextField.setEditable(false);
+		  mobilephonetextField.setEditable(false);
+		  emailtextField.setEditable(false);
+		  faxtextField.setEditable(false);
+		
+		  //Radio buttons?
+		
+		
+	}
+	
 }
