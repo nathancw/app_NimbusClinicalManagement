@@ -10,7 +10,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import java.awt.Window.Type;
 import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;

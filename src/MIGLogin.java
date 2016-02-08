@@ -40,12 +40,13 @@ public class MIGLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public MIGLogin() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450	, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setVisible(true);
 		
 		JPanel contentPanel = new JPanel();
 		contentPane.add(contentPanel, BorderLayout.CENTER);
@@ -74,5 +75,8 @@ public class MIGLogin extends JFrame {
 		JButton btnNewButton = new JButton("Log in");
 		signInpanel.add(btnNewButton, "cell 2 4,alignx right");
 	}
-
+	
+	public JPanel getContentPane(){
+		return contentPane;
+	}
 }
