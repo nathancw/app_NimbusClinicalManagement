@@ -119,6 +119,13 @@ public class InformationFrame extends JFrame {
 					 setVisible(true);
 					 repaint();
 				 }
+				 else if(true)
+					 repaint();
+					 else if(true)
+						 repaint();
+				 else if(true)
+				 repaint();
+				 
 				 /////////////////////////////////////////////////////////////
 			  }
 		
