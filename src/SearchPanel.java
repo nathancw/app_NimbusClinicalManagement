@@ -30,6 +30,8 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 import java.awt.FlowLayout;
 import javax.swing.border.BevelBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -42,13 +44,13 @@ public class SearchPanel extends JPanel{
 			{null,null,null,null,}};
 	
 	private JPanel contentPanel;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField patientIDtextField;
+	private JTextField dOBtextField;
+	private JTextField firstNametextField;
+	private JTextField lastNametextField;
 	private JTable table;
-	private JLabel lblNewLabel;
-	private JLabel lblClickOnA;
+	private JLabel topLabel;
+	private JLabel lblMiddle;
 
 	/**
 	 * Launch the application.
@@ -77,43 +79,48 @@ public class SearchPanel extends JPanel{
 		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100]", "[50][50][100][100][100][100][300]"));
 		
-		lblNewLabel = new JLabel("Search for a patient by inputting data below.");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		contentPanel.add(lblNewLabel, "cell 1 0 6 1,alignx center,aligny top");
+		topLabel = new JLabel("Search for a patient by inputting data below.");
+		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		contentPanel.add(topLabel, "cell 1 0 6 1,alignx center,aligny top");
 	
-		JLabel lblNewLabel_3 = new JLabel("Patient ID:");
-		contentPanel.add(lblNewLabel_3, "cell 0 1,alignx right,aligny center");
+		JLabel lblPatientID = new JLabel("Patient ID:");
+		contentPanel.add(lblPatientID, "cell 0 1,alignx right,aligny center");
 		
-		textField = new JTextField();
-		contentPanel.add(textField, "cell 1 1,alignx left,aligny center");
-		textField.setColumns(10);
+		patientIDtextField = new JTextField();
+		contentPanel.add(patientIDtextField, "cell 1 1,alignx left,aligny center");
+		patientIDtextField.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Date of Birth:");
-		contentPanel.add(lblNewLabel_1, "cell 2 1,alignx right,aligny center");
+		JLabel lblDOB = new JLabel("Date of Birth:");
+		contentPanel.add(lblDOB, "cell 2 1,alignx right,aligny center");
 		
-		textField_1 = new JTextField();
-		contentPanel.add(textField_1, "cell 3 1,alignx left,aligny center");
-		textField_1.setColumns(10);
+		dOBtextField = new JTextField();
+		contentPanel.add(dOBtextField, "cell 3 1,alignx left,aligny center");
+		dOBtextField.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("First Name:");
-		contentPanel.add(lblNewLabel_2, "cell 4 1,alignx right,aligny center");
+		JLabel lblFirstName = new JLabel("First Name:");
+		contentPanel.add(lblFirstName, "cell 4 1,alignx right,aligny center");
 		
-		textField_2 = new JTextField();
-		contentPanel.add(textField_2, "cell 5 1,alignx left,aligny center");
-		textField_2.setColumns(10);
+		firstNametextField = new JTextField();
+		contentPanel.add(firstNametextField, "cell 5 1,alignx left,aligny center");
+		firstNametextField.setColumns(10);
 		
-		JLabel lblNewLabel_4 = new JLabel("Last Name:");
-		contentPanel.add(lblNewLabel_4, "cell 6 1,alignx right,aligny center");
+		JLabel lblLastName = new JLabel("Last Name:");
+		contentPanel.add(lblLastName, "cell 6 1,alignx right,aligny center");
 		
-		textField_3 = new JTextField();
-		contentPanel.add(textField_3, "cell 7 1,alignx left,aligny center");
-		textField_3.setColumns(10);
+		lastNametextField = new JTextField();
+		contentPanel.add(lastNametextField, "cell 7 1,alignx left,aligny center");
+		lastNametextField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Search");
-		contentPanel.add(btnNewButton, "cell 3 2,alignx right,aligny center");
+		JButton searchButton = new JButton("Search");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Search button pressed!");
+			}
+		});
+		contentPanel.add(searchButton, "cell 3 2,alignx right,aligny center");
 		
-		lblClickOnA = new JLabel("Click on a Patient Name to pull up their information.");
-		contentPanel.add(lblClickOnA, "cell 1 3 6 1,alignx center");
+		lblMiddle = new JLabel("Click on a Patient Name to pull up their information.");
+		contentPanel.add(lblMiddle, "cell 1 3 6 1,alignx center");
 		
 		JPanel resultsPanel = new JPanel();
 		contentPanel.add(resultsPanel, "cell 0 4 8 3,alignx center,aligny top");

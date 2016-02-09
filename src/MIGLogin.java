@@ -40,6 +40,7 @@ public class MIGLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public MIGLogin() {
+		setTitle("Nimbus Clincal Management Software Login");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450	, 400);
 		contentPane = new JPanel();
@@ -53,6 +54,7 @@ public class MIGLogin extends JFrame {
 		contentPanel.setLayout(new MigLayout("", "[50,grow][50,grow][75][75][75][75.00][50,grow][50,grow]", "[50,grow][50][50][50][50][50,grow]"));
 		
 		JPanel signInpanel = new JPanel();
+		signInpanel.setForeground(Color.WHITE);
 		signInpanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Sign In", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPanel.add(signInpanel, "cell 2 1 4 4");
 		//contentPanel.add(signInpanel, "dock south");
