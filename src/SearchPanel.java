@@ -6,11 +6,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JToolBar;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -30,11 +35,12 @@ import javax.swing.border.BevelBorder;
 
 public class SearchPanel extends JPanel{
 
-	String directoryList[] = {"Directory","Create New"};
+	//String directoryList[] = {"Directory","Create New"};
 	String[] colNames = {"Name","ID","DoB","Gender"};
 	Object[][] patients = {
 			{"Blank","111","080808","F"},
 			{null,null,null,null,}};
+	
 	private JPanel contentPanel;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -42,6 +48,7 @@ public class SearchPanel extends JPanel{
 	private JTextField textField_3;
 	private JTable table;
 	private JLabel lblNewLabel;
+	private JLabel lblClickOnA;
 
 	/**
 	 * Launch the application.
@@ -105,15 +112,45 @@ public class SearchPanel extends JPanel{
 		JButton btnNewButton = new JButton("Search");
 		contentPanel.add(btnNewButton, "cell 3 2,alignx right,aligny center");
 		
+		lblClickOnA = new JLabel("Click on a Patient Name to pull up their information.");
+		contentPanel.add(lblClickOnA, "cell 1 3 6 1,alignx center");
+		
 		JPanel resultsPanel = new JPanel();
-		contentPanel.add(resultsPanel, "cell 0 3 8 4,alignx center,aligny top");
+		contentPanel.add(resultsPanel, "cell 0 4 8 3,alignx center,aligny top");
 		resultsPanel.setLayout(new BorderLayout(0, 0));
 		
-		
-		table = new JTable(patients,colNames);
+		//Make the table uneditable
+		TableModel model = new DefaultTableModel(patients, colNames)
+		  {
+		    public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		  };
+		table = new JTable(model);
+		  
 		table.setBorder(null);
 		resultsPanel.add(table);
 		resultsPanel.add(new JScrollPane(table));
-		}
+			
+		
+		table.addMouseListener(new MouseAdapter() {
+			  public void mouseClicked(MouseEvent e) {
+			    //if (e.getClickCount() == 1) {
+				  	if(table.getSelectedColumn() == 0){
+				  		
+				  	
+			    	 System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+			    	 PatientInformationFrame patientframe = new PatientInformationFrame();
+			         patientframe.show("Basic Information");
+				  	}
+			     //}
+			   }
+			});
 
+	
+	}
+
+	
+		
 }

@@ -16,13 +16,9 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 
-public class InformationFrame extends JFrame {
+public class PatientInformationFrame extends JFrame {
 
-	String directoryList[] = {"Directory","Create New        ","View Patient Information","Search For Patient","Exit"};
-	String[] colNames = {"Name","ID","DoB","Gender"};
-	Object[][] patients = {
-			{"Blank","111","080808","F"},
-			{null,null,null,null,}};
+	String directoryList[] = {"Basic Information","Patient History","Appointments","Billing History","Insurance"};
 	private JPanel contentPane;
 	private JPanel contentPanel;	
 	private JPanel bufferPanel;
@@ -37,7 +33,7 @@ public class InformationFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InformationFrame frame = new InformationFrame();
+					PatientInformationFrame frame = new PatientInformationFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,16 +45,16 @@ public class InformationFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InformationFrame() {
+	public PatientInformationFrame() {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		setTitle("Nimbus Clincial Software");
+		setTitle("Nimbus Clincial Software - Patient Information");
 		setBounds(100, 100, 1000, 700);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -112,20 +108,13 @@ public class InformationFrame extends JFrame {
 					 
 				 }
 				 
-				 else if(selectedValue.equals("View Patient Information")){
+				 else if(selectedValue.equals("Basic Information     ")){
 					 dataPanel.removeAll();
 					 BasicInformationPanel basicInfo = new BasicInformationPanel();
 					 dataPanel.add(basicInfo,"cell 0 0,grow");
 					 setVisible(true);
 					 repaint();
-				 }
-				 else if(true)
-					 repaint();
-					 else if(true)
-						 repaint();
-				 else if(true)
-				 repaint();
-				 
+				 }	 
 				 /////////////////////////////////////////////////////////////
 			  }
 		
@@ -134,5 +123,14 @@ public class InformationFrame extends JFrame {
 	}
 	
 	
-
+	public void show(String panel){
+	
+		if(panel.equals("Basic Information")){
+			 dataPanel.removeAll();
+			 BasicInformationPanel basicInfo = new BasicInformationPanel();
+			 dataPanel.add(basicInfo,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		}
+	}
 }
