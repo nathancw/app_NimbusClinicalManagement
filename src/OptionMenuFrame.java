@@ -96,6 +96,11 @@ public class OptionMenuFrame extends JFrame {
 			  if (!ev.getValueIsAdjusting()) {//This line prevents double events Put the code for when to switch based on specific values in this if statement.
 				 
 				//////////////////////////////////////////////////////////////////
+				 
+				  /////
+				  //////
+				  /////////
+				  ///////
 				 String selectedValue = (String)categoriesList.getSelectedValue();
 				 System.out.println("Selected:" + selectedValue); 		 
 				 /////////////////////////////////////////////////////////////////
