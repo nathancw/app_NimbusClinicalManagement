@@ -12,13 +12,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.JTabbedPane;
 
-public class pages extends JPanel {
-	private JTextField txtCigna;
+public class InsurancePanel extends JPanel {
+	private JTextField txtFieldCompanyName;
 	private JTextField txtZgp;
 	private JTextField txtHca;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtFieldPhone;
 	private JTextField txtMedicare;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -29,16 +29,16 @@ public class pages extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public pages() {
+	public InsurancePanel() {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
 		add(panel);
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
 		
-		JLabel lblInsuranceInformation = new JLabel("Insurance Information");
+		JLabel lblInsuranceInformation = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: Bob Smith </html>");
 		lblInsuranceInformation.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		panel.add(lblInsuranceInformation, "cell 3 1 3 1,alignx center");
+		panel.add(lblInsuranceInformation, "cell 3 0 3 2,alignx center");
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		panel.add(tabbedPane, "cell 1 2 7 4,grow");
@@ -51,19 +51,19 @@ public class pages extends JPanel {
 		lblCompanyName.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_1.add(lblCompanyName, "cell 0 0,alignx left");
 		
-		txtCigna = new JTextField();
-		txtCigna.setText("Cigna");
-		panel_1.add(txtCigna, "cell 1 0 2 1,growx");
-		txtCigna.setColumns(10);
+		txtFieldCompanyName = new JTextField();
+		txtFieldCompanyName.setText("Cigna");
+		panel_1.add(txtFieldCompanyName, "cell 1 0 2 1,growx");
+		txtFieldCompanyName.setColumns(10);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone Number:");
 		lblPhoneNumber.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_1.add(lblPhoneNumber, "cell 3 0,alignx left");
 		
-		textField_2 = new JTextField();
-		textField_2.setText("(999) 888-7777");
-		panel_1.add(textField_2, "cell 4 0 2 1,growx");
-		textField_2.setColumns(10);
+		txtFieldPhone = new JTextField();
+		txtFieldPhone.setText("(999) 888-7777");
+		panel_1.add(txtFieldPhone, "cell 4 0 2 1,growx");
+		txtFieldPhone.setColumns(10);
 		
 		JLabel lblPatientId = new JLabel("Patient ID:");
 		lblPatientId.setFont(new Font("Times New Roman", Font.PLAIN, 15));

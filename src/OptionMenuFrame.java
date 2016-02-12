@@ -18,9 +18,9 @@ import javax.swing.JLabel;
 
 public class OptionMenuFrame extends JFrame {
 
-	String directoryList[] = {"Directory","Create New        ","View Patient Information","Search For Patient","Exit"};
+	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Exit"};
 	
-	private JPanel contentPane;
+	private JPanel contentPane;	
 	private JPanel contentPanel;	
 	private JPanel bufferPanel;
 	private JList categoriesList;
@@ -94,17 +94,14 @@ public class OptionMenuFrame extends JFrame {
 		  public void valueChanged(ListSelectionEvent ev)
 		  {	
 			  if (!ev.getValueIsAdjusting()) {//This line prevents double events Put the code for when to switch based on specific values in this if statement.
+			
 				 
-				//////////////////////////////////////////////////////////////////
-				 
-				  /////
-				  //////
-				  /////////
-				  ///////
 				 String selectedValue = (String)categoriesList.getSelectedValue();
 				 System.out.println("Selected:" + selectedValue); 		 
+				 
 				 /////////////////////////////////////////////////////////////////
 				 ///Selecting Which Frame to show below///////////////////////////
+				 ///These will need to be changed from hardcoded stuff to array values I believe
 				 if(selectedValue.equals("Search For Patient")){
 					 dataPanel.removeAll();
 					 SearchPanel searchPanel = new SearchPanel();
@@ -121,7 +118,18 @@ public class OptionMenuFrame extends JFrame {
 					 setVisible(true);
 					 repaint();
 				 }	 
+				 else if(selectedValue.equals("Book New Appointment")){
+					 dataPanel.removeAll();
+					 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();
+					 dataPanel.add(bookAppointment,"cell 0 0,grow");
+					 setVisible(true);
+					 repaint();
+					 
+				 }
+				 	
 				 /////////////////////////////////////////////////////////////
+				 
+				 
 			  }
 		
 		  } 
