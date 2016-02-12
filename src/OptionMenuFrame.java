@@ -104,7 +104,7 @@ public class OptionMenuFrame extends JFrame {
 				 ///These will need to be changed from hardcoded stuff to array values I believe
 				 if(selectedValue.equals("Search For Patient")){
 					 dataPanel.removeAll();
-					 SearchPanel searchPanel = new SearchPanel();
+					 SearchPatientPanel searchPanel = new SearchPatientPanel();
 					 dataPanel.add(searchPanel,"cell 0 0,grow");
 					 setVisible(true);
 					 repaint();

@@ -5,7 +5,9 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.BorderLayout;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
@@ -25,6 +27,8 @@ import javax.swing.JCheckBox;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class BookAppointmentPanel extends JPanel {
@@ -118,6 +122,16 @@ public class BookAppointmentPanel extends JPanel {
 		
 		JTextArea textArea = new JTextArea();
 		CommentsPanel.add(textArea, "cell 0 0 4 5,grow");
+		
+		JButton btnViewOpenAppointments = new JButton("View Open Appointments");
+		btnViewOpenAppointments.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Do we want to preview a table of open appointments and have them click one easier use? It will auto fille data in the form.");
+			
+			}
+		});
+		contentPanel.add(btnViewOpenAppointments, "cell 2 12 2 1");
 		
 		JButton btnCancel = new JButton("Cancel");
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");

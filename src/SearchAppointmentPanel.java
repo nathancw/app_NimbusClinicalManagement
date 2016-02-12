@@ -32,10 +32,11 @@ import java.awt.FlowLayout;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 
 
-public class SearchPanel extends JPanel{
+public class SearchAppointmentPanel extends JPanel{
 
 	//String directoryList[] = {"Directory","Create New"};
 	String[] colNames = {"Name","ID","DoB","Gender"};
@@ -44,13 +45,14 @@ public class SearchPanel extends JPanel{
 			{null,null,null,null,}};
 	
 	private JPanel contentPanel;
-	private JTextField patientIDtextField;
-	private JTextField dOBtextField;
-	private JTextField firstNametextField;
-	private JTextField lastNametextField;
+	private JTextField patientIDTextField;
+	private JTextField firstNameTextField;
+	private JTextField lastNameTextField;
 	private JTable table;
 	private JLabel topLabel;
 	private JLabel lblMiddle;
+	private JButton btnBookNewAppointment;
+	private JComboBox procedureComboBox;
 
 	/**
 	 * Launch the application.
@@ -71,7 +73,7 @@ public class SearchPanel extends JPanel{
 	/**
 	 * Create the frame.
 	 */
-	public SearchPanel() {
+	public SearchAppointmentPanel() {
 		setLayout(new BorderLayout(0, 0));
 
 		
@@ -79,37 +81,36 @@ public class SearchPanel extends JPanel{
 		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100]", "[50][50][100][100][100][100][300]"));
 		
-		topLabel = new JLabel("Search for a patient by inputting data below.");
+		topLabel = new JLabel("Search for an Appointment by inputting data below.");
 		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(topLabel, "cell 1 0 6 1,alignx center,aligny top");
 	
 		JLabel lblPatientID = new JLabel("Patient ID:");
 		contentPanel.add(lblPatientID, "cell 0 1,alignx right,aligny center");
 		
-		patientIDtextField = new JTextField();
-		contentPanel.add(patientIDtextField, "cell 1 1,alignx left,aligny center");
-		patientIDtextField.setColumns(10);
+		patientIDTextField = new JTextField();
+		contentPanel.add(patientIDTextField, "cell 1 1,alignx left,aligny center");
+		patientIDTextField.setColumns(10);
 		
-		JLabel lblDOB = new JLabel("Date of Birth:");
-		contentPanel.add(lblDOB, "cell 2 1,alignx right,aligny center");
+		JLabel lblProcedure = new JLabel("Procedure:");
+		contentPanel.add(lblProcedure, "cell 2 1,alignx trailing,aligny center");
 		
-		dOBtextField = new JTextField();
-		contentPanel.add(dOBtextField, "cell 3 1,alignx left,aligny center");
-		dOBtextField.setColumns(10);
+		procedureComboBox = new JComboBox();
+		contentPanel.add(procedureComboBox, "cell 3 1,growx");
 		
 		JLabel lblFirstName = new JLabel("First Name:");
 		contentPanel.add(lblFirstName, "cell 4 1,alignx right,aligny center");
 		
-		firstNametextField = new JTextField();
-		contentPanel.add(firstNametextField, "cell 5 1,alignx left,aligny center");
-		firstNametextField.setColumns(10);
+		firstNameTextField = new JTextField();
+		contentPanel.add(firstNameTextField, "cell 5 1,alignx left,aligny center");
+		firstNameTextField.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
 		contentPanel.add(lblLastName, "cell 6 1,alignx right,aligny center");
 		
-		lastNametextField = new JTextField();
-		contentPanel.add(lastNametextField, "cell 7 1,alignx left,aligny center");
-		lastNametextField.setColumns(10);
+		lastNameTextField = new JTextField();
+		contentPanel.add(lastNameTextField, "cell 7 1,alignx left,aligny center");
+		lastNameTextField.setColumns(10);
 		
 		JButton searchButton = new JButton("Search");
 		searchButton.addActionListener(new ActionListener() {
@@ -117,9 +118,12 @@ public class SearchPanel extends JPanel{
 				System.out.println("Search button pressed!");
 			}
 		});
-		contentPanel.add(searchButton, "cell 3 2,alignx right,aligny center");
+		contentPanel.add(searchButton, "cell 2 2 2 1,alignx center,aligny center");
 		
-		lblMiddle = new JLabel("Click on a Patient Name to pull up their information.");
+		btnBookNewAppointment = new JButton("Book New Appointment");
+		contentPanel.add(btnBookNewAppointment, "cell 4 2 2 1,alignx center");
+		
+		lblMiddle = new JLabel("Click on a Respective Patient ID row to pull up their information.");
 		contentPanel.add(lblMiddle, "cell 1 3 6 1,alignx center");
 		
 		JPanel resultsPanel = new JPanel();
@@ -146,10 +150,12 @@ public class SearchPanel extends JPanel{
 			    //if (e.getClickCount() == 1) {
 				  	if(table.getSelectedColumn() == 0){
 				  		
-				  	
+				  	//Edit on table click
 			    	 System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
-			    	 PatientInformationFrame patientframe = new PatientInformationFrame();
-			         patientframe.show("Basic Information");
+			    	 //PatientInformationFrame patientframe = new PatientInformationFrame();
+			         //patientframe.show("Basic Information");
+			         
+			         
 				  	}
 			     //}
 			   }
@@ -161,3 +167,4 @@ public class SearchPanel extends JPanel{
 	
 		
 }
+
