@@ -60,7 +60,7 @@ public class MainMenu extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnNewButton_2 = new JButton("Create Patient");
-		btnNewButton_2.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnNewButton_2.setFont(new Font("Malgun Gothic", Font.PLAIN, 20));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
