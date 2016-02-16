@@ -36,6 +36,7 @@ public class BasicInformationPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public BasicInformationPanel() {
+		/////////////////////
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
