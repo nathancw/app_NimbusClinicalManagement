@@ -76,7 +76,7 @@ public class BookAppointmentPanel extends JPanel {
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
 		
 		TextFieldsPanel.add(datePicker, "cell 3 0,growx");
-				
+		///		
 		///
 		JLabel lblDoctor = new JLabel("Doctor:");
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
