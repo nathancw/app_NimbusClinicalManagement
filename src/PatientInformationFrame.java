@@ -99,22 +99,7 @@ public class PatientInformationFrame extends JFrame {
 				 System.out.println("Selected:" + selectedValue); 		 
 				 /////////////////////////////////////////////////////////////////
 				 ///Selecting Which Frame to show below///////////////////////////
-				 if(selectedValue.equals("Search For Patient")){
-					 dataPanel.removeAll();
-					 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
-					 dataPanel.add(searchPanel,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-					 
-				 }
-				 
-				 else if(selectedValue.equals("Basic Information     ")){
-					 dataPanel.removeAll();
-					 BasicInformationPanel basicInfo = new BasicInformationPanel();
-					 dataPanel.add(basicInfo,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-				 }	 
+				 show(selectedValue);
 				 /////////////////////////////////////////////////////////////
 			  }
 		
@@ -123,14 +108,30 @@ public class PatientInformationFrame extends JFrame {
 	}
 	
 	
-	public void show(String panel){
+	public void show(String selectedValue){
 	
-		if(panel.equals("Basic Information")){
+		if(selectedValue.equals("Search For Patient")){
+			 dataPanel.removeAll();
+			 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
+			 dataPanel.add(searchPanel,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+			 
+		 }
+		 
+		 else if(selectedValue.equals("Basic Information")){
 			 dataPanel.removeAll();
 			 BasicInformationPanel basicInfo = new BasicInformationPanel();
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
-		}
+		 }
+		 else if(selectedValue.equals("Billing History")){
+			 dataPanel.removeAll();
+			 BillingPanel basicInfo = new BillingPanel();
+			 dataPanel.add(basicInfo,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }	 
 	}
 }
