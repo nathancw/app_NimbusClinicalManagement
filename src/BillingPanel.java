@@ -65,14 +65,14 @@ public class BillingPanel extends JPanel {
 		JLabel lblPaid = new JLabel("Paid:");
 		billInformation.add(lblPaid, "cell 1 3");
 		
-		JPanel panel = new JPanel();
-		billInformation.add(panel, "cell 2 3,grow");
+		JPanel billInfoPanel = new JPanel();
+		billInformation.add(billInfoPanel, "cell 2 3,grow");
 		
 		JRadioButton rdbtnYes = new JRadioButton("Yes");
-		panel.add(rdbtnYes);
+		billInfoPanel.add(rdbtnYes);
 		
 		JRadioButton rdbtnNo = new JRadioButton("No");
-		panel.add(rdbtnNo);
+		billInfoPanel.add(rdbtnNo);
 		
 		JLabel lblDatePaid = new JLabel("Date Paid:");
 		billInformation.add(lblDatePaid, "cell 3 3,alignx trailing");

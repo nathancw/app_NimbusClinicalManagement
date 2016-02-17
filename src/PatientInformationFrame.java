@@ -101,7 +101,7 @@ public class PatientInformationFrame extends JFrame {
 				 ///Selecting Which Frame to show below///////////////////////////
 				 if(selectedValue.equals("Search For Patient")){
 					 dataPanel.removeAll();
-					 SearchPanel searchPanel = new SearchPanel();
+					 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
 					 dataPanel.add(searchPanel,"cell 0 0,grow");
 					 setVisible(true);
 					 repaint();
