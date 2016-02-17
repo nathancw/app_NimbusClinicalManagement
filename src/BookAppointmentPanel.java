@@ -76,8 +76,7 @@ public class BookAppointmentPanel extends JPanel {
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
 		
 		TextFieldsPanel.add(datePicker, "cell 3 0,growx");
-		datePicker.setEnabled(false);
-		
+		///		
 		///
 		JLabel lblDoctor = new JLabel("Doctor:");
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
@@ -128,7 +127,7 @@ public class BookAppointmentPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Do we want to preview a table of open appointments and have them click one easier use? It will auto fille data in the form.");
-				
+			
 			}
 		});
 		contentPanel.add(btnViewOpenAppointments, "cell 2 12 2 1");
@@ -143,7 +142,7 @@ public class BookAppointmentPanel extends JPanel {
 	
 	public class DateLabelFormatter extends AbstractFormatter {
 
-	    private String datePattern = "MM-dd-yyyy";
+	    private String datePattern = "yyyy-MM-dd";
 	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
 	    @Override
