@@ -33,6 +33,12 @@ public class BillingPanel extends JPanel {
 	 * Create the panel.
 	 * 
 	 */
+	/*
+	 * Ideas: Will they ever want to create a new bill or will the bill be created when they schedule an appointment? but that means the bill
+	 * can not be paid because the patient never showed up. So only if they show up to the appointment, check in, then the bill will be generated?
+	 * 
+	 * 
+	 */
 	
 	String[] colNames = {"Name","ID","DoB","Gender"};
 	Object[][] patients = {
@@ -85,6 +91,8 @@ public class BillingPanel extends JPanel {
 		JLabel lblAmount = new JLabel("Amount:");
 		billInformation.add(lblAmount, "cell 3 2,alignx trailing");
 		
+		//For amount, the dollar sign will be added when you set value. Maybe just leave it at this and 
+		//Whenever they save the changes the dollar sign will be added
 		NumberFormat paymentFormat = NumberFormat.getCurrencyInstance();
 		JFormattedTextField amountField = new JFormattedTextField(paymentFormat);
 		amountField.setValue(500.0);
@@ -113,6 +121,8 @@ public class BillingPanel extends JPanel {
 		try {
 			dateMask = new MaskFormatter("##/##/####");
 			dateMask.install(datePaidField);
+			dateMask.install(dateIssuedField);
+			dateMask.install(chargeDateField);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
