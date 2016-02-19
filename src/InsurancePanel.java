@@ -13,18 +13,18 @@ import javax.swing.border.LineBorder;
 import javax.swing.JTabbedPane;
 
 public class InsurancePanel extends JPanel {
-	private JTextField txtFieldCompanyName;
-	private JTextField txtZgp;
-	private JTextField txtHca;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField txtFieldPhone;
-	private JTextField txtMedicare;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField txtCompName1;
+	private JTextField txtPatientId1;
+	private JTextField txtGroupNum1;
+	private JTextField txtPlanStart1;
+	private JTextField txtPlanEnd1;
+	private JTextField txtPhoneNum1;
+	private JTextField txtCompName2;
+	private JTextField txtPatientId2;
+	private JTextField txtGroupNum2;
+	private JTextField txtPlanStart2;
+	private JTextField txtPlanEnd2;
+	private JTextField txtPhoneNum2;
 
 	/**
 	 * Create the panel.
@@ -36,9 +36,9 @@ public class InsurancePanel extends JPanel {
 		add(panel);
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
 		
-		JLabel lblInsuranceInformation = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: Bob Smith </html>");
-		lblInsuranceInformation.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		panel.add(lblInsuranceInformation, "cell 3 0 3 2,alignx center");
+		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: Bob Smith </html>");
+		lblInsuranceInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		panel.add(lblInsuranceInfo, "cell 3 0 3 2,alignx center");
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		panel.add(tabbedPane, "cell 1 2 7 4,grow");
@@ -47,117 +47,117 @@ public class InsurancePanel extends JPanel {
 		tabbedPane.addTab("Primary Insurance", null, panel_1, null);
 		panel_1.setLayout(new MigLayout("", "[105][105][105][105][105][105]", "[50][50][50][50][50][50]"));
 		
-		JLabel lblCompanyName = new JLabel("Company Name:");
-		lblCompanyName.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblCompanyName, "cell 0 0,alignx left");
+		JLabel lblCompName1 = new JLabel("Company Name:");
+		lblCompName1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblCompName1, "cell 0 0,alignx left");
 		
-		txtFieldCompanyName = new JTextField();
-		txtFieldCompanyName.setText("Cigna");
-		panel_1.add(txtFieldCompanyName, "cell 1 0 2 1,growx");
-		txtFieldCompanyName.setColumns(10);
+		txtCompName1 = new JTextField();
+		txtCompName1.setText("Cigna");
+		panel_1.add(txtCompName1, "cell 1 0 2 1,growx");
+		txtCompName1.setColumns(10);
 		
-		JLabel lblPhoneNumber = new JLabel("Phone Number:");
-		lblPhoneNumber.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblPhoneNumber, "cell 3 0,alignx left");
+		JLabel lblPhoneNum1 = new JLabel("Phone Number:");
+		lblPhoneNum1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblPhoneNum1, "cell 3 0,alignx left");
 		
-		txtFieldPhone = new JTextField();
-		txtFieldPhone.setText("(999) 888-7777");
-		panel_1.add(txtFieldPhone, "cell 4 0 2 1,growx");
-		txtFieldPhone.setColumns(10);
+		txtPhoneNum1 = new JTextField();
+		txtPhoneNum1.setText("(999) 888-7777");
+		panel_1.add(txtPhoneNum1, "cell 4 0 2 1,growx");
+		txtPhoneNum1.setColumns(10);
 		
-		JLabel lblPatientId = new JLabel("Patient ID:");
-		lblPatientId.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblPatientId, "cell 0 1,alignx left");
+		JLabel lblPatientId1 = new JLabel("Patient ID:");
+		lblPatientId1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblPatientId1, "cell 0 1,alignx left");
 		
-		txtZgp = new JTextField();
-		txtZgp.setText("ZGP523847");
-		panel_1.add(txtZgp, "cell 1 1 2 1,growx");
-		txtZgp.setColumns(10);
+		txtPatientId1 = new JTextField();
+		txtPatientId1.setText("ZGP523847");
+		panel_1.add(txtPatientId1, "cell 1 1 2 1,growx");
+		txtPatientId1.setColumns(10);
 		
-		JLabel lblGroupNumber = new JLabel("Group Number:");
-		lblGroupNumber.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblGroupNumber, "cell 0 2,alignx left");
+		JLabel lblGroupNum1 = new JLabel("Group Number:");
+		lblGroupNum1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblGroupNum1, "cell 0 2,alignx left");
 		
-		txtHca = new JTextField();
-		txtHca.setText("HCA000");
-		panel_1.add(txtHca, "cell 1 2 2 1,growx");
-		txtHca.setColumns(10);
+		txtGroupNum1 = new JTextField();
+		txtGroupNum1.setText("HCA000");
+		panel_1.add(txtGroupNum1, "cell 1 2 2 1,growx");
+		txtGroupNum1.setColumns(10);
 		
-		JLabel lblPlanStartDate = new JLabel("Plan Start Date:");
-		lblPlanStartDate.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblPlanStartDate, "cell 0 3,alignx left");
+		JLabel lblPlanStart1 = new JLabel("Plan Start Date:");
+		lblPlanStart1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblPlanStart1, "cell 0 3,alignx left");
 		
-		textField = new JTextField();
-		textField.setText("01/01/2016");
-		panel_1.add(textField, "cell 1 3 2 1,growx");
-		textField.setColumns(10);
+		txtPlanStart1 = new JTextField();
+		txtPlanStart1.setText("01/01/2016");
+		panel_1.add(txtPlanStart1, "cell 1 3 2 1,growx");
+		txtPlanStart1.setColumns(10);
 		
-		JLabel lblPlanEndDate = new JLabel("Plan End Date:");
-		lblPlanEndDate.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_1.add(lblPlanEndDate, "cell 0 4,alignx left");
+		JLabel lblPlanEnd1 = new JLabel("Plan End Date:");
+		lblPlanEnd1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblPlanEnd1, "cell 0 4,alignx left");
 		
-		textField_1 = new JTextField();
-		textField_1.setText("01/01/2017");
-		panel_1.add(textField_1, "cell 1 4 2 1,growx");
-		textField_1.setColumns(10);
+		txtPlanEnd1 = new JTextField();
+		txtPlanEnd1.setText("01/01/2017");
+		panel_1.add(txtPlanEnd1, "cell 1 4 2 1,growx");
+		txtPlanEnd1.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Secondary Insurance", null, panel_2, null);
 		panel_2.setLayout(new MigLayout("", "[105][105][105][105][105][105]", "[50][50][50][50][50][50]"));
 		
-		JLabel lblCompanyName_1 = new JLabel("Company Name:");
-		lblCompanyName_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblCompanyName_1, "cell 0 0,alignx left");
+		JLabel lblCompName2 = new JLabel("Company Name:");
+		lblCompName2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblCompName2, "cell 0 0,alignx left");
 		
-		txtMedicare = new JTextField();
-		txtMedicare.setText("Medicare");
-		panel_2.add(txtMedicare, "cell 1 0 2 1,growx");
-		txtMedicare.setColumns(10);
+		txtCompName2 = new JTextField();
+		txtCompName2.setText("Medicare");
+		panel_2.add(txtCompName2, "cell 1 0 2 1,growx");
+		txtCompName2.setColumns(10);
 		
-		JLabel lblPhoneNumber_1 = new JLabel("Phone Number:");
-		lblPhoneNumber_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblPhoneNumber_1, "cell 3 0,alignx left");
+		JLabel lblPhoneNum2 = new JLabel("Phone Number:");
+		lblPhoneNum2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblPhoneNum2, "cell 3 0,alignx left");
 		
-		textField_7 = new JTextField();
-		textField_7.setText("(817) 875-9581");
-		panel_2.add(textField_7, "cell 4 0 2 1,growx");
-		textField_7.setColumns(10);
+		txtPhoneNum2 = new JTextField();
+		txtPhoneNum2.setText("(817) 875-9581");
+		panel_2.add(txtPhoneNum2, "cell 4 0 2 1,growx");
+		txtPhoneNum2.setColumns(10);
 		
-		JLabel lblPatientIdl = new JLabel("Patient ID:");
-		lblPatientIdl.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblPatientIdl, "cell 0 1,alignx left");
+		JLabel lblPatientId2 = new JLabel("Patient ID:");
+		lblPatientId2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblPatientId2, "cell 0 1,alignx left");
 		
-		textField_3 = new JTextField();
-		textField_3.setText("985401");
-		panel_2.add(textField_3, "cell 1 1 2 1,growx");
-		textField_3.setColumns(10);
+		txtPatientId2 = new JTextField();
+		txtPatientId2.setText("985401");
+		panel_2.add(txtPatientId2, "cell 1 1 2 1,growx");
+		txtPatientId2.setColumns(10);
 		
-		JLabel lblGroupNumber_1 = new JLabel("Group Number:");
-		lblGroupNumber_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblGroupNumber_1, "cell 0 2,alignx left");
+		JLabel lblGroupNum2 = new JLabel("Group Number:");
+		lblGroupNum2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblGroupNum2, "cell 0 2,alignx left");
 		
-		textField_4 = new JTextField();
-		textField_4.setText("1110");
-		panel_2.add(textField_4, "cell 1 2 2 1,growx");
-		textField_4.setColumns(10);
+		txtGroupNum2 = new JTextField();
+		txtGroupNum2.setText("1110");
+		panel_2.add(txtGroupNum2, "cell 1 2 2 1,growx");
+		txtGroupNum2.setColumns(10);
 		
-		JLabel lblPlanStartDate_1 = new JLabel("Plan Start Date:");
-		lblPlanStartDate_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblPlanStartDate_1, "cell 0 3,alignx left");
+		JLabel lblPlanStart2 = new JLabel("Plan Start Date:");
+		lblPlanStart2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblPlanStart2, "cell 0 3,alignx left");
 		
-		textField_5 = new JTextField();
-		textField_5.setText("01/01/2016");
-		panel_2.add(textField_5, "cell 1 3 2 1,growx");
-		textField_5.setColumns(10);
+		txtPlanStart2 = new JTextField();
+		txtPlanStart2.setText("01/01/2016");
+		panel_2.add(txtPlanStart2, "cell 1 3 2 1,growx");
+		txtPlanStart2.setColumns(10);
 		
-		JLabel lblPlanEndDate_1 = new JLabel("Plan End Date:");
-		lblPlanEndDate_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		panel_2.add(lblPlanEndDate_1, "cell 0 4,alignx left");
+		JLabel lblPlanEnd2 = new JLabel("Plan End Date:");
+		lblPlanEnd2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblPlanEnd2, "cell 0 4,alignx left");
 		
-		textField_6 = new JTextField();
-		textField_6.setText("01/01/2017");
-		panel_2.add(textField_6, "cell 1 4 2 1,growx");
-		textField_6.setColumns(10);
+		txtPlanEnd2 = new JTextField();
+		txtPlanEnd2.setText("01/01/2017");
+		panel_2.add(txtPlanEnd2, "cell 1 4 2 1,growx");
+		txtPlanEnd2.setColumns(10);
 
 	}
 
