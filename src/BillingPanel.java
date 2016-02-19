@@ -140,6 +140,7 @@ public class BillingPanel extends JPanel {
 		tablePanel.setLayout(new BorderLayout(0, 0));
 		table = new JTable(model);
 		  
+		table.setRowHeight(0,30);
 		table.setBorder(null);
 		tablePanel.add(table,BorderLayout.CENTER);
 		JScrollPane scrollPane = new JScrollPane(table);
