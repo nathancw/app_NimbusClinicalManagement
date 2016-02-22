@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 
 public class OptionMenuFrame extends JFrame {
 
-	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Exit"};
+	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Insurance Information","Exit"};
 	
 	private JPanel contentPane;	
 	private JPanel contentPanel;	
@@ -126,6 +126,14 @@ public class OptionMenuFrame extends JFrame {
 					 repaint();
 					 
 				 }
+				 
+				 else if(selectedValue.equals("Insurance Information")){
+					 dataPanel.removeAll();
+					 InsurancePanel insInfo = new InsurancePanel();
+					 dataPanel.add(insInfo,"cell 0 0,grow");
+					 setVisible(true);
+					 repaint();
+				 }	 
 				 	
 				 /////////////////////////////////////////////////////////////
 				 
