@@ -1,39 +1,30 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Color;
-import java.awt.Insets;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.MatteBorder;
+import net.miginfocom.swing.MigLayout;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.JTextField;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+
 import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 
-//ADLKJASDLKAJDWLKJLKDJASDLK JAVA
 public class LoginFrame extends JFrame {
-
+	public static NimbusDAO login;
 	private JPanel contentPane;
-	private JTextField userName;
-	private JPasswordField passWord;
+	private JTextField usernametextField;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -43,6 +34,7 @@ public class LoginFrame extends JFrame {
 			public void run() {
 				try {
 					LoginFrame frame = new LoginFrame();
+					login = new NimbusDAO();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,80 +47,87 @@ public class LoginFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 550, 400);
+		
+		setTitle("Nimbus Clincal Management Software Login");
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450	, 400);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setVisible(true);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		panel.setBackground(Color.WHITE);
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addGap(18)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		panel.setLayout(null);
+		JPanel contentPanel = new JPanel();
+		contentPane.add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new MigLayout("", "[50,grow][50,grow][75][75][75][75.00][50,grow][50,grow]", "[50,grow][50][50][50][50][50,grow]"));
 		
-		JPanel sign_in = new JPanel();
-		sign_in.setBackground(Color.WHITE);
-		sign_in.setBorder(new TitledBorder(null, "Sign in", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-
-		sign_in.setBounds(26, 13, 454, 274);
-		panel.add(sign_in);
-		sign_in.setLayout(null);
+		JPanel signInpanel = new JPanel();
+		signInpanel.setForeground(Color.WHITE);
+		signInpanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Sign In", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		contentPanel.add(signInpanel, "cell 2 1 4 4");
+		//contentPanel.add(signInpanel, "dock south");
 		
-		userName = new JTextField();
-		userName.setBounds(224, 76, 143, 32);
-		sign_in.add(userName);
-		userName.setColumns(10);
+		signInpanel.setLayout(new MigLayout("", "[50][100][100][50]", "[30][][30][][40]"));
 		
 		JLabel lblNewLabel = new JLabel("Username");
-		lblNewLabel.setBounds(112, 76, 100, 32);
-		sign_in.add(lblNewLabel);
+		signInpanel.add(lblNewLabel, "cell 1 0 2 1,aligny bottom");
 		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(112, 140, 100, 32);
-		sign_in.add(lblPassword);
+		usernametextField = new JTextField();
+		signInpanel.add(usernametextField, "cell 1 1 2 1,growx,aligny top");
+		usernametextField.setColumns(10);
 		
-		passWord = new JPasswordField();
-		passWord.setBounds(224, 145, 143, 32);
-		sign_in.add(passWord);
+		JLabel lblNewLabel_1 = new JLabel("Password");
+		signInpanel.add(lblNewLabel_1, "cell 1 2 2 1,aligny bottom");
 		
-		JButton Login = new JButton("Log in");
-		Login.addActionListener(new ActionListener() {
+		passwordField = new JPasswordField();
+		signInpanel.add(passwordField, "cell 1 3 2 1,growx,aligny top");
+		
+		JButton loginBtn = new JButton("Log in");
+		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(userName.getText().equals("1") && passWord.getText().equals("2"))
-					System.out.println("Account accepted");
-				else{
-					 JOptionPane.showMessageDialog(null, "Incorrect Password", "Please Login again", JOptionPane.ERROR_MESSAGE);
+				if(checkCredintials(usernametextField.getText(),passwordField.getPassword())){
+					dispose();
+					MainMenu menu = new MainMenu();
+					menu.setVisible(true);
 				}
-			
-			
 			}
 		});
-		Login.setBounds(255, 206, 112, 32);
-		sign_in.add(Login);
-		contentPane.setLayout(gl_contentPane);
+		signInpanel.add(loginBtn, "cell 2 4,alignx right");
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+	
+	public boolean checkCredintials(String userName, char[] password){
+		
+		String sqlQuery = "Select * from NCMSE.dbo.Account where Username = ? and password = ?";
+		
+		//We are going to try to create a connection to the database using the DAO and then query it.
+		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
+		//http://stackoverflow.com/questions/18142745/how-do-i-generate-a-salt-in-java-for-salted-hash
+		//Security Needs to be implemented thats for sure, but i will look into that later
+		
+		try {
+			
+			PreparedStatement stmt = login.getConnection().prepareStatement(sqlQuery);
+			stmt.setString(1, userName);
+			stmt.setString(2, new String(password));
+
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()){
+				JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
+				return true;
+			}
+			else{
+				JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful Login");
+				return false;
+			}
+			
+	
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		public void actionPerformed(ActionEvent e) {
-		}
+		
+		return false;
 	}
+	
+	
 }
