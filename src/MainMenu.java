@@ -49,11 +49,11 @@ public class MainMenu extends JFrame {
 		panel.setLayout(new MigLayout("", "[100][100][100][100,grow][100][100,grow][100][100][100][100]", "[50][50,grow][50][50,grow][50][50,grow][50][50,grow][50][50][50][50]"));
 		
 		JLabel lblNewLabel_1 = new JLabel("Clinical Management");
-		lblNewLabel_1.setFont(new Font("MicraC", Font.BOLD, 10));
+		lblNewLabel_1.setFont(new Font("Mongolian Baiti", Font.BOLD, 12));
 		panel.add(lblNewLabel_1, "flowx,cell 4 1 2 1,alignx center,aligny bottom");
 		
 		JLabel lblNewLabel = new JLabel("NIMBUS");
-		lblNewLabel.setFont(new Font("MicraC", Font.BOLD, 24));
+		lblNewLabel.setFont(new Font("Mongolian Baiti", Font.BOLD, 24));
 		panel.add(lblNewLabel, "cell 3 1 4 1,alignx center,aligny center");
 		
 		JPanel panel_1 = new JPanel();
@@ -61,7 +61,7 @@ public class MainMenu extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnNewButton_2 = new JButton("Create Patient");
-		btnNewButton_2.setFont(new Font("Malgun Gothic", Font.PLAIN, 20));
+		btnNewButton_2.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -73,7 +73,7 @@ public class MainMenu extends JFrame {
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnNewButton_1 = new JButton("Search for Patient");
-		btnNewButton_1.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnNewButton_1.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_2.add(btnNewButton_1, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
@@ -81,7 +81,7 @@ public class MainMenu extends JFrame {
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnSearchForAppointment = new JButton("Search by Procedure");
-		btnSearchForAppointment.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_3.add(btnSearchForAppointment, BorderLayout.CENTER);
 		btnSearchForAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -93,7 +93,7 @@ public class MainMenu extends JFrame {
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnSearchByTime = new JButton("Search by Time");
-		btnSearchByTime.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnSearchByTime.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_4.add(btnSearchByTime, BorderLayout.CENTER);
 		
 		JPanel panel_5 = new JPanel();
@@ -101,7 +101,7 @@ public class MainMenu extends JFrame {
 		panel_5.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnScheduleAppointment = new JButton("Schedule Appointment");
-		btnScheduleAppointment.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnScheduleAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_5.add(btnScheduleAppointment, BorderLayout.CENTER);
 		
 		JPanel panel_6 = new JPanel();
@@ -109,7 +109,7 @@ public class MainMenu extends JFrame {
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnPatientBilling = new JButton("Patient Billing");
-		btnPatientBilling.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnPatientBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		
 		JPanel panel_7 = new JPanel();
@@ -117,7 +117,7 @@ public class MainMenu extends JFrame {
 		panel_7.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setFont(new Font("Micra", Font.PLAIN, 9));
+		btnLogout.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_7.add(btnLogout, BorderLayout.CENTER);
 	}
 
