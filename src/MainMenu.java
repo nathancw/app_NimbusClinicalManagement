@@ -60,13 +60,15 @@ public class MainMenu extends JFrame {
 		panel.add(panel_1, "cell 3 3 2 2,grow");
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton_2 = new JButton("Create Patient");
-		btnNewButton_2.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton createPatientBtn = new JButton("Create Patient");
+		createPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		createPatientBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				CreatePatientFrame create = new CreatePatientFrame();
+				create.setVisible(true);
 			}
 		});
-		panel_1.add(btnNewButton_2);
+		panel_1.add(createPatientBtn);
 		
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2, "cell 5 3 2 2,grow");

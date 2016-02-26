@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class NimbusDAO {
-	Connection sqlconn;
+	public static Connection sqlconn;
 	public NimbusDAO() throws Exception {
 		sqlconn = createConnection();
 	}
@@ -32,7 +32,7 @@ public class NimbusDAO {
 		return null;
 	}
 	
-	public Connection getConnection(){
+	public static Connection getConnection(){
 		return sqlconn;
 		
 	}

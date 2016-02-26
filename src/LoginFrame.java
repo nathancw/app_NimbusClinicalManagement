@@ -93,6 +93,9 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		signInpanel.add(loginBtn, "cell 2 4,alignx right");
+		
+		//When you press enter this button will be called
+		getRootPane().setDefaultButton(loginBtn);
 	}
 	
 	public boolean checkCredintials(String userName, char[] password){
@@ -129,5 +132,8 @@ public class LoginFrame extends JFrame {
 		return false;
 	}
 	
+	public static NimbusDAO getDAO(){
+		return login;
+	}
 	
 }

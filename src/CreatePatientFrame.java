@@ -1,5 +1,7 @@
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.ButtonGroup;
@@ -18,10 +20,17 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
-public class BasicInformationPanel extends JPanel {
+public class CreatePatientFrame extends JFrame {
+
 	private JTextField firstnametextField;
 	private JTextField lastnamtextField;
 	private JTextField middlenametextField;
@@ -38,25 +47,47 @@ public class BasicInformationPanel extends JPanel {
 	private JFormattedTextField faxtextField;
 	private JButton btnEdit;
 	private JButton btnSave;
+	private JPanel contentPane;
 	
 	private JRadioButton maleRadioButton;
 
 	
 	private JRadioButton  femaleRadioButton;
-	
 
 	/**
-	 * Create the panel.
+	 * Launch the application.
 	 */
-	public BasicInformationPanel() {
-		setLayout(new BorderLayout(0, 0));
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CreatePatientFrame frame = new CreatePatientFrame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public CreatePatientFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 900, 600);
+		setTitle("Create a new Patient");
+		contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		contentPane.setVisible(true);
 		
 		JPanel contentPanel = new JPanel();
-		add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][100][100][100][100][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30]"));
 		
-		JLabel lblViewPatientInformation = new JLabel("View Patient Information");
-		contentPanel.add(lblViewPatientInformation, "cell 3 0 3 1,aligny top");
+		JLabel lblViewPatientInformation = new JLabel("Create a new Patient by inputting Information");
+		contentPanel.add(lblViewPatientInformation, "cell 2 0 5 1,alignx center,aligny center");
 		
 		JPanel BasicPanel = new JPanel();
 		BasicPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -201,24 +232,16 @@ public class BasicInformationPanel extends JPanel {
 		contentPanel.add(editbtnPanel, "cell 6 11,grow");
 		editbtnPanel.setLayout(new BorderLayout(0, 0));
 		
-		btnEdit = new JButton("Edit");
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setAllEditable();
-			}
-		});
-		editbtnPanel.add(btnEdit, BorderLayout.CENTER);
-		
+	
 		JPanel savebtnPanel = new JPanel();
 		contentPanel.add(savebtnPanel, "cell 7 11,grow");
 		savebtnPanel.setLayout(new BorderLayout(0, 0));
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton("Create");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				updateDatabase();
-				setAllUnEditable();
+				if(updateDatabase())
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Changes Saved Successfully in database.");
 			}
@@ -229,65 +252,30 @@ public class BasicInformationPanel extends JPanel {
 
 		//setAllUnEditable();
 		setFormatting();
-	}
-
-	public void setAllUnEditable(){
-		  btnSave.setEnabled(false);
-		  btnEdit.setEnabled(true);
-		  firstnametextField.setEditable(false);
-		  lastnamtextField.setEditable(false);
-		  middlenametextField.setEditable(false);
-		  dobTextField.setEditable(false);
-		  agetextField.setEditable(false);
-		  addresstextField.setEditable(false);
-		  citytextField.setEditable(false);
-		  statetextField.setEditable(false);
-		  ziptextField.setEditable(false);
-		  patientidtextField.setEditable(false);
-		  homephonetextField.setEditable(false);
-		  mobilephonetextField.setEditable(false);
-		  emailtextField.setEditable(false);
-		  faxtextField.setEditable(false);
-		
-		  //Radio buttons?
-		
-		  maleRadioButton.setEnabled(false);
-		  femaleRadioButton.setEnabled(false);
 		
 	}
 	
-	public void setAllEditable(){
-		  btnEdit.setEnabled(false);
-		  btnSave.setEnabled(true);
-		  firstnametextField.setEditable(true);
-		  lastnamtextField.setEditable(true);
-		  middlenametextField.setEditable(true);
-		  dobTextField.setEditable(true);
-		  agetextField.setEditable(true);
-		  addresstextField.setEditable(true);
-		  citytextField.setEditable(true);
-		  statetextField.setEditable(true);
-		  ziptextField.setEditable(true);
-		  patientidtextField.setEditable(true);
-		  homephonetextField.setEditable(true);
-		  mobilephonetextField.setEditable(true);
-		  emailtextField.setEditable(true);
-		  faxtextField.setEditable(true);
-		
-		  //Radio buttons?
-		  maleRadioButton.setEnabled(false);
-		  femaleRadioButton.setEnabled(false);
-		
-	}
-	
-	public void updateDatabase(){
+	public Boolean updateDatabase(){
 		
 		String firstName = firstnametextField.getText();
 		String lastName = lastnamtextField.getText();
 		String middleName= middlenametextField.getText();
 		
 		//Sting to date conversion will need to be done
-		String dob = dobTextField.getText();
+		String dateofbirth = dobTextField.getText(); //02/22/2016
+		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
+		
+		//if(dateofbirth.length() == 9)
+		//	dobYMD = dateofbirth.substring(5,8) + "-" + dateofbirth.substring(2,3) + "-" + "0" + dateofbirth.charAt(0);
+		//else
+		
+		Date dob = null;	
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		try {
+			dob = df.parse(dobYMD);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		} 
 		
 		String age = agetextField.getText();
 		String address = addresstextField.getText();
@@ -300,35 +288,63 @@ public class BasicInformationPanel extends JPanel {
 		String emailtext = emailtextField.getText();
 		String faxtext = faxtextField.getText();
 		
-		 String gender;
+		String gender;
 		if(maleRadioButton.isSelected()){
 			gender = "M";
 		}
 		else
 			gender = "F";
-	
-		//Have all the data gathered just need to actually create the insert query using the strings above. Date conversion could be an issue
 		
+		
+		
+		String sqlQuery2 = "insert into [NCMSE].[dbo].[Account]" +
+				 "VALUES (" + firstName + "," + middleName + "," + lastName+ "," + dobYMD + "," + age + " ," +gender + "," + address + "," + city + "," + state + "," + zip + "," + homephone + "," + 
+				mobilephone + "," + emailtext + "," + faxtext +")";
+		
+		System.out.println("SQLQUERY2: " + sqlQuery2);
+		
+		String sqlQuery = "insert into [NCMSE].[NCM].[Patient]" +
+						"(FirstName,MiddleName,LastName,DateOfBirth,Age,Sex,Address,City,State,Zip,HomePhone,Mobile,Email,Fax)" +
+						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		
+		Connection sqlconn = null;
+		PreparedStatement stmt = null;
+		try {
+			
+			//TODO: Not create a new connection every time... Also need to clean the table on inserts
+			//This is terrible, terrible logic. So many statics that don't make any sense. I'm so confused rofl
+			NimbusDAO DAO = new NimbusDAO();
+			sqlconn = DAO.getConnection();
+			stmt = sqlconn.prepareStatement(sqlQuery);
+			
+			stmt.setString(1, firstName);
+			stmt.setString(2, middleName);
+			stmt.setString(3, lastName);
+			stmt.setDate(4, new java.sql.Date(dob.getTime()));
+			stmt.setString(5, age);
+			stmt.setString(6, gender);
+			stmt.setString(7, address);
+			stmt.setString(8, city);
+			stmt.setString(9, state);
+			stmt.setString(10, zip);
+			stmt.setString(11, homephone);
+			stmt.setString(12, mobilephone);
+			stmt.setString(13, emailtext);
+			stmt.setString(14, faxtext); 
+			stmt.executeUpdate();		
+	
+			stmt.close();
+			sqlconn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+		return true;
 	}
 	
 	public void setFormatting(){
-		/*
-		 firstnametextField.setEditable(false);
-		  lastnamtextField.setEditable(false);
-		  middlenametextField.setEditable(false);
-		  dobTextField.setEditable(false);
-		  agetextField.setEditable(false);
-		  addresstextField.setEditable(false);
-		  citytextField.setEditable(false);
-		  statetextField.setEditable(false);
-		  ziptextField.setEditable(false);
-		  patientidtextField.setEditable(false);
-		  homephonetextField.setEditable(false);
-		  mobilephonetextField.setEditable(false);
-		  emailtextField.setEditable(false);
-		  faxtextField.setEditable(false);
-		  */
-		
+
 		try {
 			MaskFormatter dateMask = new MaskFormatter("##/##/####");
 			MaskFormatter ageText  = new MaskFormatter("##");
@@ -352,4 +368,5 @@ public class BasicInformationPanel extends JPanel {
 			e1.printStackTrace();
 		}
 	}
+
 }
