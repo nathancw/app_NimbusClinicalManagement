@@ -37,6 +37,9 @@ public class NimbusDAO {
 		
 	}
 	
+	//The other idea is to Create one DAO method for each query we need to execute. 
+	//There should be some overlaps such as we will probably have to execute Getpatientdetails() for multiple parameters multiple times.
+	//This would allow us to reuse that method. but doing this would make the DAO class really really really large. I will have to debate it a little bit.
 	//Bad bad logic
 	/*public ResultSet query(String sqlQuery) throws SQLException{
 		
