@@ -297,11 +297,13 @@ public class CreatePatientFrame extends JFrame {
 		
 		
 		
-		String sqlQuery2 = "insert into [NCMSE].[dbo].[Account]" +
+		/*For debugging purposes if you want to see which value is getting inserted into it
+		 * String sqlQuery2 = "insert into [NCMSE].[dbo].[Account]" +
 				 "VALUES (" + firstName + "," + middleName + "," + lastName+ "," + dobYMD + "," + age + " ," +gender + "," + address + "," + city + "," + state + "," + zip + "," + homephone + "," + 
 				mobilephone + "," + emailtext + "," + faxtext +")";
 		
 		System.out.println("SQLQUERY2: " + sqlQuery2);
+		*/
 		
 		String sqlQuery = "insert into [NCMSE].[NCM].[Patient]" +
 						"(FirstName,MiddleName,LastName,DateOfBirth,Age,Sex,Address,City,State,Zip,HomePhone,Mobile,Email,Fax)" +
@@ -315,6 +317,8 @@ public class CreatePatientFrame extends JFrame {
 			//This is terrible, terrible logic. So many statics that don't make any sense. I'm so confused rofl
 			NimbusDAO DAO = new NimbusDAO();
 			sqlconn = DAO.getConnection();
+			////////////////////////////
+			
 			stmt = sqlconn.prepareStatement(sqlQuery);
 			
 			stmt.setString(1, firstName);
