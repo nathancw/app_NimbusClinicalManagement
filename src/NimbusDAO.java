@@ -50,9 +50,13 @@ public class NimbusDAO {
 		sqlconn.close();
 	}
 	
+	/* This method is designed to getPatientdetails no matter what you are inserting
+	 * So the query will use the Passed in parameters in the query. But there is still a ton of issues with
+	 *querying on multiple parameters. Currently, it returns everything 
+	 * May need some error handleing when the paramters are empty strings. This will need some sql knowledge
+	 */
 	public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
-				//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 				//hard coding some error handeling 
 				Date dob;
 				if(dateofbirth.equals(""))
@@ -84,6 +88,12 @@ public class NimbusDAO {
 				return null;
 	}
 
+	/* Change patient details takes in every value of patient table. This is the method to insert new values into the datbase
+	 * or change existing patient data. The boolean update will determine what you want to do, if its false, you just want to insert
+	 * into the table and not update it. This determines which query to update
+	 *TODO: Implement Update feature, but you need massive error handling for blank parameters. The other option is to create an entirely new
+	 * method which updates and leave this one as inserting
+	 */
 	public Boolean changePatientData(boolean update, String firstName, String middleName, String lastName, String dateofbirth,
 			String age, String gender, String address, String city, String state, String zip, String homephone, String mobilephone,
 			String emailtext, String faxtext){
