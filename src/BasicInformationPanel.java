@@ -17,6 +17,7 @@ import java.awt.Color;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 
@@ -351,5 +352,18 @@ public class BasicInformationPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	public void populate(int Patient_ID){
+		NimbusDAO dao;
+		try {
+			dao = new NimbusDAO();
+			ResultSet rs = dao.getPatientDetails(Patient_ID,"","","");
+			System.out.println("TRYING TO POPULATE");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

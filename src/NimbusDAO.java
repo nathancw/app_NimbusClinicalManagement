@@ -2,12 +2,22 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
 
 public class NimbusDAO {
-	public static Connection sqlconn;
+	Connection sqlconn;
 	public NimbusDAO() throws Exception {
 		sqlconn = createConnection();
 	}
@@ -32,27 +42,114 @@ public class NimbusDAO {
 		return null;
 	}
 	
-	public static Connection getConnection(){
+	public Connection getConnection(){
 		return sqlconn;
-		
 	}
 	
-	//The other idea is to Create one DAO method for each query we need to execute. 
-	//There should be some overlaps such as we will probably have to execute Getpatientdetails() for multiple parameters multiple times.
-	//This would allow us to reuse that method. but doing this would make the DAO class really really really large. I will have to debate it a little bit.
-	//Bad bad logic
-	/*public ResultSet query(String sqlQuery) throws SQLException{
+	public void closeConnection() throws SQLException{
+		sqlconn.close();
+	}
+	
+	public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
-		Statement stmt = sqlconn.createStatement();
-		
-		ResultSet rs = stmt.executeQuery(sqlQuery);
+				//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
+				//hard coding some error handeling 
+				Date dob;
+				if(dateofbirth.equals(""))
+					dob = parseTextFieldDate("01/01/2016");
+				else
+					dob = parseTextFieldDate(dateofbirth);
+				 
+				String sqlQuery = "Select * from [NCMSE].[NCM].[Patient]" +
+							"where FirstName = ? or LastName = ? or DateOfBirth = ? or Patient_ID = ?";	
+			
+				Connection conn = this.getConnection();
+				PreparedStatement stmt = null;
+				try {
+
+					///Prepare and execute query
+					stmt = conn.prepareStatement(sqlQuery);
+					stmt.setString(1, firstName);
+					stmt.setString(2, lastName);
+					stmt.setDate(3, new java.sql.Date(dob.getTime()));
+					stmt.setInt(4, id);
+					ResultSet rs = stmt.executeQuery();	
+					
+					return rs;
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				
-		return null;
+				return null;
+	}
+
+	public Boolean changePatientData(boolean update, String firstName, String middleName, String lastName, String dateofbirth,
+			String age, String gender, String address, String city, String state, String zip, String homephone, String mobilephone,
+			String emailtext, String faxtext){
+		
+		String sqlQuery = null;
 		
 		
+		if(!update){
+		sqlQuery = "insert into [NCMSE].[NCM].[Patient]" +
+				"(FirstName,MiddleName,LastName,DateOfBirth,Age,Sex,Address,City,State,Zip,HomePhone,Mobile,Email,Fax)" +
+				"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+		}
+		Connection sqlconn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+			
+			Date dob = parseTextFieldDate(dateofbirth);
+			stmt = sqlconn.prepareStatement(sqlQuery);
+			
+			stmt.setString(1, firstName);
+			stmt.setString(2, middleName);
+			stmt.setString(3, lastName);
+			stmt.setDate(4, new java.sql.Date(dob.getTime()));
+			stmt.setString(5, age);
+			stmt.setString(6, gender);
+			stmt.setString(7, address);
+			stmt.setString(8, city);
+			stmt.setString(9, state);
+			stmt.setString(10, zip);
+			stmt.setString(11, homephone);
+			stmt.setString(12, mobilephone);
+			stmt.setString(13, emailtext);
+			stmt.setString(14, faxtext); 
+			stmt.executeUpdate();		
 		
-	} */
+			stmt.close();
+			sqlconn.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return false;
 
 		
+	}
 
+	public Date parseTextFieldDate(String dateofbirth){
+		
+		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
+		
+		Date dob = null;	
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		System.out.println("at 0: " + (int)dateofbirth.charAt(0));
+		try {
+			if((dateofbirth.charAt(0) != 32))
+			dob = df.parse(dobYMD);
+			else{
+				//Set to todays date if none is specified
+				dob = Calendar.getInstance().getTime();;
+				dob = df.parse(dobYMD);
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		} 
+		return dob;
+	}
 }

@@ -260,23 +260,7 @@ public class CreatePatientFrame extends JFrame {
 		String firstName = firstnametextField.getText();
 		String lastName = lastnamtextField.getText();
 		String middleName= middlenametextField.getText();
-		
-		//Sting to date conversion will need to be done
 		String dateofbirth = dobTextField.getText(); //02/22/2016
-		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
-		
-		//if(dateofbirth.length() == 9)
-		//	dobYMD = dateofbirth.substring(5,8) + "-" + dateofbirth.substring(2,3) + "-" + "0" + dateofbirth.charAt(0);
-		//else
-		
-		Date dob = null;	
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		try {
-			dob = df.parse(dobYMD);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		} 
-		
 		String age = agetextField.getText();
 		String address = addresstextField.getText();
 		String city = citytextField.getText();
@@ -295,57 +279,23 @@ public class CreatePatientFrame extends JFrame {
 		else
 			gender = "F";
 		
+		NimbusDAO dao;
+		Boolean update = false;
+		Boolean wasUpdated = false;
 		
-		
-		/*For debugging purposes if you want to see which value is getting inserted into it
-		 * String sqlQuery2 = "insert into [NCMSE].[dbo].[Account]" +
-				 "VALUES (" + firstName + "," + middleName + "," + lastName+ "," + dobYMD + "," + age + " ," +gender + "," + address + "," + city + "," + state + "," + zip + "," + homephone + "," + 
-				mobilephone + "," + emailtext + "," + faxtext +")";
-		
-		System.out.println("SQLQUERY2: " + sqlQuery2);
-		*/
-		
-		String sqlQuery = "insert into [NCMSE].[NCM].[Patient]" +
-						"(FirstName,MiddleName,LastName,DateOfBirth,Age,Sex,Address,City,State,Zip,HomePhone,Mobile,Email,Fax)" +
-						"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
-		
-		Connection sqlconn = null;
-		PreparedStatement stmt = null;
 		try {
-			
-			//TODO: Not create a new connection every time... Also need to clean the table on inserts
-			//This is terrible, terrible logic. So many statics that don't make any sense. I'm so confused rofl
-			NimbusDAO DAO = new NimbusDAO();
-			sqlconn = DAO.getConnection();
-			////////////////////////////
-			
-			stmt = sqlconn.prepareStatement(sqlQuery);
-			
-			stmt.setString(1, firstName);
-			stmt.setString(2, middleName);
-			stmt.setString(3, lastName);
-			stmt.setDate(4, new java.sql.Date(dob.getTime()));
-			stmt.setString(5, age);
-			stmt.setString(6, gender);
-			stmt.setString(7, address);
-			stmt.setString(8, city);
-			stmt.setString(9, state);
-			stmt.setString(10, zip);
-			stmt.setString(11, homephone);
-			stmt.setString(12, mobilephone);
-			stmt.setString(13, emailtext);
-			stmt.setString(14, faxtext); 
-			stmt.executeUpdate();		
-	
-			stmt.close();
-			sqlconn.close();
+			dao = new NimbusDAO();
+			wasUpdated = dao.changePatientData(update,  firstName,  middleName,  lastName,  dateofbirth,
+					 age,  gender,  address,  city,  state,  zip,  homephone,  mobilephone,
+					 emailtext, faxtext);
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
-		return true;
-	}
+		return wasUpdated;
+	
+	}	
+	
 	
 	public void setFormatting(){
 

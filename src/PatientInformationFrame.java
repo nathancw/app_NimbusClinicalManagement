@@ -25,6 +25,7 @@ public class PatientInformationFrame extends JFrame {
 	private JList categoriesList;
 	private JPanel dataPanel;
 	private JPanel removeablePanel;
+	private int patient_ID;
 
 	/**
 	 * Launch the application.
@@ -33,7 +34,7 @@ public class PatientInformationFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PatientInformationFrame frame = new PatientInformationFrame();
+					PatientInformationFrame frame = new PatientInformationFrame(000000);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,8 +46,9 @@ public class PatientInformationFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientInformationFrame() {
+	public PatientInformationFrame(int Patient_ID) {
 		
+		this.patient_ID = Patient_ID;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
 		contentPane = new JPanel();
@@ -122,6 +124,7 @@ public class PatientInformationFrame extends JFrame {
 		 else if(selectedValue.equals("Basic Information")){
 			 dataPanel.removeAll();
 			 BasicInformationPanel basicInfo = new BasicInformationPanel();
+			 basicInfo.populate(patient_ID);
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();

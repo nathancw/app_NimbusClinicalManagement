@@ -170,9 +170,9 @@ public class SearchPatientPanel extends JPanel{
 			    //if (e.getClickCount() == 1) {
 				  	if(table.getSelectedColumn() == 0){
 				  		
-				  	
-			    	 System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
-			    	 PatientInformationFrame patientframe = new PatientInformationFrame();
+				  	 String patient_ID = table.getValueAt(table.getSelectedRow(), 0).toString();
+			    	 System.out.println(patient_ID);
+			    	 PatientInformationFrame patientframe = new PatientInformationFrame(Integer.parseInt(patient_ID));
 			         patientframe.show("Basic Information");
 				  	}
 			     //}
@@ -185,65 +185,37 @@ public class SearchPatientPanel extends JPanel{
 	
 	public DefaultTableModel search(String[][] patients){
 		
-		//Ge
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
-		 String id = patientIDtextField.getText();
+		 int id;
+		 
+		 if(patientIDtextField.getText().equals(""))
+			 id = 0;
+		 else
+			 id = Integer.parseInt(patientIDtextField.getText());
+		 
 		 String firstName = firstNametextField.getText();
 		 String lastName = lastNametextField.getText();
 		 
 		 String dateofbirth = dOBtextField.getText(); //02/22/2016
-			String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
+		 String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
 			
-			//if(dateofbirth.length() == 9)
-			//	dobYMD = dateofbirth.substring(5,8) + "-" + dateofbirth.substring(2,3) + "-" + "0" + dateofbirth.charAt(0);
-			//else
+			try{
+			NimbusDAO dao = new NimbusDAO();
 			
-			Date dob = null;	
-			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-			System.out.println("at 0: " + (int)dateofbirth.charAt(0));
-			try {
-				if((dateofbirth.charAt(0) != 32))
-				dob = df.parse(dobYMD);
-				else{
-					//Set to todays date if none is specified
-					dob = Calendar.getInstance().getTime();;
-					dob = df.parse(dobYMD);
-				}
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-			} 
-		 
-			String sqlQuery = "Select [Patient_ID],[FirstName],[LastName],[DateOfBirth]from [NCMSE].[NCM].[Patient]" +
-					"where FirstName = ? or LastName = ? or DateOfBirth = ?";	
-	
-		Connection sqlconn = null;
-		PreparedStatement stmt = null;
-		try {
-			
-			//TODO: Not create a new connection every time... Also need to clean the table on inserts
-			//This is terrible, terrible logic. So many statics that don't make any sense. I'm so confused rofl
-			NimbusDAO DAO = new NimbusDAO();
-			sqlconn = DAO.getConnection();
-			////////////////////////////
-			
-			///Prepare and execute query
-			stmt = sqlconn.prepareStatement(sqlQuery);
-			stmt.setString(1, firstName);
-			stmt.setString(2, lastName);
-			stmt.setDate(3, new java.sql.Date(dob.getTime()));
-			ResultSet rs = stmt.executeQuery();	
-		
-			////////////
+			//Get patient detials
+			ResultSet rs = dao.getPatientDetails(id,firstName,lastName,dateofbirth);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			
 			int numberOfCols = rsMeta.getColumnCount();
 			Vector<String> colNames= new Vector<String>();   // your columns names
-			for (int i = 1; i <= numberOfCols; i++ ){
-			    colNames.add(rsMeta.getColumnName(i));
-			}
+			colNames.add(rsMeta.getColumnName(1));
+			colNames.add(rsMeta.getColumnName(2));
+			colNames.add(rsMeta.getColumnName(4));
+			colNames.add(rsMeta.getColumnName(5));
+			
 			
 			tableModel = new DefaultTableModel(colNames, 0);
 
@@ -256,21 +228,14 @@ public class SearchPatientPanel extends JPanel{
 			    tableModel.addRow(rowData);
 			}
 			
-			stmt.close();
-			sqlconn.close();
+			dao.closeConnection();
 			return tableModel;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
-		
-		
-	
-		
-		
-		
+		return null;	
 	}
 		
 }
