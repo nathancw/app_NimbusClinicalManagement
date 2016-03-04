@@ -106,6 +106,7 @@ public class OptionMenuFrame extends JFrame {
 					 dataPanel.removeAll();
 					 SearchPatientPanel searchPanel = new SearchPatientPanel();
 					 dataPanel.add(searchPanel,"cell 0 0,grow");
+					 getRootPane().setDefaultButton(searchPanel.getDefaultButton());
 					 setVisible(true);
 					 repaint();
 					 

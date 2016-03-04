@@ -61,6 +61,7 @@ public class SearchPatientPanel extends JPanel{
 	private JTable table;
 	private JLabel topLabel;
 	private JLabel lblMiddle;
+	private JButton searchButton;
 
 	/**
 	 * Launch the application.
@@ -130,7 +131,7 @@ public class SearchPatientPanel extends JPanel{
 		contentPanel.add(lastNametextField, "cell 7 1,alignx left,aligny center");
 		lastNametextField.setColumns(10);
 		
-		JButton searchButton = new JButton("Search");
+		searchButton = new JButton("Search");
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//when we search, we need to update the patients list
@@ -179,10 +180,13 @@ public class SearchPatientPanel extends JPanel{
 			   }
 			});
 
+		//Make the searchbutton the default button in the panel
 	
 	}
 
-	
+	public JButton getDefaultButton(){
+		return searchButton;
+	}
 	public DefaultTableModel search(String[][] patients){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
@@ -196,10 +200,9 @@ public class SearchPatientPanel extends JPanel{
 		 
 		 String firstName = firstNametextField.getText();
 		 String lastName = lastNametextField.getText();
-		 
+		 System.out.println("lastnameempty? : " + lastName.isEmpty());
 		 String dateofbirth = dOBtextField.getText(); //02/22/2016
-		 String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
-			
+	
 			try{
 			NimbusDAO dao = new NimbusDAO();
 			
@@ -209,7 +212,6 @@ public class SearchPatientPanel extends JPanel{
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			
-			int numberOfCols = rsMeta.getColumnCount();
 			Vector<String> colNames= new Vector<String>();   // your columns names
 			colNames.add(rsMeta.getColumnName(1));
 			colNames.add(rsMeta.getColumnName(2));

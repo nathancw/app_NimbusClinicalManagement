@@ -1,4 +1,3 @@
-//package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -57,35 +56,46 @@ public class NimbusDAO {
 	 */
 	public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
-				//hard coding some error handeling 
-				Date dob;
-				if(dateofbirth.equals(""))
-					dob = parseTextFieldDate("01/01/2016");
-				else
-					dob = parseTextFieldDate(dateofbirth);
-				 
-				String sqlQuery = "Select * from [NCMSE].[NCM].[Patient]" +
-							"where FirstName = ? or LastName = ? or DateOfBirth = ? or Patient_ID = ?";	
+		Date dob;
+		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
+		//quicker than building dyanamic queries.
+		if((firstName.isEmpty())){
+			firstName = null;
+		}
+		if((lastName.isEmpty())){
+			lastName = null;
 			
-				Connection conn = this.getConnection();
-				PreparedStatement stmt = null;
-				try {
+		}
+		
+		if(dateofbirth.equals("") || dateofbirth.equals("  /  /    ")){
+			dob = parseTextFieldDate("01/01/2016");
+		}
+		else
+			dob = parseTextFieldDate(dateofbirth);
+		 
+		System.out.println("FirstName: " + firstName + " LastName: " + lastName + " id: " + id + " dob: " + dob);
+		String sqlQuery = "Select * from [NCMSE].[NCM].[Patient]" +
+					"where FirstName = ? or LastName = ? or DateOfBirth = ? or Patient_ID = ?";	
+	
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
 
-					///Prepare and execute query
-					stmt = conn.prepareStatement(sqlQuery);
-					stmt.setString(1, firstName);
-					stmt.setString(2, lastName);
-					stmt.setDate(3, new java.sql.Date(dob.getTime()));
-					stmt.setInt(4, id);
-					ResultSet rs = stmt.executeQuery();	
-					
-					return rs;
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				return null;
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+			stmt.setString(1, firstName);
+			stmt.setString(2, lastName);
+			stmt.setDate(3, new java.sql.Date(dob.getTime()));
+			stmt.setInt(4, id);
+			ResultSet rs = stmt.executeQuery();	
+			
+			return rs;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/* Change patient details takes in every value of patient table. This is the method to insert new values into the datbase
