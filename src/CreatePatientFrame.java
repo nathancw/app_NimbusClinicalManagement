@@ -285,7 +285,7 @@ public class CreatePatientFrame extends JFrame {
 		
 		try {
 			dao = new NimbusDAO();
-			wasUpdated = dao.changePatientData(update,  firstName,  middleName,  lastName,  dateofbirth,
+			wasUpdated = dao.changePatientData(update, 0, firstName,  middleName,  lastName,  dateofbirth,
 					 age,  gender,  address,  city,  state,  zip,  homephone,  mobilephone,
 					 emailtext, faxtext);
 		} catch (Exception e) {

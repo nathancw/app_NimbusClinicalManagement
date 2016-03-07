@@ -64,16 +64,15 @@ public class NimbusDAO {
 		}
 		if((lastName.isEmpty())){
 			lastName = null;
-			
 		}
 		
 		if(dateofbirth.equals("") || dateofbirth.equals("  /  /    ")){
-			dob = parseTextFieldDate("01/01/2016");
+			dob = parseTextFieldDate("00/00/0000");
 		}
 		else
 			dob = parseTextFieldDate(dateofbirth);
 		 
-		System.out.println("FirstName: " + firstName + " LastName: " + lastName + " id: " + id + " dob: " + dob);
+		//System.out.println("FirstName: " + firstName + " LastName: " + lastName + " id: " + id + " dob: " + dob);
 		String sqlQuery = "Select * from [NCMSE].[NCM].[Patient]" +
 					"where FirstName = ? or LastName = ? or DateOfBirth = ? or Patient_ID = ?";	
 	
@@ -104,23 +103,29 @@ public class NimbusDAO {
 	 *TODO: Implement Update feature, but you need massive error handling for blank parameters. The other option is to create an entirely new
 	 * method which updates and leave this one as inserting
 	 */
-	public Boolean changePatientData(boolean update, String firstName, String middleName, String lastName, String dateofbirth,
+	public Boolean changePatientData(boolean update, int patient_ID, String firstName, String middleName, String lastName, String dateofbirth,
 			String age, String gender, String address, String city, String state, String zip, String homephone, String mobilephone,
 			String emailtext, String faxtext){
 		
 		String sqlQuery = null;
-		
 		
 		if(!update){
 		sqlQuery = "insert into [NCMSE].[NCM].[Patient]" +
 				"(FirstName,MiddleName,LastName,DateOfBirth,Age,Sex,Address,City,State,Zip,HomePhone,Mobile,Email,Fax)" +
 				"VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";	
 		}
+		else{
+			sqlQuery = "update [NCMSE].[NCM].[Patient] set FirstName = ?,MiddleName = ?,LastName = ?,DateOfBirth = ?,Age = ?,Sex = ?,Address = ?,City = ?,"
+			+ "State= ?,Zip= ?,HomePhone= ?,Mobile= ?,Email= ?,Fax= ? where Patient_ID = " + Integer.toString(patient_ID);
+			
+			
+		}
 		Connection sqlconn = this.getConnection();
 		PreparedStatement stmt = null;
 		try {
 			
 			Date dob = parseTextFieldDate(dateofbirth);
+			
 			stmt = sqlconn.prepareStatement(sqlQuery);
 			
 			stmt.setString(1, firstName);
@@ -137,6 +142,7 @@ public class NimbusDAO {
 			stmt.setString(12, mobilephone);
 			stmt.setString(13, emailtext);
 			stmt.setString(14, faxtext); 
+			
 			stmt.executeUpdate();		
 		
 			stmt.close();
@@ -154,11 +160,11 @@ public class NimbusDAO {
 
 	public Date parseTextFieldDate(String dateofbirth){
 		
-		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(3,5) + "-" + dateofbirth.charAt(0) + dateofbirth.charAt(1);
-		
+		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(0,2) + "-" + dateofbirth.substring(3,5);
+		//System.out.println("Dobymd: " + dobYMD);
 		Date dob = null;	
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		System.out.println("at 0: " + (int)dateofbirth.charAt(0));
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		//System.out.println("at 0: " + (int)dateofbirth.charAt(0));
 		try {
 			if((dateofbirth.charAt(0) != 32))
 			dob = df.parse(dobYMD);

@@ -19,7 +19,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class BasicInformationPanel extends JPanel {
@@ -218,10 +222,12 @@ public class BasicInformationPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				updateDatabase();
+				boolean updated = updateDatabase();
 				setAllUnEditable();
-				JOptionPane.showMessageDialog(new JFrame(),
-					    "Changes Saved Successfully in database.");
+				if(updated)
+					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
+				else
+					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occured.");
 			}
 		});
 		savebtnPanel.add(btnSave, BorderLayout.CENTER);
@@ -281,7 +287,7 @@ public class BasicInformationPanel extends JPanel {
 		
 	}
 	
-	public void updateDatabase(){
+	public boolean updateDatabase(){
 		
 		String firstName = firstnametextField.getText();
 		String lastName = lastnametextField.getText();
@@ -307,8 +313,20 @@ public class BasicInformationPanel extends JPanel {
 		}
 		else
 			gender = "F";
-	
-		//Have all the data gathered just need to actually create the insert query using the strings above. Date conversion could be an issue
+		
+		NimbusDAO dao;
+		boolean updated = false;
+		try {
+			dao = new NimbusDAO();
+			updated=  dao.changePatientData(true, Integer.parseInt(patientid), firstName,  middleName,  lastName,  dob,
+					 age,  gender,  address,  city,  state,  zip,  homephone,  mobilephone,
+					 emailtext, faxtext);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return updated;
 		
 	}
 	
@@ -365,7 +383,11 @@ public class BasicInformationPanel extends JPanel {
 				faxtextField.setText(rs.getString("Fax"));;
 				
 				//FixThis
-				dobTextField.setText(rs.getString("DateOfBirth"));
+				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				Date dob = rs.getDate("DateOfBirth");  
+				String formattedDate = df.format(dob);
+
+				dobTextField.setText(formattedDate);
 			}
 			
 		} catch (Exception e) {

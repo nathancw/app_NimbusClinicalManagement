@@ -63,25 +63,6 @@ public class SearchPatientPanel extends JPanel{
 	private JLabel lblMiddle;
 	private JButton searchButton;
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchFrame frame = new SearchFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	} */
-
-	/**
-	 * Create the frame.
-	 */
 	public SearchPatientPanel() {
 		setLayout(new BorderLayout(0, 0));
 
@@ -138,6 +119,7 @@ public class SearchPatientPanel extends JPanel{
 				//But when we click on the patient name we need to QUERY AGAIN? Like damn this is going to be so long and touhg
 				//Do I create a PatientDAO? 
 				DefaultTableModel queryModel= search(patients);
+					
 				table.setModel(queryModel);
 				System.out.println("Search button pressed!");
 			}
@@ -151,7 +133,7 @@ public class SearchPatientPanel extends JPanel{
 		contentPanel.add(resultsPanel, "cell 0 4 8 3,alignx center,aligny top");
 		resultsPanel.setLayout(new BorderLayout(0, 0));
 		
-		//Make the table uneditable
+		//Make the table uneditabl, default table model
 		TableModel model = new DefaultTableModel(patients, colNames)
 		  {
 		    public boolean isCellEditable(int row, int column)
@@ -218,14 +200,20 @@ public class SearchPatientPanel extends JPanel{
 			colNames.add(rsMeta.getColumnName(4));
 			colNames.add(rsMeta.getColumnName(5));
 			
-			
-			tableModel = new DefaultTableModel(colNames, 0);
+			//Make the cells uneditable while creating the tablemodel
+			tableModel = new DefaultTableModel(colNames, 0)	{
+			    public boolean isCellEditable(int row, int column)
+			    {
+			      return false;//This causes all cells to be not editable
+			    }
+			  };
 
 			while (rs.next()) {
 				String data0 = rs.getString("Patient_ID");	
 			    String data1 = rs.getString("FirstName");
 			    String data2 = rs.getString("LastName");
-			    String data3 = rs.getString("DateOfBirth");
+			    String dob = rs.getString("DateOfBirth");
+			    String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);
 			    Object[] rowData = new Object[] {data0,data1,data2,data3};
 			    tableModel.addRow(rowData);
 			}
