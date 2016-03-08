@@ -38,9 +38,7 @@ public class BookAppointmentPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public BookAppointmentPanel() {
-		//Width: 900
-		//Height:700
-		//testing Extra changes
+		
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();

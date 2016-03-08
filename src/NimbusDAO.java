@@ -205,5 +205,20 @@ public class NimbusDAO {
 		
 		return rs;
 	}
-
+	
+	public void createAccount(){
+		
+		
+	}
+	
+	public void changeAppointment(){
+		
+		
+		
+	}
+	
+	public ResultSet getAppointmentDetails(){
+	
+		return null;
+	}
 }
