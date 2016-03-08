@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class NimbusDAO {
@@ -178,4 +180,30 @@ public class NimbusDAO {
 		} 
 		return dob;
 	}
+
+	public ResultSet checkCredintials(String userName, char[] password){
+		
+		String sqlQuery = "Select * from NCMSE.dbo.Account where Username = ? and password = ?";
+		ResultSet rs = null;
+		//We are going to try to create a connection to the database using the DAO and then query it.
+		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
+		//http://stackoverflow.com/questions/18142745/how-do-i-generate-a-salt-in-java-for-salted-hash
+		//Security Needs to be implemented thats for sure, but i will look into that later
+		
+		try {
+			
+			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
+			stmt.setString(1, userName);
+			stmt.setString(2, new String(password));
+
+			rs = stmt.executeQuery();
+			
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+
 }

@@ -85,7 +85,7 @@ public class LoginFrame extends JFrame {
 		JButton loginBtn = new JButton("Log in");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(checkCredintials(usernametextField.getText(),passwordField.getPassword())){
+				if(checkLogin(usernametextField.getText(),passwordField.getPassword())){
 					dispose();
 					MainMenu menu = new MainMenu();
 					menu.setVisible(true);
@@ -98,22 +98,11 @@ public class LoginFrame extends JFrame {
 		getRootPane().setDefaultButton(loginBtn);
 	}
 	
-	public boolean checkCredintials(String userName, char[] password){
-		
-		String sqlQuery = "Select * from NCMSE.dbo.Account where Username = ? and password = ?";
-		
-		//We are going to try to create a connection to the database using the DAO and then query it.
-		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
-		//http://stackoverflow.com/questions/18142745/how-do-i-generate-a-salt-in-java-for-salted-hash
-		//Security Needs to be implemented thats for sure, but i will look into that later
+	public boolean checkLogin(String userName, char[] password){
 		
 		try {
-			
-			PreparedStatement stmt = login.getConnection().prepareStatement(sqlQuery);
-			stmt.setString(1, userName);
-			stmt.setString(2, new String(password));
-
-			ResultSet rs = stmt.executeQuery();
+			NimbusDAO dao = new NimbusDAO();
+			ResultSet rs = dao.checkCredintials(userName, password);
 			
 			if(rs.next()){
 				JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
