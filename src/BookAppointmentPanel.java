@@ -13,12 +13,15 @@ import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -28,17 +31,27 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.awt.event.ActionEvent;
 
 
 public class BookAppointmentPanel extends JPanel {
 	private JTextField patientIDTextField;
-
+	private NimbusDAO dao = null;
+	private JTextField textField;
+	private JComboBox endcomboBox;
 	/**
 	 * Create the panel.
 	 */
 	public BookAppointmentPanel() {
-		
+		try {
+			dao = new NimbusDAO();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
@@ -82,33 +95,52 @@ public class BookAppointmentPanel extends JPanel {
 		
 		JComboBox doctorComboBox = new JComboBox();
 		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
+		doctorComboBox.setModel(getDoctors());
 		
 		JLabel lblStartTime = new JLabel("Start Time:");
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
 		
-		JComboBox comboBox = new JComboBox();
-		TextFieldsPanel.add(comboBox, "cell 3 1,growx");
+		JComboBox startcomboBox = new JComboBox();
+		startcomboBox.setModel(getStartTimes());
+		startcomboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Start Time Changed");
+				String startTime = (String) ((JComboBox) e.getSource()).getSelectedItem();
+				endcomboBox.addItem(startTime);
+				endcomboBox.setSelectedItem(getEndTime(startTime));
+			}
+		});
+		TextFieldsPanel.add(startcomboBox, "cell 3 1,growx");
+		
 		
 		JLabel lblReason = new JLabel("Reason:");
 		TextFieldsPanel.add(lblReason, "cell 0 2,alignx trailing");
 		
-		JComboBox comboBox_1 = new JComboBox();
-		TextFieldsPanel.add(comboBox_1, "cell 1 2,growx");
+		JComboBox reasoncomboBox = new JComboBox();
+		TextFieldsPanel.add(reasoncomboBox, "cell 1 2,growx");
 		
 		JLabel lblEndTime = new JLabel("End Time:");
 		TextFieldsPanel.add(lblEndTime, "cell 2 2,alignx trailing");
 		
-		JComboBox comboBox_3 = new JComboBox();
-		TextFieldsPanel.add(comboBox_3, "cell 3 2,growx");
+		endcomboBox = new JComboBox();
+		TextFieldsPanel.add(endcomboBox, "cell 3 2,growx");
+		endcomboBox.setEnabled(false);
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
 		TextFieldsPanel.add(lblProcedure, "cell 0 3,alignx trailing");
 		
-		JComboBox comboBox_2 = new JComboBox();
-		TextFieldsPanel.add(comboBox_2, "cell 1 3,growx");
+		JComboBox procedurecomboBox = new JComboBox();
+		TextFieldsPanel.add(procedurecomboBox, "cell 1 3,growx");
 		
 		JCheckBox chckbxSendEmail = new JCheckBox("Send Email");
 		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
+		
+		JLabel lblSpecialty = new JLabel("Specialty:");
+		TextFieldsPanel.add(lblSpecialty, "cell 0 4,alignx trailing");
+		
+		textField = new JTextField();
+		TextFieldsPanel.add(textField, "cell 1 4,growx");
+		textField.setColumns(10);
 		
 		JCheckBox chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
@@ -159,6 +191,101 @@ public class BookAppointmentPanel extends JPanel {
 	        return "";
 	    }
 
+	}
+	
+	public DefaultComboBoxModel getStartTimes(){
+		DefaultComboBoxModel model = null;
+		ArrayList<String> times = new ArrayList<String>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.TimeSlot";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				times.add("");
+				while(rs.next()){
+					times.add(rs.getString("StartTime"));
+				}
+				
+				model = new DefaultComboBoxModel(times.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}	
+		
+	public String getEndTime(String startTime){
+		String endTime = null;
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.TimeSlot where StartTime = ?";
+			System.out.println("SqlQUERY: " + sqlQuery + startTime);
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				stmt.setString(1, startTime);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+			
+				if(rs.next()){
+					endTime = rs.getString("EndTime");
+					System.out.println("End Time: " + endTime);
+				}
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return endTime;
+	}
+	
+	public DefaultComboBoxModel getDoctors(){
+		DefaultComboBoxModel model = null;
+		ArrayList<String> doctors = new ArrayList<String>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.Doctor";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				doctors.add("");
+				while(rs.next()){
+					doctors.add(rs.getString("CombinedName"));
+				}
+				
+				model = new DefaultComboBoxModel(doctors.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
 	}
 
 }

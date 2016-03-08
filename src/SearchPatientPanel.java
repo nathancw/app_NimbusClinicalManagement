@@ -182,7 +182,6 @@ public class SearchPatientPanel extends JPanel{
 		 
 		 String firstName = firstNametextField.getText();
 		 String lastName = lastNametextField.getText();
-		 System.out.println("lastnameempty? : " + lastName.isEmpty());
 		 String dateofbirth = dOBtextField.getText(); //02/22/2016
 	
 			try{
