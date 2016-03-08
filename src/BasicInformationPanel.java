@@ -17,13 +17,18 @@ import java.awt.Color;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class BasicInformationPanel extends JPanel {
 	private JTextField firstnametextField;
-	private JTextField lastnamtextField;
+	private JTextField lastnametextField;
 	private JTextField middlenametextField;
 	private JFormattedTextField dobTextField;
 	private JFormattedTextField agetextField;
@@ -117,9 +122,9 @@ public class BasicInformationPanel extends JPanel {
 		JLabel lblLastName = new JLabel("Last Name:");
 		BasicPanel.add(lblLastName, "cell 0 2");
 		
-		lastnamtextField = new JTextField();
-		BasicPanel.add(lastnamtextField, "cell 1 2");
-		lastnamtextField.setColumns(10);
+		lastnametextField = new JTextField();
+		BasicPanel.add(lastnametextField, "cell 1 2");
+		lastnametextField.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age:");
 		BasicPanel.add(lblAge, "cell 2 2,alignx left");
@@ -217,10 +222,12 @@ public class BasicInformationPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				updateDatabase();
+				boolean updated = updateDatabase();
 				setAllUnEditable();
-				JOptionPane.showMessageDialog(new JFrame(),
-					    "Changes Saved Successfully in database.");
+				if(updated)
+					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
+				else
+					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occured.");
 			}
 		});
 		savebtnPanel.add(btnSave, BorderLayout.CENTER);
@@ -235,7 +242,7 @@ public class BasicInformationPanel extends JPanel {
 		  btnSave.setEnabled(false);
 		  btnEdit.setEnabled(true);
 		  firstnametextField.setEditable(false);
-		  lastnamtextField.setEditable(false);
+		  lastnametextField.setEditable(false);
 		  middlenametextField.setEditable(false);
 		  dobTextField.setEditable(false);
 		  agetextField.setEditable(false);
@@ -260,7 +267,7 @@ public class BasicInformationPanel extends JPanel {
 		  btnEdit.setEnabled(false);
 		  btnSave.setEnabled(true);
 		  firstnametextField.setEditable(true);
-		  lastnamtextField.setEditable(true);
+		  lastnametextField.setEditable(true);
 		  middlenametextField.setEditable(true);
 		  dobTextField.setEditable(true);
 		  agetextField.setEditable(true);
@@ -280,10 +287,10 @@ public class BasicInformationPanel extends JPanel {
 		
 	}
 	
-	public void updateDatabase(){
+	public boolean updateDatabase(){
 		
 		String firstName = firstnametextField.getText();
-		String lastName = lastnamtextField.getText();
+		String lastName = lastnametextField.getText();
 		String middleName= middlenametextField.getText();
 		
 		//Sting to date conversion will need to be done
@@ -306,29 +313,25 @@ public class BasicInformationPanel extends JPanel {
 		}
 		else
 			gender = "F";
-	
-		//Have all the data gathered just need to actually create the insert query using the strings above. Date conversion could be an issue
+		
+		NimbusDAO dao;
+		boolean updated = false;
+		try {
+			dao = new NimbusDAO();
+			updated=  dao.changePatientData(true, Integer.parseInt(patientid), firstName,  middleName,  lastName,  dob,
+					 age,  gender,  address,  city,  state,  zip,  homephone,  mobilephone,
+					 emailtext, faxtext);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return updated;
 		
 	}
 	
 	public void setFormatting(){
-		/*
-		 firstnametextField.setEditable(false);
-		  lastnamtextField.setEditable(false);
-		  middlenametextField.setEditable(false);
-		  dobTextField.setEditable(false);
-		  agetextField.setEditable(false);
-		  addresstextField.setEditable(false);
-		  citytextField.setEditable(false);
-		  statetextField.setEditable(false);
-		  ziptextField.setEditable(false);
-		  patientidtextField.setEditable(false);
-		  homephonetextField.setEditable(false);
-		  mobilephonetextField.setEditable(false);
-		  emailtextField.setEditable(false);
-		  faxtextField.setEditable(false);
-		  */
-		
+	
 		try {
 			MaskFormatter dateMask = new MaskFormatter("##/##/####");
 			MaskFormatter ageText  = new MaskFormatter("##");
@@ -351,5 +354,46 @@ public class BasicInformationPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	public void populate(int Patient_ID){
+		setAllUnEditable();
+		
+		NimbusDAO dao;
+		try {
+			dao = new NimbusDAO();
+			ResultSet rs = dao.getPatientDetails(Patient_ID,"","","");
+			
+			if(rs.next()){
+				
+				firstnametextField.setText(rs.getString("FirstName"));
+				lastnametextField.setText(rs.getString("LastName"));
+				patientidtextField.setText(rs.getString("Patient_ID"));
+				middlenametextField.setText(rs.getString("MiddleName"));
+				
+				agetextField.setText(rs.getString("Age"));
+				addresstextField.setText(rs.getString("Address"));
+				citytextField.setText(rs.getString("City"));;
+				statetextField.setText(rs.getString("State"));;
+				ziptextField.setText(rs.getString("Zip"));;
+			
+				homephonetextField.setText(rs.getString("HomePhone"));;
+				mobilephonetextField.setText(rs.getString("Mobile"));;
+				emailtextField.setText(rs.getString("Email"));;
+				faxtextField.setText(rs.getString("Fax"));;
+				
+				//FixThis
+				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				Date dob = rs.getDate("DateOfBirth");  
+				String formattedDate = df.format(dob);
+
+				dobTextField.setText(formattedDate);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
