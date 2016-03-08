@@ -74,7 +74,7 @@ public class CreatePatientFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public CreatePatientFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		setTitle("Create a new Patient");
 		contentPane = new JPanel();

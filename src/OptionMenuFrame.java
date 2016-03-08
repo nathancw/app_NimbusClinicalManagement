@@ -47,6 +47,7 @@ public class OptionMenuFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public OptionMenuFrame() {
+
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
@@ -141,9 +142,50 @@ public class OptionMenuFrame extends JFrame {
 			  }
 		
 		  } 
+		  
 		});
 	}
 	
+	public void show(String selectedValue){
+		
+		if(selectedValue.equals("Search For Patient")){
+			 dataPanel.removeAll();
+			 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
+			 dataPanel.add(searchPanel,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+			 
+		 }
+		 
+		 else if(selectedValue.equals("Basic Information")){
+			 dataPanel.removeAll();
+			 BasicInformationPanel basicInfo = new BasicInformationPanel();
+			 dataPanel.add(basicInfo,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }
+		 else if(selectedValue.equals("Billing History")){
+			 dataPanel.removeAll();
+			 BillingPanel basicInfo = new BillingPanel();
+			 dataPanel.add(basicInfo,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }
+		 else if(selectedValue.equals("Book New Appointment")){
+			 dataPanel.removeAll();
+			 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();
+			 dataPanel.add(bookAppointment, "cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }
+		 else if(selectedValue.equals("Insurance Information")){
+			 dataPanel.removeAll();
+			 InsurancePanel insuranceInfo = new InsurancePanel();
+			 dataPanel.add(insuranceInfo, "cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }
+	}
 	
 
 }
