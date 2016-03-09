@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -29,7 +30,14 @@ public class CreateAccountFrame extends JFrame {
 	private JPanel contentPane;
 	private JPanel mainPanel;
 	private JPanel bgPanel;
-	JComboBox comboBoxType;
+	private JPanel bgPanel2;
+	private JComboBox comboBoxType;
+	private int clearanceLevel = 0;
+	private JTextField txtFirstName;
+	private JTextField txtLastName;
+	private JTextField txtUsername;
+	private JTextField txtPassword;
+	private JTextField txtConfirmPassword;
 
 	/**
 	 * Launch the application.
@@ -121,11 +129,6 @@ public class CreateAccountFrame extends JFrame {
 		
 	public void employeeAccount() {
 		//PANEL WITH EMPLOYEE INFO
-		JTextField txtFirstName;
-		JTextField txtLastName;
-		JTextField txtUsername;
-		JTextField txtPassword;
-		JTextField txtConfirmPassword;
 		
 		JPanel employeePanel = new JPanel();
 		mainPanel.add(employeePanel, "cell 2 1 7 5");
@@ -184,12 +187,19 @@ public class CreateAccountFrame extends JFrame {
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SHOW CREATE ACCOUNT PANEL
+				  dispose();
+				  CreateAccountFrame createAccount = new CreateAccountFrame();
+				  createAccount.setVisible(true);
 			  }
 			});
 		
 		btnSave.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
+				  clearanceLevel = 2;
+				  if(validateFields()) {
+					  checkPassword();
+				  }
 			  }
 			});
 		
@@ -197,11 +207,6 @@ public class CreateAccountFrame extends JFrame {
 	
 	public void doctorAccount() {
 		//PANEL WIHT DOCTOR INFO
-		JTextField txtFirstName;
-		JTextField txtLastName;
-		JTextField txtUsername;
-		JTextField txtPassword;
-		JTextField txtConfirmPassword;
 		
 		JPanel doctorPanel = new JPanel();
 		mainPanel.add(doctorPanel, "cell 2 1 7 5");
@@ -260,23 +265,25 @@ public class CreateAccountFrame extends JFrame {
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SHOW CREATE ACCOUNT PANEL
+				  dispose();
+				  CreateAccountFrame createAccount = new CreateAccountFrame();
+				  createAccount.setVisible(true);
 			  }
 			});
 		
 		btnSave.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
+				  clearanceLevel = 3;
+				  if(validateFields()) {
+					  checkPassword();
+				  }
 			  }
 			});
 	}
 	
 	public void adminAccount() {
 		//PANEL WITH ADMIN INFO
-		JTextField txtFirstName;
-		JTextField txtLastName;
-		JTextField txtUsername;
-		JTextField txtPassword;
-		JTextField txtConfirmPassword;
 		
 		JPanel adminPanel = new JPanel();
 		mainPanel.add(adminPanel, "cell 2 1 7 5");
@@ -335,13 +342,75 @@ public class CreateAccountFrame extends JFrame {
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SHOW CREATE ACCOUNT PANEL
+				  dispose();
+				  CreateAccountFrame createAccount = new CreateAccountFrame();
+				  createAccount.setVisible(true);
 			  }
 			});
 		
 		btnSave.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
+				  clearanceLevel = 1;
+				  if(validateFields()) {
+					  checkPassword();
+				  }
 			  }
 			});
+	}
+	
+	public Boolean validateFields() {
+		String fname = txtFirstName.getText();
+		String lname = txtLastName.getText();
+		String username = txtUsername.getText();
+		String password = txtPassword.getText();
+		
+		if(fname.isEmpty() || lname.isEmpty() || username.isEmpty() || password.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	public Boolean checkPassword() {
+		String pass1 = txtPassword.getText();
+		String pass2 = txtConfirmPassword.getText();
+		
+		Boolean digit = false;
+		
+		if(pass1 != null && !(pass1.isEmpty())) {
+			for(int i = 0; i < pass1.length(); i++) {
+				if(digit = Character.isDigit(pass1.charAt(i)))
+					break;
+			}
+		}
+		
+		if(pass1.length() < 8) {
+			JOptionPane.showMessageDialog(this, "The password must be at least 8 characters long.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(!digit) {
+			JOptionPane.showMessageDialog(this, "The password must contain at least one number.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(!(pass1.equals(pass2))) {
+			JOptionPane.showMessageDialog(this, "The passwords must match.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	
+	public void updateDatabase() {
+		String fname = txtFirstName.getText();
+		String lname = txtLastName.getText();
+		String username = txtUsername.getText();
+		String password = txtPassword.getText();
 	}
 }
