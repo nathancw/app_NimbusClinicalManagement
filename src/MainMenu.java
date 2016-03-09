@@ -70,6 +70,12 @@ public class MainMenu extends JFrame {
 		if (isAdministrator == true) {
 			JButton btnCreateNewEmployee = new JButton("Create New Employee");
 			btnCreateNewEmployee.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+			btnCreateNewEmployee.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent argo0) {
+					CreateAccountFrame create = new CreateAccountFrame();
+					create.setVisible(true);
+				}
+			});
 			panel_10.add(btnCreateNewEmployee, BorderLayout.CENTER);
 		}
 		
