@@ -23,6 +23,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JCheckBox;
@@ -50,7 +53,8 @@ public class BookAppointmentPanel extends JPanel {
 	private JComboBox reasoncomboBox;
 	private JCheckBox chckbxChckedIn;
 	private	JTextArea textArea;
-	
+	private int timeID;
+	private Map<String,Integer> doctorIDs;
 	/**
 	 * Create the panel.
 	 */
@@ -101,6 +105,7 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblDoctor = new JLabel("Doctor:");
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
 		
+		doctorIDs = null;
 		doctorComboBox = new JComboBox();
 		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
 		doctorComboBox.setModel(getDoctors());
@@ -108,6 +113,7 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblStartTime = new JLabel("Start Time:");
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
 		
+		timeID = 0;
 		startcomboBox = new JComboBox();
 		startcomboBox.setModel(getStartTimes());
 		startcomboBox.addActionListener(new ActionListener() {
@@ -249,6 +255,7 @@ public class BookAppointmentPanel extends JPanel {
 			
 				if(rs.next()){
 					endTime = rs.getString("EndTime");
+					timeID = rs.getInt("TimeSlot_ID");
 					System.out.println("End Time: " + endTime);
 				}
 			
@@ -266,6 +273,7 @@ public class BookAppointmentPanel extends JPanel {
 	public DefaultComboBoxModel getDoctors(){
 		DefaultComboBoxModel model = null;
 		ArrayList<String> doctors = new ArrayList<String>();
+		doctorIDs = new HashMap<String,Integer>();
 		
 		if(dao!=null){
 			String sqlQuery = "Select * from NCMSE.NCM.Doctor";
@@ -279,6 +287,8 @@ public class BookAppointmentPanel extends JPanel {
 				doctors.add("");
 				while(rs.next()){
 					doctors.add(rs.getString("CombinedName"));
+					doctorIDs.put(rs.getString("CombinedName"),rs.getInt("Doctor_ID"));
+					
 				}
 				
 				model = new DefaultComboBoxModel(doctors.toArray());
@@ -298,18 +308,29 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	public boolean createNewAppointment(){
+		//We need to link a date when they select a date, populate the time slots then for that day. Maybe if its monday have a certain time slots open? Or just leave date in the table
 		/*
-		 specialtytextField.getText();
-		  endcomboBox.getText();
-		 datePicker.getText();
-		  doctorComboBox.getText();
-		  startcomboBox.getText();
-		  procedurecomboBox.getText();
-		 chckbxSendEmail.getText();
-		  reasoncomboBox.getText();
-		 chckbxChckedIn.getText();
-		 textArea.getText();
+		 procedurecomboBox.getText();
+		 reasoncomboBox.getText();
+	
 		*/
+		//Find the string value in hashmap and return the dcotorID associated with it
+		int doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
+		
+		int procedureID = 0;
+		
+		String comments = textArea.getText();
+		
+		Date datePickerDate= (Date)datePicker.getModel().getValue();
+		
+		boolean checkedIn = false;
+		if(chckbxChckedIn.isSelected())
+			checkedIn = true;
+		boolean sendEmail = false;
+		
+		if(chckbxSendEmail.isSelected())
+			sendEmail = true;
+			
 		
 		return true;
 	}
