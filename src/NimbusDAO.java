@@ -211,7 +211,7 @@ public class NimbusDAO {
 		
 	}
 	
-	public boolean changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
+	public int changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
 			int timeSlot_ID,String comments){
 		
 		String sqlQuery = null;
@@ -221,10 +221,10 @@ public class NimbusDAO {
 		
 		System.out.println("Values: " + patient_ID + "," + doctor_ID + "," + procedure_ID + "," + date + "," + sendEmail + "," + checkedIn + "," + timeSlot_ID + "," + comments);
 		
-		if(patient_ID == "" || patient_ID.isEmpty())
-			return false;
+		if(patient_ID == "" || patient_ID.isEmpty() || patient_ID.length() != 6)
+			return 1;
 		if(date == null)
-			return false;
+			return 2;
 		
 		Connection sqlconn = this.getConnection();
 		PreparedStatement stmt = null;
@@ -244,13 +244,13 @@ public class NimbusDAO {
 		
 			stmt.close();
 			sqlconn.close();
-			return true;
+			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		
-		return false;
+		return 10;
 		
 		
 	}

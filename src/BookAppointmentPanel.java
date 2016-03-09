@@ -55,6 +55,8 @@ public class BookAppointmentPanel extends JPanel {
 	private	JTextArea textArea;
 	private int timeID;
 	private Map<String,Integer> doctorIDs;
+	private Map<String,Integer> procedureIDs;
+	private Map<Integer,String> specialtyName;
 	/**
 	 * Create the panel.
 	 */
@@ -107,8 +109,17 @@ public class BookAppointmentPanel extends JPanel {
 		
 		doctorIDs = null;
 		doctorComboBox = new JComboBox();
-		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
 		doctorComboBox.setModel(getDoctors());
+		doctorComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Need to implement doctor procedures tied to the specialty id
+				procedurecomboBox.setModel(getProcedures());
+				specialtytextField.setText(specialtyName.get(doctorIDs.get(doctorComboBox.getSelectedItem()))); 
+			}
+
+		});
+		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
+		
 		
 		JLabel lblStartTime = new JLabel("Start Time:");
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
@@ -144,6 +155,7 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblProcedure = new JLabel("Procedure:");
 		TextFieldsPanel.add(lblProcedure, "cell 0 3,alignx trailing");
 		
+		procedureIDs = null;
 		procedurecomboBox = new JComboBox();
 		TextFieldsPanel.add(procedurecomboBox, "cell 1 3,growx");
 		
@@ -153,9 +165,11 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblSpecialty = new JLabel("Specialty:");
 		TextFieldsPanel.add(lblSpecialty, "cell 0 4,alignx trailing");
 		
+		//specialtyName = new HashMap<Integer,String>();
 		specialtytextField = new JTextField();
 		TextFieldsPanel.add(specialtytextField, "cell 1 4,growx");
 		specialtytextField.setColumns(10);
+		specialtytextField.setEditable(false);
 		
 		chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
@@ -190,6 +204,7 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(btnBookNewAppointment, "cell 5 12");
 
 	}
+	
 	
 	public class DateLabelFormatter extends AbstractFormatter {
 
@@ -280,9 +295,11 @@ public class BookAppointmentPanel extends JPanel {
 		DefaultComboBoxModel model = null;
 		ArrayList<String> doctors = new ArrayList<String>();
 		doctorIDs = new HashMap<String,Integer>();
+		specialtyName = new HashMap<Integer,String>();
 		
 		if(dao!=null){
-			String sqlQuery = "Select * from NCMSE.NCM.Doctor";
+			String sqlQuery = "SELECT TOP 20 d.[Doctor_ID],d.[FirstName],d.[MiddleName],d.[LastName],d.[CombinedName],d.[Specialty_ID],s.SpecialtyName FROM [NCMSE].[NCM].[Doctor] d " +
+					"inner join NCMSE.NCM.Doctor_Specialty s   on s.Specialty_ID = d.Specialty_ID";
 			ResultSet rs = null;
 			try {
 				
@@ -294,7 +311,8 @@ public class BookAppointmentPanel extends JPanel {
 				while(rs.next()){
 					doctors.add(rs.getString("CombinedName"));
 					doctorIDs.put(rs.getString("CombinedName"),rs.getInt("Doctor_ID"));
-					
+					specialtyName.put(rs.getInt("Doctor_ID"), rs.getString("SpecialtyName"));
+				
 				}
 				
 				model = new DefaultComboBoxModel(doctors.toArray());
@@ -314,12 +332,13 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	public DefaultComboBoxModel getProcedures(){
+		
 		DefaultComboBoxModel model = null;
-		ArrayList<String> doctors = new ArrayList<String>();
-		doctorIDs = new HashMap<String,Integer>();
+		ArrayList<String> procedures = new ArrayList<String>();
+		procedureIDs = new HashMap<String,Integer>();
 		
 		if(dao!=null){
-			String sqlQuery = "Select * from NCMSE.NCM.Doctor";
+			String sqlQuery = "Select * from NCMSE.NCM.Clinical_Procedures";
 			ResultSet rs = null;
 			try {
 				
@@ -327,14 +346,14 @@ public class BookAppointmentPanel extends JPanel {
 				rs = stmt.executeQuery();
 				ResultSetMetaData rsMeta = rs.getMetaData();
 				
-				doctors.add("");
+				procedures.add("");
 				while(rs.next()){
-					doctors.add(rs.getString("CombinedName"));
-					doctorIDs.put(rs.getString("CombinedName"),rs.getInt("Doctor_ID"));
+					procedures.add(rs.getString("ProcedureName"));
+					procedureIDs.put(rs.getString("ProcedureName"),rs.getInt("Procedure_ID"));
 					
 				}
 				
-				model = new DefaultComboBoxModel(doctors.toArray());
+				model = new DefaultComboBoxModel(procedures.toArray());
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -352,21 +371,27 @@ public class BookAppointmentPanel extends JPanel {
 	
 	
 	public boolean createNewAppointment(){
-		//We need to link a date when they select a date, populate the time slots then for that day. Maybe if its monday have a certain time slots open? Or just leave date in the table
-		/*
-		 procedurecomboBox.getText();
-		 reasoncomboBox.getText();
-	
-		*/
+
 		//Find the string value in hashmap and return the dcotorID associated with it
 		String patient_ID = patientIDTextField.getText();
-		int doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
 		
-		int procedureID = 1;
+		int doctorID = 0;
+		int procedureID = 0;
+		Date datePickerDate= (Date)datePicker.getModel().getValue();
+		
+		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
+			
+			JOptionPane.showMessageDialog(this,
+				    "Empty Fields. Please fill in all information.","Cannot Book Appointment.",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else{
+			doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
+			procedureID = procedureIDs.get(procedurecomboBox.getSelectedItem());
+		}
 		
 		String comments = textArea.getText();
-		
-		Date datePickerDate= (Date)datePicker.getModel().getValue();
 		
 		boolean checkedIn = false;
 		if(chckbxChckedIn.isSelected())
@@ -380,9 +405,28 @@ public class BookAppointmentPanel extends JPanel {
 		try {
 			dao = new NimbusDAO();
 			
-			boolean changed = dao.changeAppointment(patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
+			int changeValue = dao.changeAppointment(patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
 					 timeID,comments);
 			
+			//Error messages
+			if(changeValue == 1){
+				JOptionPane.showMessageDialog(this,
+					    "Incorrect Patient ID. Must be 6 digits and not empty.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 2){
+				JOptionPane.showMessageDialog(this,
+					    "Incorrect Date. Please enter a date.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 10){
+				JOptionPane.showMessageDialog(this,
+					    "Error code 10.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 0)
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Booked Appointment.");
 			
 			
 		} catch (Exception e) {
