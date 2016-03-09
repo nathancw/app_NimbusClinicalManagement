@@ -40,8 +40,17 @@ import java.awt.event.ActionEvent;
 public class BookAppointmentPanel extends JPanel {
 	private JTextField patientIDTextField;
 	private NimbusDAO dao = null;
-	private JTextField textField;
+	private JTextField specialtytextField;
 	private JComboBox endcomboBox;
+	private JDatePickerImpl datePicker;
+	private JComboBox doctorComboBox;
+	private JComboBox startcomboBox;
+	private JComboBox procedurecomboBox;
+	private JCheckBox chckbxSendEmail;
+	private JComboBox reasoncomboBox;
+	private JCheckBox chckbxChckedIn;
+	private	JTextArea textArea;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -77,7 +86,6 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblDate = new JLabel("Date:");
 		TextFieldsPanel.add(lblDate, "cell 2 0,alignx trailing");
 		//
-		JComboBox dateComboBox = new JComboBox();
 		
 		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
@@ -85,7 +93,7 @@ public class BookAppointmentPanel extends JPanel {
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
+		datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
 		
 		TextFieldsPanel.add(datePicker, "cell 3 0,growx");
 		///		
@@ -93,21 +101,22 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblDoctor = new JLabel("Doctor:");
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
 		
-		JComboBox doctorComboBox = new JComboBox();
+		doctorComboBox = new JComboBox();
 		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
 		doctorComboBox.setModel(getDoctors());
 		
 		JLabel lblStartTime = new JLabel("Start Time:");
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
 		
-		JComboBox startcomboBox = new JComboBox();
+		startcomboBox = new JComboBox();
 		startcomboBox.setModel(getStartTimes());
 		startcomboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Start Time Changed");
 				String startTime = (String) ((JComboBox) e.getSource()).getSelectedItem();
-				endcomboBox.addItem(startTime);
-				endcomboBox.setSelectedItem(getEndTime(startTime));
+				String endTime = getEndTime(startTime);
+				endcomboBox.addItem(endTime);
+				endcomboBox.setSelectedItem(endTime);
 			}
 		});
 		TextFieldsPanel.add(startcomboBox, "cell 3 1,growx");
@@ -116,7 +125,7 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblReason = new JLabel("Reason:");
 		TextFieldsPanel.add(lblReason, "cell 0 2,alignx trailing");
 		
-		JComboBox reasoncomboBox = new JComboBox();
+		reasoncomboBox = new JComboBox();
 		TextFieldsPanel.add(reasoncomboBox, "cell 1 2,growx");
 		
 		JLabel lblEndTime = new JLabel("End Time:");
@@ -124,25 +133,25 @@ public class BookAppointmentPanel extends JPanel {
 		
 		endcomboBox = new JComboBox();
 		TextFieldsPanel.add(endcomboBox, "cell 3 2,growx");
-		endcomboBox.setEnabled(false);
+		endcomboBox.setEditable(false);
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
 		TextFieldsPanel.add(lblProcedure, "cell 0 3,alignx trailing");
 		
-		JComboBox procedurecomboBox = new JComboBox();
+		procedurecomboBox = new JComboBox();
 		TextFieldsPanel.add(procedurecomboBox, "cell 1 3,growx");
 		
-		JCheckBox chckbxSendEmail = new JCheckBox("Send Email");
+		chckbxSendEmail = new JCheckBox("Send Email");
 		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
 		
 		JLabel lblSpecialty = new JLabel("Specialty:");
 		TextFieldsPanel.add(lblSpecialty, "cell 0 4,alignx trailing");
 		
-		textField = new JTextField();
-		TextFieldsPanel.add(textField, "cell 1 4,growx");
-		textField.setColumns(10);
+		specialtytextField = new JTextField();
+		TextFieldsPanel.add(specialtytextField, "cell 1 4,growx");
+		specialtytextField.setColumns(10);
 		
-		JCheckBox chckbxChckedIn = new JCheckBox("Checked In?");
+		chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
 		
 		JPanel CommentsPanel = new JPanel();
@@ -150,7 +159,7 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(CommentsPanel, "cell 2 7 4 5,grow");
 		CommentsPanel.setLayout(new MigLayout("", "[100,grow][150][100][150]", "[30,grow][30][30][30][30]"));
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		CommentsPanel.add(textArea, "cell 0 0 4 5,grow");
 		
 		JButton btnViewOpenAppointments = new JButton("View Open Appointments");
@@ -287,5 +296,21 @@ public class BookAppointmentPanel extends JPanel {
 		
 		return model;
 	}
-
+	
+	public boolean createNewAppointment(){
+		/*
+		 specialtytextField.getText();
+		  endcomboBox.getText();
+		 datePicker.getText();
+		  doctorComboBox.getText();
+		  startcomboBox.getText();
+		  procedurecomboBox.getText();
+		 chckbxSendEmail.getText();
+		  reasoncomboBox.getText();
+		 chckbxChckedIn.getText();
+		 textArea.getText();
+		*/
+		
+		return true;
+	}
 }
