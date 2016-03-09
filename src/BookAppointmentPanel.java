@@ -182,6 +182,11 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");
 		
 		JButton btnBookNewAppointment = new JButton("Book New Appointment");
+		btnBookNewAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				createNewAppointment();
+			}
+		});
 		contentPanel.add(btnBookNewAppointment, "cell 5 12");
 
 	}
@@ -271,6 +276,7 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	public DefaultComboBoxModel getDoctors(){
+		
 		DefaultComboBoxModel model = null;
 		ArrayList<String> doctors = new ArrayList<String>();
 		doctorIDs = new HashMap<String,Integer>();
@@ -307,6 +313,44 @@ public class BookAppointmentPanel extends JPanel {
 		return model;
 	}
 	
+	public DefaultComboBoxModel getProcedures(){
+		DefaultComboBoxModel model = null;
+		ArrayList<String> doctors = new ArrayList<String>();
+		doctorIDs = new HashMap<String,Integer>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.Doctor";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				doctors.add("");
+				while(rs.next()){
+					doctors.add(rs.getString("CombinedName"));
+					doctorIDs.put(rs.getString("CombinedName"),rs.getInt("Doctor_ID"));
+					
+				}
+				
+				model = new DefaultComboBoxModel(doctors.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}
+	
+	
 	public boolean createNewAppointment(){
 		//We need to link a date when they select a date, populate the time slots then for that day. Maybe if its monday have a certain time slots open? Or just leave date in the table
 		/*
@@ -315,9 +359,10 @@ public class BookAppointmentPanel extends JPanel {
 	
 		*/
 		//Find the string value in hashmap and return the dcotorID associated with it
+		String patient_ID = patientIDTextField.getText();
 		int doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
 		
-		int procedureID = 0;
+		int procedureID = 1;
 		
 		String comments = textArea.getText();
 		
@@ -330,7 +375,20 @@ public class BookAppointmentPanel extends JPanel {
 		
 		if(chckbxSendEmail.isSelected())
 			sendEmail = true;
+		
+		NimbusDAO dao;
+		try {
+			dao = new NimbusDAO();
 			
+			boolean changed = dao.changeAppointment(patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
+					 timeID,comments);
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 		
 		return true;
 	}

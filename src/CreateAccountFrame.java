@@ -65,7 +65,7 @@ public class CreateAccountFrame extends JFrame {
 		lblCreateAnAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		mainPanel.add(lblCreateAnAccount, "cell 4 0 3 1,alignx center");
 		
-		JPanel bgPanel = new JPanel();
+		bgPanel = new JPanel();
 		mainPanel.add(bgPanel, "flowx,cell 3 2 5 3");
 		bgPanel.setLayout(new BorderLayout());
 		
@@ -78,7 +78,7 @@ public class CreateAccountFrame extends JFrame {
 		lblAccountType.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		accountTypePanel.add(lblAccountType, "cell 0 0 5 1,alignx center");
 		
-		JComboBox comboBoxType = new JComboBox();
+		comboBoxType = new JComboBox();
 		accountTypePanel.add(comboBoxType, "cell 1 1 2 1,growx");
 		//comboBoxType.setForeground(Color.BLUE);
 		comboBoxType.addItem("Office Employee");
