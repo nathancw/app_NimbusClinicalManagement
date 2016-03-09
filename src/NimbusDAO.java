@@ -205,5 +205,58 @@ public class NimbusDAO {
 		
 		return rs;
 	}
-
+	
+	public void createAccount(){
+		
+		
+	}
+	
+	public int changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
+			int timeSlot_ID,String comments){
+		
+		String sqlQuery = null;
+		
+		sqlQuery = "insert into NCMSE.NCM.Appointment (Patient_ID,Doctor_ID,Procedure_ID,Date,SendEmail,CheckedIn,TimeSlot_ID,Comments)" +
+				"values (?,?,?,?,?,?,?,?)";
+		
+		System.out.println("Values: " + patient_ID + "," + doctor_ID + "," + procedure_ID + "," + date + "," + sendEmail + "," + checkedIn + "," + timeSlot_ID + "," + comments);
+		
+		if(patient_ID == "" || patient_ID.isEmpty() || patient_ID.length() != 6)
+			return 1;
+		if(date == null)
+			return 2;
+		
+		Connection sqlconn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+			
+			stmt = sqlconn.prepareStatement(sqlQuery);
+			
+			stmt.setInt(1, Integer.parseInt(patient_ID));
+			stmt.setInt(2, doctor_ID);
+			stmt.setInt(3, procedure_ID);
+			stmt.setDate(4, new java.sql.Date(date.getTime()));
+			stmt.setBoolean(5, sendEmail);
+			stmt.setBoolean(6, checkedIn);
+			stmt.setInt(7, timeSlot_ID);
+			stmt.setString(8, comments);
+			stmt.executeUpdate();		
+		
+			stmt.close();
+			sqlconn.close();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 10;
+		
+		
+	}
+	
+	public ResultSet getAppointmentDetails(){
+	
+		return null;
+	}
 }

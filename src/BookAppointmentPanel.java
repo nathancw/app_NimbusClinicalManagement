@@ -13,13 +13,19 @@ import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JCheckBox;
@@ -28,19 +34,39 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.awt.event.ActionEvent;
 
 
 public class BookAppointmentPanel extends JPanel {
 	private JTextField patientIDTextField;
-
+	private NimbusDAO dao = null;
+	private JTextField specialtytextField;
+	private JComboBox endcomboBox;
+	private JDatePickerImpl datePicker;
+	private JComboBox doctorComboBox;
+	private JComboBox startcomboBox;
+	private JComboBox procedurecomboBox;
+	private JCheckBox chckbxSendEmail;
+	private JComboBox reasoncomboBox;
+	private JCheckBox chckbxChckedIn;
+	private	JTextArea textArea;
+	private int timeID;
+	private Map<String,Integer> doctorIDs;
+	private Map<String,Integer> procedureIDs;
+	private Map<Integer,String> specialtyName;
 	/**
 	 * Create the panel.
 	 */
 	public BookAppointmentPanel() {
-		//Width: 900
-		//Height:700
-		//testing Extra changes
+		try {
+			dao = new NimbusDAO();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
@@ -66,7 +92,6 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblDate = new JLabel("Date:");
 		TextFieldsPanel.add(lblDate, "cell 2 0,alignx trailing");
 		//
-		JComboBox dateComboBox = new JComboBox();
 		
 		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
@@ -74,7 +99,7 @@ public class BookAppointmentPanel extends JPanel {
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
+		datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
 		
 		TextFieldsPanel.add(datePicker, "cell 3 0,growx");
 		///		
@@ -82,37 +107,71 @@ public class BookAppointmentPanel extends JPanel {
 		JLabel lblDoctor = new JLabel("Doctor:");
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
 		
-		JComboBox doctorComboBox = new JComboBox();
+		doctorIDs = null;
+		doctorComboBox = new JComboBox();
+		doctorComboBox.setModel(getDoctors());
+		doctorComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Need to implement doctor procedures tied to the specialty id
+				procedurecomboBox.setModel(getProcedures());
+				specialtytextField.setText(specialtyName.get(doctorIDs.get(doctorComboBox.getSelectedItem()))); 
+			}
+
+		});
 		TextFieldsPanel.add(doctorComboBox, "cell 1 1,growx");
+		
 		
 		JLabel lblStartTime = new JLabel("Start Time:");
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
 		
-		JComboBox comboBox = new JComboBox();
-		TextFieldsPanel.add(comboBox, "cell 3 1,growx");
+		timeID = 0;
+		startcomboBox = new JComboBox();
+		startcomboBox.setModel(getStartTimes());
+		startcomboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Start Time Changed");
+				String startTime = (String) ((JComboBox) e.getSource()).getSelectedItem();
+				String endTime = getEndTime(startTime);
+				endcomboBox.addItem(endTime);
+				endcomboBox.setSelectedItem(endTime);
+			}
+		});
+		TextFieldsPanel.add(startcomboBox, "cell 3 1,growx");
+		
 		
 		JLabel lblReason = new JLabel("Reason:");
 		TextFieldsPanel.add(lblReason, "cell 0 2,alignx trailing");
 		
-		JComboBox comboBox_1 = new JComboBox();
-		TextFieldsPanel.add(comboBox_1, "cell 1 2,growx");
+		reasoncomboBox = new JComboBox();
+		TextFieldsPanel.add(reasoncomboBox, "cell 1 2,growx");
 		
 		JLabel lblEndTime = new JLabel("End Time:");
 		TextFieldsPanel.add(lblEndTime, "cell 2 2,alignx trailing");
 		
-		JComboBox comboBox_3 = new JComboBox();
-		TextFieldsPanel.add(comboBox_3, "cell 3 2,growx");
+		endcomboBox = new JComboBox();
+		TextFieldsPanel.add(endcomboBox, "cell 3 2,growx");
+		endcomboBox.setEditable(false);
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
 		TextFieldsPanel.add(lblProcedure, "cell 0 3,alignx trailing");
 		
-		JComboBox comboBox_2 = new JComboBox();
-		TextFieldsPanel.add(comboBox_2, "cell 1 3,growx");
+		procedureIDs = null;
+		procedurecomboBox = new JComboBox();
+		TextFieldsPanel.add(procedurecomboBox, "cell 1 3,growx");
 		
-		JCheckBox chckbxSendEmail = new JCheckBox("Send Email");
+		chckbxSendEmail = new JCheckBox("Send Email");
 		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
 		
-		JCheckBox chckbxChckedIn = new JCheckBox("Checked In?");
+		JLabel lblSpecialty = new JLabel("Specialty:");
+		TextFieldsPanel.add(lblSpecialty, "cell 0 4,alignx trailing");
+		
+		//specialtyName = new HashMap<Integer,String>();
+		specialtytextField = new JTextField();
+		TextFieldsPanel.add(specialtytextField, "cell 1 4,growx");
+		specialtytextField.setColumns(10);
+		specialtytextField.setEditable(false);
+		
+		chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
 		
 		JPanel CommentsPanel = new JPanel();
@@ -120,7 +179,7 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(CommentsPanel, "cell 2 7 4 5,grow");
 		CommentsPanel.setLayout(new MigLayout("", "[100,grow][150][100][150]", "[30,grow][30][30][30][30]"));
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		CommentsPanel.add(textArea, "cell 0 0 4 5,grow");
 		
 		JButton btnViewOpenAppointments = new JButton("View Open Appointments");
@@ -137,9 +196,15 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");
 		
 		JButton btnBookNewAppointment = new JButton("Book New Appointment");
+		btnBookNewAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				createNewAppointment();
+			}
+		});
 		contentPanel.add(btnBookNewAppointment, "cell 5 12");
 
 	}
+	
 	
 	public class DateLabelFormatter extends AbstractFormatter {
 
@@ -162,5 +227,213 @@ public class BookAppointmentPanel extends JPanel {
 	    }
 
 	}
+	
+	public DefaultComboBoxModel getStartTimes(){
+		DefaultComboBoxModel model = null;
+		ArrayList<String> times = new ArrayList<String>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.TimeSlot";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				times.add("");
+				while(rs.next()){
+					times.add(rs.getString("StartTime"));
+				}
+				
+				model = new DefaultComboBoxModel(times.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}	
+		
+	public String getEndTime(String startTime){
+		String endTime = null;
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.TimeSlot where StartTime = ?";
+			System.out.println("SqlQUERY: " + sqlQuery + startTime);
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				stmt.setString(1, startTime);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+			
+				if(rs.next()){
+					endTime = rs.getString("EndTime");
+					timeID = rs.getInt("TimeSlot_ID");
+					System.out.println("End Time: " + endTime);
+				}
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return endTime;
+	}
+	
+	public DefaultComboBoxModel getDoctors(){
+		
+		DefaultComboBoxModel model = null;
+		ArrayList<String> doctors = new ArrayList<String>();
+		doctorIDs = new HashMap<String,Integer>();
+		specialtyName = new HashMap<Integer,String>();
+		
+		if(dao!=null){
+			String sqlQuery = "SELECT TOP 20 d.[Doctor_ID],d.[FirstName],d.[MiddleName],d.[LastName],d.[CombinedName],d.[Specialty_ID],s.SpecialtyName FROM [NCMSE].[NCM].[Doctor] d " +
+					"inner join NCMSE.NCM.Doctor_Specialty s   on s.Specialty_ID = d.Specialty_ID";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				doctors.add("");
+				while(rs.next()){
+					doctors.add(rs.getString("CombinedName"));
+					doctorIDs.put(rs.getString("CombinedName"),rs.getInt("Doctor_ID"));
+					specialtyName.put(rs.getInt("Doctor_ID"), rs.getString("SpecialtyName"));
+				
+				}
+				
+				model = new DefaultComboBoxModel(doctors.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}
+	
+	public DefaultComboBoxModel getProcedures(){
+		
+		DefaultComboBoxModel model = null;
+		ArrayList<String> procedures = new ArrayList<String>();
+		procedureIDs = new HashMap<String,Integer>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.Clinical_Procedures";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				procedures.add("");
+				while(rs.next()){
+					procedures.add(rs.getString("ProcedureName"));
+					procedureIDs.put(rs.getString("ProcedureName"),rs.getInt("Procedure_ID"));
+					
+				}
+				
+				model = new DefaultComboBoxModel(procedures.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}
+	
+	
+	public boolean createNewAppointment(){
 
+		//Find the string value in hashmap and return the dcotorID associated with it
+		String patient_ID = patientIDTextField.getText();
+		
+		int doctorID = 0;
+		int procedureID = 0;
+		Date datePickerDate= (Date)datePicker.getModel().getValue();
+		
+		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
+			
+			JOptionPane.showMessageDialog(this,
+				    "Empty Fields. Please fill in all information.","Cannot Book Appointment.",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else{
+			doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
+			procedureID = procedureIDs.get(procedurecomboBox.getSelectedItem());
+		}
+		
+		String comments = textArea.getText();
+		
+		boolean checkedIn = false;
+		if(chckbxChckedIn.isSelected())
+			checkedIn = true;
+		boolean sendEmail = false;
+		
+		if(chckbxSendEmail.isSelected())
+			sendEmail = true;
+		
+		NimbusDAO dao;
+		try {
+			dao = new NimbusDAO();
+			
+			int changeValue = dao.changeAppointment(patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
+					 timeID,comments);
+			
+			//Error messages
+			if(changeValue == 1){
+				JOptionPane.showMessageDialog(this,
+					    "Incorrect Patient ID. Must be 6 digits and not empty.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 2){
+				JOptionPane.showMessageDialog(this,
+					    "Incorrect Date. Please enter a date.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 10){
+				JOptionPane.showMessageDialog(this,
+					    "Error code 10.","Cannot Book Appointment",
+					    JOptionPane.ERROR_MESSAGE);
+			}
+			else if(changeValue == 0)
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Booked Appointment.");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		
+		return true;
+	}
 }
