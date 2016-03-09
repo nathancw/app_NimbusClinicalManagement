@@ -146,9 +146,7 @@ public class NimbusDAO {
 			stmt.setString(14, faxtext); 
 			
 			stmt.executeUpdate();		
-		
-			stmt.close();
-			sqlconn.close();
+	
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -258,5 +256,28 @@ public class NimbusDAO {
 	public ResultSet getAppointmentDetails(){
 	
 		return null;
+	}
+	
+	public int getMaxPatientIDNumber(){
+		
+		int patient_ID = 0;
+		String sqlQuery = "select max(patient_ID) as Patient_ID from NCMSE.NCm.Patient";	
+
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			stmt = sqlconn.prepareStatement(sqlQuery);
+			ResultSet rs = stmt.executeQuery();	
+			
+			if(rs.next())
+			return rs.getInt("Patient_ID");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return patient_ID;
 	}
 }

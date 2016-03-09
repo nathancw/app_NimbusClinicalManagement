@@ -27,6 +27,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.border.MatteBorder;
 
 
 public class CreatePatientFrame extends JFrame {
@@ -48,6 +49,7 @@ public class CreatePatientFrame extends JFrame {
 	private JButton btnEdit;
 	private JButton btnSave;
 	private JPanel contentPane;
+	private int patientID;
 	
 	private JRadioButton maleRadioButton;
 
@@ -90,7 +92,7 @@ public class CreatePatientFrame extends JFrame {
 		contentPanel.add(lblViewPatientInformation, "cell 2 0 5 1,alignx center,aligny center");
 		
 		JPanel BasicPanel = new JPanel();
-		BasicPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		BasicPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Basic Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		contentPanel.add(BasicPanel, "cell 1 1 7 3,grow");
 		BasicPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100]", "[30][30][30]"));
 		
@@ -121,6 +123,8 @@ public class CreatePatientFrame extends JFrame {
 		patientidtextField = new JTextField();
 		BasicPanel.add(patientidtextField, "cell 6 0,growx");
 		patientidtextField.setColumns(10);
+		patientidtextField.setEditable(false);
+		
 		
 		JLabel lblMiddleName = new JLabel("Middle Name:");
 		BasicPanel.add(lblMiddleName, "cell 0 1");
@@ -170,9 +174,6 @@ public class CreatePatientFrame extends JFrame {
 		addresstextField = new JTextField();
 		addressPanel.add(addresstextField, "cell 1 0 2 1,growx");
 		addresstextField.setColumns(10);
-		addresstextField.setText("Test");
-		//addresstextField.setEnabled(false);
-		addresstextField.setEditable(false);
 		
 		JLabel lblCity = new JLabel("City:");
 		addressPanel.add(lblCity, "cell 0 1,alignx left");
@@ -241,9 +242,11 @@ public class CreatePatientFrame extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(updateDatabase())
-				JOptionPane.showMessageDialog(new JFrame(),
-					    "Changes Saved Successfully in database.");
+				if(updateDatabase()){
+					patientidtextField.setText(Integer.toString(patientID));
+					JOptionPane.showMessageDialog(new JFrame(),
+					    "Successfully created patient in database with a Patient ID of: " + patientID);
+				}
 			}
 		});
 		savebtnPanel.add(btnSave, BorderLayout.CENTER);
@@ -272,6 +275,17 @@ public class CreatePatientFrame extends JFrame {
 		String emailtext = emailtextField.getText();
 		String faxtext = faxtextField.getText();
 		
+		if(firstName.isEmpty() || lastName.isEmpty() || middleName.isEmpty() || dateofbirth.charAt(0) == 32 || age.isEmpty()){
+			JOptionPane.showMessageDialog(this,
+				    "Please fill all fields in the Basic Information Section.","Cannot Create Patient",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+				
+		
+		
+		
+		
 		String gender;
 		if(maleRadioButton.isSelected()){
 			gender = "M";
@@ -288,6 +302,10 @@ public class CreatePatientFrame extends JFrame {
 			wasUpdated = dao.changePatientData(update, 0, firstName,  middleName,  lastName,  dateofbirth,
 					 age,  gender,  address,  city,  state,  zip,  homephone,  mobilephone,
 					 emailtext, faxtext);
+			
+			
+			patientID = dao.getMaxPatientIDNumber();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
