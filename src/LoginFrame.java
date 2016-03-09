@@ -25,6 +25,7 @@ public class LoginFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField usernametextField;
 	private JPasswordField passwordField;
+	public static int accessLevel;
 
 	/**
 	 * Launch the application.
@@ -51,6 +52,7 @@ public class LoginFrame extends JFrame {
 		setTitle("Nimbus Clincal Management Software Login");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450	, 400);
+		accessLevel = 0;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -106,6 +108,7 @@ public class LoginFrame extends JFrame {
 			
 			if(rs.next()){
 				JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
+				accessLevel = rs.getInt("AccessLevel");
 				return true;
 			}
 			else{
