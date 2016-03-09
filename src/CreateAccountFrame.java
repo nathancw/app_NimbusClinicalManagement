@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -27,6 +28,8 @@ public class CreateAccountFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel mainPanel;
+	private JPanel bgPanel;
+	JComboBox comboBoxType;
 
 	/**
 	 * Launch the application.
@@ -65,7 +68,7 @@ public class CreateAccountFrame extends JFrame {
 		lblCreateAnAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		mainPanel.add(lblCreateAnAccount, "cell 4 0 3 1,alignx center");
 		
-		JPanel bgPanel = new JPanel();
+		bgPanel = new JPanel();
 		mainPanel.add(bgPanel, "flowx,cell 3 2 5 3");
 		bgPanel.setLayout(new BorderLayout());
 		
@@ -78,7 +81,7 @@ public class CreateAccountFrame extends JFrame {
 		lblAccountType.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		accountTypePanel.add(lblAccountType, "cell 0 0 5 1,alignx center");
 		
-		JComboBox comboBoxType = new JComboBox();
+		comboBoxType = new JComboBox();
 		accountTypePanel.add(comboBoxType, "cell 1 1 2 1,growx");
 		//comboBoxType.setForeground(Color.BLUE);
 		comboBoxType.addItem("Office Employee");
@@ -157,14 +160,14 @@ public class CreateAccountFrame extends JFrame {
 		JLabel lblPassword = new JLabel("Password:");
 		employeePanel.add(lblPassword, "cell 1 8,alignx left");
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		employeePanel.add(txtPassword, "cell 2 8 2 1,growx");
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
 		employeePanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
-		txtConfirmPassword = new JTextField();
+		txtConfirmPassword = new JPasswordField();
 		employeePanel.add(txtConfirmPassword, "cell 2 10 2 1,growx");
 		txtConfirmPassword.setColumns(10);
 		
@@ -177,6 +180,18 @@ public class CreateAccountFrame extends JFrame {
 		
 		JButton btnSave = new JButton("Save");
 		employeePanel.add(btnSave, "cell 3 12");
+		
+		btnCancel.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SHOW CREATE ACCOUNT PANEL
+			  }
+			});
+		
+		btnSave.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SUCCESS/PUT IN DATABASE
+			  }
+			});
 		
 	}
 	
@@ -221,14 +236,14 @@ public class CreateAccountFrame extends JFrame {
 		JLabel lblPassword = new JLabel("Password:");
 		doctorPanel.add(lblPassword, "cell 1 8,alignx left");
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		doctorPanel.add(txtPassword, "cell 2 8 2 1,growx");
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
 		doctorPanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
-		txtConfirmPassword = new JTextField();
+		txtConfirmPassword = new JPasswordField();
 		doctorPanel.add(txtConfirmPassword, "cell 2 10 2 1,growx");
 		txtConfirmPassword.setColumns(10);
 		
@@ -241,6 +256,18 @@ public class CreateAccountFrame extends JFrame {
 		
 		JButton btnSave = new JButton("Save");
 		doctorPanel.add(btnSave, "cell 3 12");
+		
+		btnCancel.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SHOW CREATE ACCOUNT PANEL
+			  }
+			});
+		
+		btnSave.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SUCCESS/PUT IN DATABASE
+			  }
+			});
 	}
 	
 	public void adminAccount() {
@@ -284,14 +311,14 @@ public class CreateAccountFrame extends JFrame {
 		JLabel lblPassword = new JLabel("Password:");
 		adminPanel.add(lblPassword, "cell 1 8,alignx left");
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		adminPanel.add(txtPassword, "cell 2 8 2 1,growx");
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
 		adminPanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
-		txtConfirmPassword = new JTextField();
+		txtConfirmPassword = new JPasswordField();
 		adminPanel.add(txtConfirmPassword, "cell 2 10 2 1,growx");
 		txtConfirmPassword.setColumns(10);
 		
@@ -304,5 +331,17 @@ public class CreateAccountFrame extends JFrame {
 		
 		JButton btnSave = new JButton("Save");
 		adminPanel.add(btnSave, "cell 3 12");
+		
+		btnCancel.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SHOW CREATE ACCOUNT PANEL
+			  }
+			});
+		
+		btnSave.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  //SUCCESS/PUT IN DATABASE
+			  }
+			});
 	}
 }
