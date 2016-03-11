@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 
 public class OptionMenuFrame extends JFrame {
 
-	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Search For Appointment","Exit"};
+	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Search For Appointment","Return to Main Menu"};
 	
 	private JPanel contentPane;	
 	private JPanel contentPanel;	
@@ -26,6 +26,7 @@ public class OptionMenuFrame extends JFrame {
 	private JList categoriesList;
 	private JPanel dataPanel;
 	private JPanel removeablePanel;
+	private int accessLevel = LoginFrame.accessLevel;
 
 	/**
 	 * Launch the application.
@@ -142,6 +143,11 @@ public class OptionMenuFrame extends JFrame {
 					 dataPanel.add(searchApp,"cell 0 0,grow");
 					 setVisible(true);
 					 repaint();
+				 }	 
+				 else if(selectedValue.equals(directoryList[6])){
+					 dispose();
+					 MainMenu main = new MainMenu();
+					 main.setVisible(true);
 				 }	 
 				 	
 				 /////////////////////////////////////////////////////////////

@@ -46,7 +46,7 @@ import javax.swing.JComboBox;
 public class SearchAppointmentPanel extends JPanel{
 
 	//String directoryList[] = {"Directory","Create New"};
-	String[] colNames = {"Appointment ID","Patient_ID","First Name","Last Name","Date","Start Time","End Time"};
+	String[] colNames = {"Appointment_ID","Patient_ID","First Name","LastName","Date","StartTime","EndTime"};
 	Object[][] appointments;
 	
 	private JPanel contentPanel;
@@ -211,7 +211,7 @@ public class SearchAppointmentPanel extends JPanel{
 			colNames.add(rsMeta.getColumnName(2));
 			colNames.add(rsMeta.getColumnName(3));
 			colNames.add(rsMeta.getColumnName(4));
-			colNames.add(rsMeta.getColumnName(5));
+			//colNames.add(rsMeta.getColumnName(5));
 			colNames.add(rsMeta.getColumnName(7));
 			colNames.add(rsMeta.getColumnName(8));
 			colNames.add(rsMeta.getColumnName(9));
@@ -229,11 +229,11 @@ public class SearchAppointmentPanel extends JPanel{
 			    int data1 = rs.getInt("Patient_ID");
 			    String data2 = rs.getString("FirstName");
 			    String data3 = rs.getString("LastName");
-			    String data4 = rs.getString("CombinedName");
+			    //String data4 = rs.getString("CombinedName");
 			    String data5 = rs.getString("Date");
 			    String data6 = rs.getString("StartTime");
 			    String data7 = rs.getString("EndTime");
-			    Object[] rowData = new Object[] {data0,data1,data2,data3,data4,data5,data6,data7};
+			    Object[] rowData = new Object[] {data0,data1,data2,data3,data5,data6,data7};
 			    tableModel.addRow(rowData);
 			}
 			
