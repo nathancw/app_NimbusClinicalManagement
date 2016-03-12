@@ -36,8 +36,8 @@ public class CreateAccountFrame extends JFrame {
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JTextField txtUsername;
-	private JTextField txtPassword;
-	private JTextField txtConfirmPassword;
+	private JPasswordField txtPassword;
+	private JPasswordField txtConfirmPassword;
 
 	/**
 	 * Launch the application.
@@ -198,7 +198,12 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 2;
 				  if(validateFields()) {
-					  checkPassword();
+					  if(checkPassword()) {
+						  insertDatabase(2);
+						  dispose();
+						  MainMenu menu = new MainMenu();
+						  menu.setVisible(true);
+					  }
 				  }
 			  }
 			});
@@ -276,7 +281,12 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 3;
 				  if(validateFields()) {
-					  checkPassword();
+					  if(checkPassword()) {
+						  insertDatabase(2);
+						  dispose();
+						  MainMenu menu = new MainMenu();
+						  menu.setVisible(true);
+					  }
 				  }
 			  }
 			});
@@ -353,7 +363,12 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 1;
 				  if(validateFields()) {
-					  checkPassword();
+					  if(checkPassword()) {
+						  insertDatabase(2);
+						  dispose();
+						  MainMenu menu = new MainMenu();
+						  menu.setVisible(true);
+					  }
 				  }
 			  }
 			});
@@ -363,7 +378,7 @@ public class CreateAccountFrame extends JFrame {
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
 		String username = txtUsername.getText();
-		String password = txtPassword.getText();
+		String password = new String(txtPassword.getPassword());
 		
 		if(fname.isEmpty() || lname.isEmpty() || username.isEmpty() || password.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Create Account",
@@ -375,8 +390,8 @@ public class CreateAccountFrame extends JFrame {
 	}
 	
 	public Boolean checkPassword() {
-		String pass1 = txtPassword.getText();
-		String pass2 = txtConfirmPassword.getText();
+		String pass1 = new String(txtPassword.getPassword());
+		String pass2 = new String(txtConfirmPassword.getPassword());
 		
 		Boolean digit = false;
 		
@@ -407,10 +422,20 @@ public class CreateAccountFrame extends JFrame {
 	}
 	
 	
-	public void updateDatabase() {
+	public void insertDatabase(int access) {
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
 		String username = txtUsername.getText();
-		String password = txtPassword.getText();
+		String password = new String(txtPassword.getPassword());
+		
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			dao.createAccount(fname, lname, username, password, access);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

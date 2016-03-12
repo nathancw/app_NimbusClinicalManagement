@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -99,7 +100,7 @@ public class NimbusDAO {
 		return null;
 	}
 
-	/* Change patient details takes in every value of patient table. This is the method to insert new values into the datbase
+	/* Change patient details takes in every value of patient table. This is the method to insert new values into the database
 	 * or change existing patient data. The boolean update will determine what you want to do, if its false, you just want to insert
 	 * into the table and not update it. This determines which query to update
 	 *TODO: Implement Update feature, but you need massive error handling for blank parameters. The other option is to create an entirely new
@@ -204,9 +205,35 @@ public class NimbusDAO {
 		return rs;
 	}
 	
-	public void createAccount(){
+	public void createAccount(String fname, String lname, String username, String password, int access){
 		
+		String query;
 		
+		query = "insert into [NCMSE].[DBO].[Account]" +
+		"(Username,Password,Salt,AccessLevel,FirstName,LastName)" +
+		"VALUES (?,?,?,?,?,?)";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		Random rand = new Random();
+		
+		int salt = rand.nextInt((99999 - 10000) + 1) + 10000;
+		
+		try {
+			stmt = conn.prepareStatement(query);
+			
+			stmt.setString(1, username);
+			stmt.setString(2,  password);
+			stmt.setInt(3, salt);
+			stmt.setInt(4,  access);
+			stmt.setString(5,  fname);
+			stmt.setString(6,  lname);
+			
+			stmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public int changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
