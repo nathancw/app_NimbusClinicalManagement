@@ -99,6 +99,54 @@ public class NimbusDAO {
 		
 		return null;
 	}
+	
+	public ResultSet getAppointmentDetails(int procedureID, String firstName, String lastName, int id){
+		
+	
+		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
+		//quicker than building dyanamic queries.
+		if((firstName.isEmpty())){
+			firstName = null;
+		}
+		if((lastName.isEmpty())){
+			lastName = null;
+		}
+		
+		String sqlQuery = "SELECT TOP 20 app.[Appointment_ID],app.[Patient_ID],pat.FirstName,pat.LastName,doc.CombinedName,pro.ProcedureName,app.[Date],timeSlot.StartTime,timeSlot.EndTime " +
+				"FROM [NCMSE].[NCM].[Appointment] app " +
+				"inner join  " +
+				"[NCMSE].[NCM].[Clinical_Procedures] pro on app.Procedure_ID = pro.procedure_ID " +
+				"inner join " +
+				"[NCMSE].[NCM].[Patient] pat on app.Patient_ID = pat.Patient_ID " +
+				"inner join " +
+				"[NCMSE].[NCM].[Doctor] doc on doc.Doctor_ID = app.Doctor_ID " +
+				"inner join " +
+				"[NCMSE].[NCM].[TimeSlot] timeSlot on timeSlot.TimeSlot_ID = app.TimeSlot_ID  " +
+				"where app.Procedure_ID = ? or pat.FirstName = ? or pat.LastName = ? or app.Patient_ID = ?";
+	
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+			stmt.setInt(1,procedureID);
+			stmt.setString(2, firstName);
+			stmt.setString(3, lastName);
+			stmt.setInt(4,id);
+			ResultSet rs = stmt.executeQuery();	
+			
+			return rs;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return null;
+	}
+	
 
 	/* Change patient details takes in every value of patient table. This is the method to insert new values into the database
 	 * or change existing patient data. The boolean update will determine what you want to do, if its false, you just want to insert

@@ -37,6 +37,7 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu() {
 		//setVisible(true);
+		setTitle("Nimbus Clincial Software");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
 		contentPane = new JPanel();
@@ -46,7 +47,7 @@ public class MainMenu extends JFrame {
 		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
-		panel.setLayout(new MigLayout("", "[100][100][100][100,grow][100][100,grow][100][100][100][100]", "[50][50,grow][50][50,grow][50][50,grow][50][50,grow][50][50,grow][50][50]"));
+		panel.setLayout(new MigLayout("", "[100,grow][100][100][100,grow][100][100,grow][100][100][100][100]", "[50][50,grow][50,grow][50,grow][50][50,grow][50][50,grow][50][50,grow][50][50]"));
 		
 		JLabel lblNewLabel_1 = new JLabel("Clinical Management");
 		lblNewLabel_1.setFont(new Font("Mongolian Baiti", Font.BOLD, 12));
@@ -55,6 +56,30 @@ public class MainMenu extends JFrame {
 		JLabel lblNewLabel = new JLabel("NIMBUS");
 		lblNewLabel.setFont(new Font("Mongolian Baiti", Font.BOLD, 24));
 		panel.add(lblNewLabel, "cell 4 0 2 1,alignx center,aligny bottom");
+		
+		JPanel panel_10 = new JPanel();
+		panel.add(panel_10, "cell 0 2 2 1,grow");
+		panel_10.setLayout(new BorderLayout(0, 0));
+		
+		boolean isAdministrator = false;
+		if (LoginFrame.accessLevel == 1)
+		{
+			isAdministrator = true;
+		}
+		
+		
+		if (isAdministrator == true) {
+			JButton btnCreateNewEmployee = new JButton("Create New Employee");
+			btnCreateNewEmployee.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+			btnCreateNewEmployee.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent argo0) {
+					dispose();
+					CreateAccountFrame create = new CreateAccountFrame();
+					create.setVisible(true);
+				}
+			});
+			panel_10.add(btnCreateNewEmployee, BorderLayout.CENTER);
+		}
 		
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1, "cell 3 2 2 2,grow");
@@ -78,6 +103,7 @@ public class MainMenu extends JFrame {
 		searchPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		searchPatientBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
 				OptionMenuFrame create = new OptionMenuFrame();
 				create.setVisible(true);
 				create.show("Search For Patient");
@@ -112,6 +138,7 @@ public class MainMenu extends JFrame {
 		btnScheduleAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnScheduleAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
 				OptionMenuFrame create = new OptionMenuFrame();
 				create.setVisible(true);
 				create.show("Book New Appointment");
@@ -127,6 +154,7 @@ public class MainMenu extends JFrame {
 		btnPatientBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnPatientBilling.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
 				OptionMenuFrame create = new OptionMenuFrame();
 				create.setVisible(true);
 				create.show("Billing History");
@@ -142,6 +170,7 @@ public class MainMenu extends JFrame {
 		btnViewPatientInformation.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnViewPatientInformation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
 				OptionMenuFrame create = new OptionMenuFrame();
 				create.setVisible(true);
 				create.show("Basic Information");
@@ -157,6 +186,7 @@ public class MainMenu extends JFrame {
 		btnInsuranceInformation.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnInsuranceInformation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent argo0) {
+				dispose();
 				OptionMenuFrame create = new OptionMenuFrame();
 				create.setVisible(true);
 				create.show("Insurance Information");
