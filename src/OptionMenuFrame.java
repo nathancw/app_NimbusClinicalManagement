@@ -208,5 +208,13 @@ public class OptionMenuFrame extends JFrame {
 		 }	 
 	}
 	
+	public void populateAppointment(int appointmentID){
+		
+		dataPanel.removeAll();
+		 BookAppointmentPanel bookAppointment = new BookAppointmentPanel(appointmentID);
+		 dataPanel.add(bookAppointment, "cell 0 0,grow");
+		 setVisible(true);
+		 repaint();
+	}
 
 }

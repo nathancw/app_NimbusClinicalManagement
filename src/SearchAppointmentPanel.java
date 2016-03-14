@@ -51,7 +51,7 @@ import javax.swing.JComboBox;
 public class SearchAppointmentPanel extends JPanel{
 
 	//String directoryList[] = {"Directory","Create New"};
-	String[] colNames = {"Appointment_ID","Patient_ID","First Name","LastName","Date","StartTime","EndTime"};
+	String[] colNames = {"Appointment_ID","Patient_ID","FirstName","LastName","Date","StartTime","EndTime"};
 	Object[][] appointments;
 	
 	private JPanel contentPanel;
@@ -163,8 +163,12 @@ public class SearchAppointmentPanel extends JPanel{
 			    //if (e.getClickCount() == 1) {
 				  	if(table.getSelectedColumn() == 0){
 				  		
-				  	String appointmentID = table.getValueAt(table.getSelectedRow(), 0).toString();
+				  	int appointmentID = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
 				    System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+				    
+				    //OptionMenuFrame opt = new OptionMenuFrame();
+				    //opt.populateAppointment(appointmentID);
+				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
 				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
 				    	
 			         
@@ -196,7 +200,7 @@ public class SearchAppointmentPanel extends JPanel{
 			
 			
 			//Get patient detials
-			ResultSet rs = dao.getAppointmentDetails(procedureID,firstName,lastName,id);
+			ResultSet rs = dao.getAppointmentDetails(procedureID,firstName,lastName,id,0);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();

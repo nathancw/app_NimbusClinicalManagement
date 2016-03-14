@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 
@@ -57,6 +58,7 @@ public class BookAppointmentPanel extends JPanel {
 	private Map<String,Integer> doctorIDs;
 	private Map<String,Integer> procedureIDs;
 	private Map<Integer,String> specialtyName;
+	private int appID;
 	/**
 	 * Create the panel.
 	 */
@@ -67,6 +69,25 @@ public class BookAppointmentPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		appID = 0;
+		drawPanel();
+	}
+	
+	public BookAppointmentPanel(int appointmentID){
+		try {
+			dao = new NimbusDAO();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.appID = appointmentID;
+		drawPanel();
+		populate(appID);
+		//setAllUneditable();
+		//addEditSaveButtons();
+	}
+	
+	public void drawPanel(){
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
@@ -205,6 +226,32 @@ public class BookAppointmentPanel extends JPanel {
 
 	}
 	
+	public void populate(int appointmentID){
+		
+		try {
+			ResultSet rs = dao.getAppointmentDetails(0,"","",0,appointmentID);
+			if(rs.next()){
+				patientIDTextField.setText(rs.getString("Patient_ID"));
+				 doctorComboBox.setSelectedItem(rs.getString("CombinedName"));
+				 startcomboBox.setSelectedItem(rs.getString("StartTime"));
+				 procedurecomboBox.setSelectedItem(rs.getString("ProcedureName"));
+				 //chckbxSendEmail;
+				 //reasoncomboBox;
+				//chckbxChckedIn;
+				textArea.setText(rs.getString("Comments"));
+				specialtytextField.setText(specialtyName.get(doctorIDs.get(doctorComboBox.getSelectedItem()))); 
+				 endcomboBox.setSelectedItem(rs.getString("EndTime"));
+				// datePicker.setDate(rs.getDate("Date"));
+				 
+				
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public class DateLabelFormatter extends AbstractFormatter {
 
