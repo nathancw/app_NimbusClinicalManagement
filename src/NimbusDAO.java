@@ -284,6 +284,10 @@ public class NimbusDAO {
 		}
 	}
 	
+	public void changePassword(String password) {
+		
+	}
+	
 	public int changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
 			int timeSlot_ID,String comments){
 		

@@ -160,6 +160,10 @@ public class CreateAccountFrame extends JFrame {
 		employeePanel.add(txtUsername, "cell 2 6 2 1,growx");
 		txtUsername.setColumns(10);
 		
+		JLabel lblNewLabel = new JLabel("<html>Usernames must be <br>at most 10 characters.</html>");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		employeePanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
+		
 		JLabel lblPassword = new JLabel("Password:");
 		employeePanel.add(lblPassword, "cell 1 8,alignx left");
 		
@@ -243,6 +247,10 @@ public class CreateAccountFrame extends JFrame {
 		doctorPanel.add(txtUsername, "cell 2 6 2 1,growx");
 		txtUsername.setColumns(10);
 		
+		JLabel lblNewLabel = new JLabel("<html>Usernames must be <br>at most 10 characters.</html>");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		doctorPanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
+		
 		JLabel lblPassword = new JLabel("Password:");
 		doctorPanel.add(lblPassword, "cell 1 8,alignx left");
 		
@@ -282,7 +290,7 @@ public class CreateAccountFrame extends JFrame {
 				  clearanceLevel = 3;
 				  if(validateFields()) {
 					  if(checkPassword()) {
-						  insertDatabase(2);
+						  insertDatabase(3);
 						  dispose();
 						  MainMenu menu = new MainMenu();
 						  menu.setVisible(true);
@@ -325,6 +333,10 @@ public class CreateAccountFrame extends JFrame {
 		adminPanel.add(txtUsername, "cell 2 6 2 1,growx");
 		txtUsername.setColumns(10);
 		
+		JLabel lblNewLabel = new JLabel("<html>Usernames must be <br>at most 10 characters.</html>");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
+		adminPanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
+		
 		JLabel lblPassword = new JLabel("Password:");
 		adminPanel.add(lblPassword, "cell 1 8,alignx left");
 		
@@ -364,7 +376,7 @@ public class CreateAccountFrame extends JFrame {
 				  clearanceLevel = 1;
 				  if(validateFields()) {
 					  if(checkPassword()) {
-						  insertDatabase(2);
+						  insertDatabase(1);
 						  dispose();
 						  MainMenu menu = new MainMenu();
 						  menu.setVisible(true);
@@ -382,6 +394,11 @@ public class CreateAccountFrame extends JFrame {
 		
 		if(fname.isEmpty() || lname.isEmpty() || username.isEmpty() || password.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(username.length() > 10) {
+			JOptionPane.showMessageDialog(this, "Please keep usernames 10 characters or less.","Cannot Create Account",
 				    JOptionPane.ERROR_MESSAGE);
 			return false;
 		}

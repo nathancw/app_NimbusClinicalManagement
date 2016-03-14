@@ -2,15 +2,23 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class ChangePasswordFrame extends JFrame {
@@ -89,6 +97,62 @@ public class ChangePasswordFrame extends JFrame {
 		
 		JButton btnSave = new JButton("Save");
 		contentPanel.add(btnSave, "cell 4 7");
+		
+		btnCancel.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent evt) {
+				  dispose();
+				  MainMenu menu = new MainMenu();
+				  menu.setVisible(true);
+			  }
+			});
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				//ERROR CHECK AND CHANGE IN DATABASE
+				if(checkPassword()) {
+					updateDatabase();
+					//CHANGE FRAME
+				}
+			}
+		});
+	}
+	
+	public Boolean checkPassword() {
+		String oldPass = txtOldPass.getText();
+		String newPass = txtNewPass.getText();
+		String confirmPass = txtConfirmPass.getText();
+		Boolean digit = false;
+
+		
+		if(newPass != null && !(newPass.isEmpty())) {
+			for(int i = 0; i < newPass.length(); i++) {
+				if(digit = Character.isDigit(newPass.charAt(i)))
+					break;
+			}
+		}
+		
+		//NEED TO ADD CHECKING IF OLD PASSWORD IS CORRECT
+		if(newPass.length() < 8) {
+			JOptionPane.showMessageDialog(this, "The password must be at least 8 characters long.","Cannot Change Password",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(!digit) {
+			JOptionPane.showMessageDialog(this, "The password must contain at least one number.","Cannot Change Password",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(!(newPass.equals(confirmPass))) {
+			JOptionPane.showMessageDialog(this, "The passwords must match.","Cannot Change Password",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	public void updateDatabase() {
+		
 	}
 
 }
