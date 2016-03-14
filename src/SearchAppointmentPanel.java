@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JMenuBar;
@@ -35,8 +36,12 @@ import java.awt.FlowLayout;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -58,27 +63,16 @@ public class SearchAppointmentPanel extends JPanel{
 	private JLabel lblMiddle;
 	private JButton btnBookNewAppointment;
 	private JComboBox procedureComboBox;
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchFrame frame = new SearchFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	} */
-
-	/**
-	 * Create the frame.
-	 */
+	private NimbusDAO dao;
+	private Map<String,Integer> procedureIDs;
+	
 	public SearchAppointmentPanel() {
+		try {
+			dao = new NimbusDAO();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setLayout(new BorderLayout(0, 0));
 
 		
@@ -102,6 +96,7 @@ public class SearchAppointmentPanel extends JPanel{
 		
 		procedureComboBox = new JComboBox();
 		contentPanel.add(procedureComboBox, "cell 3 1,growx");
+		procedureComboBox.setModel(getProcedures());
 		
 		JLabel lblFirstName = new JLabel("First Name:");
 		contentPanel.add(lblFirstName, "cell 4 1,alignx right,aligny center");
@@ -187,7 +182,7 @@ public class SearchAppointmentPanel extends JPanel{
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
 		 int id;
-		 int procedureID = 0;
+		 int  procedureID = procedureIDs.get(procedureComboBox.getSelectedItem());
 
 		 if(patientIDTextField.getText().equals(""))
 			 id = 0;
@@ -198,7 +193,7 @@ public class SearchAppointmentPanel extends JPanel{
 		 String lastName = lastNameTextField.getText();
 	
 			try{
-			NimbusDAO dao = new NimbusDAO();
+			
 			
 			//Get patient detials
 			ResultSet rs = dao.getAppointmentDetails(procedureID,firstName,lastName,id);
@@ -237,7 +232,7 @@ public class SearchAppointmentPanel extends JPanel{
 			    tableModel.addRow(rowData);
 			}
 			
-			dao.closeConnection();
+			//dao.closeConnection();
 			return tableModel;
 			
 		} catch (Exception e) {
@@ -245,6 +240,44 @@ public class SearchAppointmentPanel extends JPanel{
 		}
 		
 		return null;	
+	}
+	
+	public DefaultComboBoxModel getProcedures(){
+		
+		DefaultComboBoxModel model = null;
+		ArrayList<String> procedures = new ArrayList<String>();
+		procedureIDs = new HashMap<String,Integer>();
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.Clinical_Procedures";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				procedures.add("");
+				while(rs.next()){
+					procedures.add(rs.getString("ProcedureName"));
+					procedureIDs.put(rs.getString("ProcedureName"),rs.getInt("Procedure_ID"));
+					
+				}
+				
+				model = new DefaultComboBoxModel(procedures.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
 	}
 	
 		

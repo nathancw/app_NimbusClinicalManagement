@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 
 public class OptionMenuFrame extends JFrame {
 
-	String directoryList[] = {"Directory","Create New        ","View Patient Information","Book New Appointment","Search For Patient","Search For Appointment","Return to Main Menu"};
+	String directoryList[] = {"Book New Appointment","Search For Patient","Search For Appointment","Return to Main Menu"};
 	
 	private JPanel contentPane;	
 	private JPanel contentPanel;	
@@ -144,7 +144,7 @@ public class OptionMenuFrame extends JFrame {
 					 setVisible(true);
 					 repaint();
 				 }	 
-				 else if(selectedValue.equals(directoryList[6])){
+				 else if(selectedValue.equals("Return to Main Menu")){
 					 dispose();
 					 MainMenu main = new MainMenu();
 					 main.setVisible(true);
@@ -164,7 +164,7 @@ public class OptionMenuFrame extends JFrame {
 		
 		if(selectedValue.equals("Search For Patient")){
 			 dataPanel.removeAll();
-			 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
+			 SearchPatientPanel searchPanel = new SearchPatientPanel();
 			 dataPanel.add(searchPanel,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
@@ -199,6 +199,13 @@ public class OptionMenuFrame extends JFrame {
 			 setVisible(true);
 			 repaint();
 		 }
+		 else if(selectedValue.equals("Search For Appointment")){
+			 dataPanel.removeAll();
+			 SearchAppointmentPanel searchApp = new SearchAppointmentPanel();
+			 dataPanel.add(searchApp,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }	 
 	}
 	
 

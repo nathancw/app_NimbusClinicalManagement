@@ -114,11 +114,14 @@ public class MainMenu extends JFrame {
 		panel.add(panel_3, "cell 3 4 2 2,grow");
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnSearchForAppointment = new JButton("Search by Procedure");
+		JButton btnSearchForAppointment = new JButton("Search for Appointment");
 		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		panel_3.add(btnSearchForAppointment, BorderLayout.CENTER);
 		btnSearchForAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				OptionMenuFrame appSearch = new OptionMenuFrame();
+				appSearch.show("Search For Appointment");
 			}
 		});
 		
@@ -126,9 +129,9 @@ public class MainMenu extends JFrame {
 		panel.add(panel_4, "cell 5 4 2 2,grow");
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnSearchByTime = new JButton("Search by Time");
-		btnSearchByTime.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		panel_4.add(btnSearchByTime, BorderLayout.CENTER);
+		JButton btnSearchBilling = new JButton("Search Billing Information");
+		btnSearchBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		//panel_4.add(btnSearchByTime, BorderLayout.CENTER);
 		
 		JPanel panel_5 = new JPanel();
 		panel.add(panel_5, "cell 3 6 2 2,grow");
@@ -144,13 +147,17 @@ public class MainMenu extends JFrame {
 				create.show("Book New Appointment");
 			}
 		});
-		panel_5.add(btnScheduleAppointment, BorderLayout.CENTER);
+		panel_4.add(btnScheduleAppointment, BorderLayout.CENTER);
+		
+		btnSearchBilling.setEnabled(false);
+		
+		panel_5.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_6 = new JPanel();
 		panel.add(panel_6, "cell 5 6 2 2,grow");
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnPatientBilling = new JButton("Patient Billing");
+		JButton btnPatientBilling = new JButton("Bill Patients");
 		btnPatientBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnPatientBilling.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -160,6 +167,8 @@ public class MainMenu extends JFrame {
 				create.show("Billing History");
 			}
 		});
+		btnPatientBilling.setEnabled(false);
+		
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		
 		JPanel panel_8 = new JPanel();
@@ -176,7 +185,7 @@ public class MainMenu extends JFrame {
 				create.show("Basic Information");
 			}
 		});
-		panel_8.add(btnViewPatientInformation, BorderLayout.CENTER);
+		//panel_8.add(btnViewPatientInformation, BorderLayout.CENTER);
 		
 		JPanel panel_9 = new JPanel();
 		panel.add(panel_9, "cell 5 8 2 2,grow");
@@ -192,7 +201,7 @@ public class MainMenu extends JFrame {
 				create.show("Insurance Information");
 			}
 		});
-		panel_9.add(btnInsuranceInformation, BorderLayout.CENTER);
+		//panel_9.add(btnInsuranceInformation, BorderLayout.CENTER);
 		
 		JPanel panel_7 = new JPanel();
 		panel.add(panel_7, "cell 4 10 2 1,grow");
