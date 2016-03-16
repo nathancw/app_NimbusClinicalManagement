@@ -186,8 +186,13 @@ public class SearchAppointmentPanel extends JPanel{
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
 		 int id;
-		 int  procedureID = procedureIDs.get(procedureComboBox.getSelectedItem());
-
+		 int  procedureID;
+		 String selectedItem = (String)procedureComboBox.getSelectedItem();
+		 if(selectedItem.isEmpty())
+			 procedureID = 0;
+		 else
+			 procedureID = procedureIDs.get(procedureComboBox.getSelectedItem());
+		 
 		 if(patientIDTextField.getText().equals(""))
 			 id = 0;
 		 else
