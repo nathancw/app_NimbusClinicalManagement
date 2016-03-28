@@ -166,8 +166,8 @@ public class SearchAppointmentPanel extends JPanel{
 				  	int appointmentID = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
 				    System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
 				    
-				    //OptionMenuFrame opt = new OptionMenuFrame();
-				    //opt.populateAppointment(appointmentID);
+				    OptionMenuFrame opt = new OptionMenuFrame();
+				    opt.populateAppointment(appointmentID);
 				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
 				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
 				    	

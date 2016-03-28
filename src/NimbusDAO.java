@@ -112,7 +112,7 @@ public class NimbusDAO {
 			lastName = null;
 		}
 		
-		String sqlQuery = "SELECT TOP 20 app.[Appointment_ID],app.[Patient_ID],pat.FirstName,pat.LastName,doc.CombinedName,pro.ProcedureName,app.[Date],timeSlot.StartTime,timeSlot.EndTime,app.Comments " +
+		String sqlQuery = "SELECT TOP 20 app.[Appointment_ID],app.[Patient_ID],pat.FirstName,pat.LastName,doc.CombinedName,pro.ProcedureName,app.[Date],timeSlot.StartTime,timeSlot.EndTime,app.Comments,app.SendEmail,app.CheckedIn " +
 				"FROM [NCMSE].[NCM].[Appointment] app " +
 				"inner join  " +
 				"[NCMSE].[NCM].[Clinical_Procedures] pro on app.Procedure_ID = pro.procedure_ID " +
@@ -289,13 +289,18 @@ public class NimbusDAO {
 		
 	}
 	
-	public int changeAppointment(String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
-			int timeSlot_ID,String comments){
+	public int changeAppointment(boolean update, String patient_ID,int doctor_ID,int procedure_ID,Date date,boolean sendEmail,boolean checkedIn,
+			int timeSlot_ID,String comments, int appID){
 		
 		String sqlQuery = null;
 		
-		sqlQuery = "insert into NCMSE.NCM.Appointment (Patient_ID,Doctor_ID,Procedure_ID,Date,SendEmail,CheckedIn,TimeSlot_ID,Comments)" +
-				"values (?,?,?,?,?,?,?,?)";
+		if(!update)
+			sqlQuery = "insert into NCMSE.NCM.Appointment (Patient_ID,Doctor_ID,Procedure_ID,Date,SendEmail,CheckedIn,TimeSlot_ID,Comments)" +
+					   "values (?,?,?,?,?,?,?,?)";
+		else
+			sqlQuery = " update NCMSE.NCM.Appointment set Patient_ID = ?, Doctor_ID = ?,Procedure_ID = ?,Date = ?,SendEmail = ?,CheckedIn = ?,TimeSlot_ID = ?,Comments = ? " +
+					   "where appointment_ID  = " + appID;
+			
 		
 		System.out.println("Values: " + patient_ID + "," + doctor_ID + "," + procedure_ID + "," + date + "," + sendEmail + "," + checkedIn + "," + timeSlot_ID + "," + comments);
 		

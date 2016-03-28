@@ -4,12 +4,14 @@ import net.miginfocom.swing.MigLayout;
 
 import java.awt.BorderLayout;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
@@ -25,8 +27,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.swing.JCheckBox;
 
@@ -59,6 +63,12 @@ public class BookAppointmentPanel extends JPanel {
 	private Map<String,Integer> procedureIDs;
 	private Map<Integer,String> specialtyName;
 	private int appID;
+	private JButton btnBookNewAppointment;
+	private JPanel editSavePanel;
+	private JPanel contentPanel;
+	private UtilDateModel model;
+	private JButton btnEdit;
+	private JButton btnSave;
 	/**
 	 * Create the panel.
 	 */
@@ -90,7 +100,7 @@ public class BookAppointmentPanel extends JPanel {
 	public void drawPanel(){
 		setLayout(new BorderLayout(0, 0));
 		
-		JPanel contentPanel = new JPanel();
+		contentPanel = new JPanel();
 		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][150][100][150][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30]"));
 		
@@ -114,7 +124,7 @@ public class BookAppointmentPanel extends JPanel {
 		TextFieldsPanel.add(lblDate, "cell 2 0,alignx trailing");
 		//
 		
-		UtilDateModel model = new UtilDateModel();
+		model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -216,10 +226,32 @@ public class BookAppointmentPanel extends JPanel {
 		JButton btnCancel = new JButton("Cancel");
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");
 		
-		JButton btnBookNewAppointment = new JButton("Book New Appointment");
+		editSavePanel = new JPanel();
+	
+		
+		btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setAllEditable();
+			}
+		});
+		editSavePanel.add(btnEdit);
+		
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(changeAppointmentData(true))
+					setAllUneditable();
+			}
+		});
+		editSavePanel.add(btnSave);
+		
+		btnSave.setEnabled(false);
+		
+		btnBookNewAppointment = new JButton("Book New Appointment");
 		btnBookNewAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				createNewAppointment();
+				changeAppointmentData(false);
 			}
 		});
 		contentPanel.add(btnBookNewAppointment, "cell 5 12");
@@ -228,22 +260,37 @@ public class BookAppointmentPanel extends JPanel {
 	
 	public void populate(int appointmentID){
 		
+		contentPanel.remove(btnBookNewAppointment);
+		contentPanel.add(editSavePanel, "cell 5 12,grow");
+		
+		 
 		try {
 			ResultSet rs = dao.getAppointmentDetails(0,"","",0,appointmentID);
 			if(rs.next()){
 				patientIDTextField.setText(rs.getString("Patient_ID"));
+				
 				 doctorComboBox.setSelectedItem(rs.getString("CombinedName"));
 				 startcomboBox.setSelectedItem(rs.getString("StartTime"));
 				 procedurecomboBox.setSelectedItem(rs.getString("ProcedureName"));
-				 //chckbxSendEmail;
+				
+				
+				 if(rs.getInt("SendEmail") == 1)
+					 chckbxSendEmail.setSelected(true);
+				 
+				 if(rs.getInt("CheckedIn")==1)
+					 chckbxChckedIn.setSelected(true);
 				 //reasoncomboBox;
-				//chckbxChckedIn;
+				 
 				textArea.setText(rs.getString("Comments"));
 				specialtytextField.setText(specialtyName.get(doctorIDs.get(doctorComboBox.getSelectedItem()))); 
-				 endcomboBox.setSelectedItem(rs.getString("EndTime"));
-				// datePicker.setDate(rs.getDate("Date"));
-				 
+				endcomboBox.setSelectedItem(rs.getString("EndTime"));
 				
+				//Date
+				java.util.Date newDate = rs.getDate("Date");
+				Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+				cal.setTime(newDate);
+				model.setDate(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH));
+				model.setSelected(true);
 				
 			}
 			
@@ -251,6 +298,46 @@ public class BookAppointmentPanel extends JPanel {
 			e.printStackTrace();
 		}
 		
+		setAllUneditable();
+	}
+	
+	public void setAllUneditable(){
+		
+		UIManager.put("ComboBox.disabledForeground", Color.black);
+		btnEdit.setEnabled(true);
+		btnSave.setEnabled(false);
+		
+		patientIDTextField.setEditable(false);
+		doctorComboBox.setEnabled(false);
+		startcomboBox.setEnabled(false);
+		procedurecomboBox.setEnabled(false);
+		chckbxSendEmail.setEnabled(false);
+		 
+		chckbxChckedIn.setEnabled(false);
+		 //reasoncomboBox;
+		 
+		textArea.setEnabled(false);
+		specialtytextField.setEditable(false); 
+		datePicker.setTextEditable(false);
+	}
+	
+	public void setAllEditable(){
+		
+		btnEdit.setEnabled(false);
+		btnSave.setEnabled(true);
+		patientIDTextField.setEditable(true);
+		doctorComboBox.setEnabled(true);
+		startcomboBox.setEnabled(true);
+		procedurecomboBox.setEnabled(true);
+		chckbxSendEmail.setEnabled(true);
+		 
+		chckbxChckedIn.setEnabled(true);
+		 //reasoncomboBox;
+		 
+		textArea.setEnabled(true);
+		specialtytextField.setEditable(true); 
+		datePicker.setTextEditable(true);
+			
 	}
 	
 	public class DateLabelFormatter extends AbstractFormatter {
@@ -406,9 +493,6 @@ public class BookAppointmentPanel extends JPanel {
 				e.printStackTrace();
 			}
 			
-			
-		
-	
 		}
 		else
 			System.out.println("Can't get connection");
@@ -417,7 +501,7 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	
-	public boolean createNewAppointment(){
+	public boolean changeAppointmentData(boolean update){
 
 		//Find the string value in hashmap and return the dcotorID associated with it
 		String patient_ID = patientIDTextField.getText();
@@ -452,8 +536,8 @@ public class BookAppointmentPanel extends JPanel {
 		try {
 			dao = new NimbusDAO();
 			
-			int changeValue = dao.changeAppointment(patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
-					 timeID,comments);
+			int changeValue = dao.changeAppointment(update,patient_ID,doctorID,procedureID,datePickerDate,sendEmail,checkedIn,
+					 timeID,comments,appID);
 			
 			//Error messages
 			if(changeValue == 1){
