@@ -31,6 +31,11 @@ import javax.swing.JButton;
 
 public class BillingPanel extends JPanel {
 
+	private JFormattedTextField amountField;
+	private JFormattedTextField dateIssuedField;
+	private JFormattedTextField chargeDateField;
+	private JComboBox procedureBox;
+	
 	/**
 	 * Create the panel.
 	 * 
@@ -42,9 +47,9 @@ public class BillingPanel extends JPanel {
 	 * 
 	 */
 	
-	String[] colNames = {"Patient_ID", "Procedure_ID", "Amount", "DateIssued"};
+	String[] colNames = {"Patient_ID", "Procedure_ID", "Amount", "DateIssued", "ChargeDate"};
 	Object[][] patients = {
-			{"Blank","111","080808","F"},
+			{"Blank","111","080808","F","F"},
 			{null,null,null,null,}};
 	
 	JTable table;
@@ -69,13 +74,13 @@ public class BillingPanel extends JPanel {
 		JLabel lblChargeDate = new JLabel("Charge Date:");
 		billInformation.add(lblChargeDate, "cell 1 0,alignx trailing");
 		
-		JFormattedTextField chargeDateField = new JFormattedTextField();
+		chargeDateField = new JFormattedTextField();
 		billInformation.add(chargeDateField, "cell 2 0,growx");
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
 		billInformation.add(lblProcedure, "cell 1 1,alignx trailing");
 		
-		JComboBox procedureBox = new JComboBox();
+		procedureBox = new JComboBox();
 		billInformation.add(procedureBox, "cell 2 1,growx");
 		
 		JLabel lblReason = new JLabel("Reason:");
@@ -87,7 +92,7 @@ public class BillingPanel extends JPanel {
 		JLabel lblNewLabel = new JLabel("Date Issued:");
 		billInformation.add(lblNewLabel, "cell 1 2,alignx trailing");
 		
-		JFormattedTextField dateIssuedField = new JFormattedTextField();
+		dateIssuedField = new JFormattedTextField();
 		billInformation.add(dateIssuedField, "cell 2 2,growx");
 		
 		JLabel lblAmount = new JLabel("Amount:");
@@ -96,7 +101,7 @@ public class BillingPanel extends JPanel {
 		//For amount, the dollar sign will be added when you set value. Maybe just leave it at this and 
 		//Whenever they save the changes the dollar sign will be added
 		NumberFormat paymentFormat = NumberFormat.getCurrencyInstance();
-		JFormattedTextField amountField = new JFormattedTextField(paymentFormat);
+		amountField = new JFormattedTextField(paymentFormat);
 		amountField.setValue(500.0);
 		
 		billInformation.add(amountField, "cell 4 2,growx");
@@ -156,15 +161,25 @@ public class BillingPanel extends JPanel {
 		table.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
 			    //if (e.getClickCount() == 1) {
-				  	if(table.getSelectedColumn() == 0){
+				  	
 				  		
 				  	//Edit on table click
-			    	 System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
+			    	 System.out.println(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString());
+			    	 System.out.println(table.getValueAt(table.getSelectedRow(),0).toString());
+			    	 String id = table.getValueAt(table.getSelectedRow(),0).toString();
+			    	 String procedure = table.getValueAt(table.getSelectedRow(),1).toString();
+			    	 String amount = table.getValueAt(table.getSelectedRow(),2).toString();
+			    	 String issued = table.getValueAt(table.getSelectedRow(),3).toString();
+			    	 String charged = table.getValueAt(table.getSelectedRow(),4).toString();
+			    	 
+			    	 amountField.setValue(Double.parseDouble(amount));
+			    	 dateIssuedField.setValue(issued);
+			    	 chargeDateField.setValue(charged);
 			    	 //PatientInformationFrame patientframe = new PatientInformationFrame();
 			         //patientframe.show("Basic Information");
 			         
 			         
-				  	}
+				  	
 			     //}
 			   }
 			});
@@ -199,6 +214,7 @@ public DefaultTableModel search(){
 			colNames.add(rsMeta.getColumnName(2));
 			colNames.add(rsMeta.getColumnName(3));
 			colNames.add(rsMeta.getColumnName(4));
+			colNames.add(rsMeta.getColumnName(5));
 			
 			//Make the cells uneditable while creating the tablemodel
 			tableModel = new DefaultTableModel(colNames, 0)	{
@@ -212,9 +228,11 @@ public DefaultTableModel search(){
 				String data0 = rs.getString("Patient_ID");	
 			    String data1 = rs.getString("Procedure_ID");
 			    String data2 = rs.getString("Amount");
-			    String data3 = rs.getString("DateIssued");
-			    //String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);
-			    Object[] rowData = new Object[] {data0,data1,data2,data3};
+			    String dob = rs.getString("DateIssued");
+			    String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);
+			    String cob = rs.getString("ChargeDate");
+			    String data4 = cob.substring(5, 7) + "/" + cob.substring(8,10) + "/" + cob.substring(0,4);
+			    Object[] rowData = new Object[] {data0,data1,data2,data3,data4};
 			    tableModel.addRow(rowData);
 			}
 			
