@@ -131,7 +131,7 @@ public class MainMenu extends JFrame {
 		
 		JButton btnSearchBilling = new JButton("Search Billing Information");
 		btnSearchBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		//panel_4.add(btnSearchByTime, BorderLayout.CENTER);
+		//panel_4.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_5 = new JPanel();
 		panel.add(panel_5, "cell 3 6 2 2,grow");
@@ -167,7 +167,7 @@ public class MainMenu extends JFrame {
 				create.show("Billing History");
 			}
 		});
-		btnPatientBilling.setEnabled(false);
+		btnPatientBilling.setEnabled(true);
 		
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		

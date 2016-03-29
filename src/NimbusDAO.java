@@ -365,4 +365,26 @@ public class NimbusDAO {
 		
 		return patient_ID;
 	}
+	
+	public ResultSet getBillingHistory(int Patient_ID){
+		
+		String sqlQuery = "Select * from NCMSE.ncm.Billing where Patient_ID = ?";
+		ResultSet rs = null;
+		
+		try {
+			
+			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
+			stmt.setInt(1, Patient_ID);
+
+			rs = stmt.executeQuery();
+			
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+	
 }

@@ -10,6 +10,8 @@ import javax.swing.text.MaskFormatter;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,7 +23,7 @@ import javax.swing.JFormattedTextField;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-
+import java.util.Vector;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
@@ -40,7 +42,7 @@ public class BillingPanel extends JPanel {
 	 * 
 	 */
 	
-	String[] colNames = {"Name","ID","DoB","Gender"};
+	String[] colNames = {"Patient_ID", "Procedure_ID", "Amount", "DateIssued"};
 	Object[][] patients = {
 			{"Blank","111","080808","F"},
 			{null,null,null,null,}};
@@ -139,6 +141,7 @@ public class BillingPanel extends JPanel {
 		  };
 		tablePanel.setLayout(new BorderLayout(0, 0));
 		table = new JTable(model);
+		table.setModel(search());
 		  
 		table.setRowHeight(0,30);
 		table.setBorder(null);
@@ -167,5 +170,65 @@ public class BillingPanel extends JPanel {
 			});
 
 	}
+	
+	
+	
+public DefaultTableModel search(){
+		
+		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
+		 DefaultTableModel tableModel;
+		 int id = 100012;
+		 
+		 /*if(patientIDtextField.getText().equals(""))
+			 id = 0;
+		 else
+			 id = Integer.parseInt(patientIDtextField.getText());*/
+		 
+		
+			try{
+			NimbusDAO dao = new NimbusDAO();
+			
+			//Get patient detials
+			ResultSet rs = dao.getBillingHistory(id);
+			
+			//Get metadata and prepare columnnames, even thought this shouldnt change
+			ResultSetMetaData rsMeta = rs.getMetaData();
+			
+			Vector<String> colNames= new Vector<String>();   // your columns names
+			colNames.add(rsMeta.getColumnName(1));
+			colNames.add(rsMeta.getColumnName(2));
+			colNames.add(rsMeta.getColumnName(3));
+			colNames.add(rsMeta.getColumnName(4));
+			
+			//Make the cells uneditable while creating the tablemodel
+			tableModel = new DefaultTableModel(colNames, 0)	{
+			    public boolean isCellEditable(int row, int column)
+			    {
+			      return false;//This causes all cells to be not editable
+			    }
+			  };
+
+			while (rs.next()) {
+				String data0 = rs.getString("Patient_ID");	
+			    String data1 = rs.getString("Procedure_ID");
+			    String data2 = rs.getString("Amount");
+			    String data3 = rs.getString("DateIssued");
+			    //String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);
+			    Object[] rowData = new Object[] {data0,data1,data2,data3};
+			    tableModel.addRow(rowData);
+			}
+			
+			dao.closeConnection();
+			return tableModel;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;	
+	}
+	
+	
+	
 
 }
