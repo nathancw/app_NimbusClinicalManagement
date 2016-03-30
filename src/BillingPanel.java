@@ -148,7 +148,7 @@ public class BillingPanel extends JPanel {
 		table = new JTable(model);
 		table.setModel(search());
 		  
-		table.setRowHeight(0,30);
+		//table.setRowHeight(0,30);
 		table.setBorder(null);
 		tablePanel.add(table,BorderLayout.CENTER);
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -164,8 +164,8 @@ public class BillingPanel extends JPanel {
 				  	
 				  		
 				  	//Edit on table click
-			    	 System.out.println(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString());
-			    	 System.out.println(table.getValueAt(table.getSelectedRow(),0).toString());
+			    	 //System.out.println(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString());
+			    	 //System.out.println(table.getValueAt(table.getSelectedRow(),0).toString());
 			    	 String id = table.getValueAt(table.getSelectedRow(),0).toString();
 			    	 String procedure = table.getValueAt(table.getSelectedRow(),1).toString();
 			    	 String amount = table.getValueAt(table.getSelectedRow(),2).toString();

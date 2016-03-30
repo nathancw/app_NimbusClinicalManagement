@@ -326,7 +326,7 @@ public class NimbusDAO {
 			stmt.executeUpdate();		
 		
 			stmt.close();
-			sqlconn.close();
+			//sqlconn.close();
 			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -366,15 +366,43 @@ public class NimbusDAO {
 		return patient_ID;
 	}
 	
-	public ResultSet getBillingHistory(int Patient_ID){
+	public void editBillingHistory(boolean update, int patient_ID,int procedure_ID, double amount, Date date){
 		
-		String sqlQuery = "Select * from NCMSE.ncm.Billing where Patient_ID = ?";
+		String sqlQuery = null;
+		
+		if(!update)
+		sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID,Procedure_ID,Amount,DateIssued,ChargeDate,Paid) " +
+						"values(?,?,?,?,?,0)";
+		
 		ResultSet rs = null;
 		
 		try {
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
-			stmt.setInt(1, Patient_ID);
+			stmt.setInt(1, patient_ID);
+			stmt.setInt(2, procedure_ID);
+			stmt.setDouble(3, amount);
+			stmt.setDate(4, new java.sql.Date(date.getTime()));
+			stmt.setDate(5, new java.sql.Date(date.getTime()));
+			
+			stmt.executeUpdate();
+			
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public ResultSet getBillingHistory(int patient_ID){
+		
+		String sqlQuery = "Select * from NCMSE.ncm.Billing where patient_ID = ?";
+		ResultSet rs = null;
+		
+		try {
+			
+			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
+			stmt.setInt(1, patient_ID);
 
 			rs = stmt.executeQuery();
 			
