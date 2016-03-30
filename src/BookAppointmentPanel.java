@@ -1,10 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,6 +46,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 
 
 public class BookAppointmentPanel extends JPanel {
@@ -104,13 +109,24 @@ public class BookAppointmentPanel extends JPanel {
 		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][150][100][150][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30]"));
 		
+		Image image;
+		try {
+			image = ImageIO.read(new File("Pictures\\AppointIcon.png"));
+			JLabel picLabel = new JLabel(new ImageIcon(image));
+			contentPanel.add(picLabel, "flowx,cell 0 0 2 1,alignx center,aligny top");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		JLabel lblNewLabel_2 = new JLabel("Schedule Patient Appointment");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPanel.add(lblNewLabel_2, "cell 2 0 4 1,alignx center");
 		
 		JPanel TextFieldsPanel = new JPanel();
 		TextFieldsPanel.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)), "Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		contentPanel.add(TextFieldsPanel, "cell 2 1 4 5,grow");
+		contentPanel.add(TextFieldsPanel, "cell 2 2 4 5,grow");
 		TextFieldsPanel.setLayout(new MigLayout("", "[80][150,grow][100][150,grow][20]", "[30][30][30][30][30]"));
 		
 		JLabel lblPatientID = new JLabel("Patient ID:");

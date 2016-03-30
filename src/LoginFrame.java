@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -9,6 +11,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -16,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -60,14 +65,25 @@ public class LoginFrame extends JFrame {
 		contentPane.setVisible(true);
 		
 		JPanel contentPanel = new JPanel();
+		contentPanel.setBackground(Color.WHITE);
 		contentPane.add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[50,grow][50,grow][75][75][75][75.00][50,grow][50,grow]", "[50,grow][50][50][50][50][50,grow]"));
+		contentPanel.setLayout(new MigLayout("", "[50,grow][50,grow][75][75][75][75.00][50,grow][50,grow]", "[50][50][50][50][50][50,grow]"));
 		
 		JPanel signInpanel = new JPanel();
 		signInpanel.setForeground(Color.WHITE);
 		signInpanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Sign In", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPanel.add(signInpanel, "cell 2 1 4 4");
 		//contentPanel.add(signInpanel, "dock south");
+		
+		Image image;
+		try {
+			image = ImageIO.read(new File("Pictures\\LoginLogoSmall.png"));
+			JLabel picLabel = new JLabel(new ImageIcon(image));
+			contentPanel.add(picLabel, "flowx,cell 2 0 4 1,alignx center,aligny top");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		signInpanel.setLayout(new MigLayout("", "[50][100][100][50]", "[30][][30][][40]"));
 		

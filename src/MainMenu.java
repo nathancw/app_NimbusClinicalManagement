@@ -1,6 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +13,9 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class MainMenu extends JFrame {
@@ -41,23 +47,32 @@ public class MainMenu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
 		contentPane.add(panel, BorderLayout.NORTH);
-		panel.setLayout(new MigLayout("", "[100,grow][100][100][100,grow][100][100,grow][100][100][100][100]", "[50][50,grow][50,grow][50,grow][50][50,grow][50][50,grow][50][50,grow][50][50]"));
+		panel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100][100][100]", "[50][50][50][50][50][50][50][50][50][50][50][50]"));
 		
-		JLabel lblNewLabel_1 = new JLabel("Clinical Management");
-		lblNewLabel_1.setFont(new Font("Mongolian Baiti", Font.BOLD, 12));
-		panel.add(lblNewLabel_1, "flowx,cell 4 1 2 1,alignx center,aligny top");
+		//JLabel lblNewLabel_1 = new JLabel("Clinical Management");
+		//lblNewLabel_1.setFont(new Font("Mongolian Baiti", Font.BOLD, 12));
+		//panel.add(lblNewLabel_1, "flowx,cell 4 1 2 1,alignx center,aligny top");
 		
-		JLabel lblNewLabel = new JLabel("NIMBUS");
-		lblNewLabel.setFont(new Font("Mongolian Baiti", Font.BOLD, 24));
-		panel.add(lblNewLabel, "cell 4 0 2 1,alignx center,aligny bottom");
+		Image image;
+		try {
+			image = ImageIO.read(new File("Pictures\\Logo.png"));
+			JLabel picLabel = new JLabel(new ImageIcon(image));
+			panel.add(picLabel, "flowx,cell 2 0 6 3,alignx center,aligny top");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		JPanel panel_10 = new JPanel();
+		panel_10.setBackground(Color.WHITE);
 		panel.add(panel_10, "cell 0 2 2 1,grow");
 		panel_10.setLayout(new BorderLayout(0, 0));
 		
@@ -82,7 +97,7 @@ public class MainMenu extends JFrame {
 		}
 		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, "cell 3 2 2 2,grow");
+		panel.add(panel_1, "cell 3 3 2 2,grow");
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JButton createPatientBtn = new JButton("Create Patient");
@@ -96,7 +111,7 @@ public class MainMenu extends JFrame {
 		panel_1.add(createPatientBtn);
 		
 		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, "cell 5 2 2 2,grow");
+		panel.add(panel_2, "cell 5 3 2 2,grow");
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		JButton searchPatientBtn = new JButton("Search for Patient");
@@ -111,7 +126,7 @@ public class MainMenu extends JFrame {
 		panel_2.add(searchPatientBtn, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
-		panel.add(panel_3, "cell 3 4 2 2,grow");
+		panel.add(panel_3, "cell 3 5 2 2,grow");
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnSearchForAppointment = new JButton("Search for Appointment");
@@ -126,7 +141,7 @@ public class MainMenu extends JFrame {
 		});
 		
 		JPanel panel_4 = new JPanel();
-		panel.add(panel_4, "cell 5 4 2 2,grow");
+		panel.add(panel_4, "cell 5 5 2 2,grow");
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnSearchBilling = new JButton("Search Billing Information");
@@ -134,7 +149,7 @@ public class MainMenu extends JFrame {
 		//panel_4.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_5 = new JPanel();
-		panel.add(panel_5, "cell 3 6 2 2,grow");
+		panel.add(panel_5, "cell 3 7 2 2,grow");
 		panel_5.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnScheduleAppointment = new JButton("Schedule Appointment");
@@ -154,7 +169,7 @@ public class MainMenu extends JFrame {
 		panel_5.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_6 = new JPanel();
-		panel.add(panel_6, "cell 5 6 2 2,grow");
+		panel.add(panel_6, "cell 5 7 2 2,grow");
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnPatientBilling = new JButton("Bill Patients");
@@ -172,7 +187,7 @@ public class MainMenu extends JFrame {
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		
 		JPanel panel_8 = new JPanel();
-		panel.add(panel_8, "cell 3 8 2 2,grow");
+		panel.add(panel_8, "cell 3 9 2 2,grow");
 		panel_8.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnViewPatientInformation = new JButton("View Patient Information");
@@ -188,7 +203,7 @@ public class MainMenu extends JFrame {
 		//panel_8.add(btnViewPatientInformation, BorderLayout.CENTER);
 		
 		JPanel panel_9 = new JPanel();
-		panel.add(panel_9, "cell 5 8 2 2,grow");
+		panel.add(panel_9, "cell 5 9 2 2,grow");
 		panel_9.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnInsuranceInformation = new JButton("Insurance Information");
@@ -204,7 +219,7 @@ public class MainMenu extends JFrame {
 		//panel_9.add(btnInsuranceInformation, BorderLayout.CENTER);
 		
 		JPanel panel_7 = new JPanel();
-		panel.add(panel_7, "cell 4 10 2 1,grow");
+		panel.add(panel_7, "cell 4 11 2 1,grow");
 		panel_7.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnLogout = new JButton("Logout");
