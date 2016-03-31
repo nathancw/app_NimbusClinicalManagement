@@ -193,7 +193,7 @@ public class OptionMenuFrame extends JFrame {
 			 setVisible(true);
 			 repaint();
 		 }
-		 else if(selectedValue.equals("Book New Appointment")){
+		 else if(selectedValue.equals("Book New Appointment")){		 
 			 dataPanel.removeAll();
 			 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();
 			 dataPanel.add(bookAppointment, "cell 0 0,grow");
@@ -217,7 +217,8 @@ public class OptionMenuFrame extends JFrame {
 	}
 	
 	public void populateAppointment(int appointmentID){
-		
+		 setBounds(100, 100, 900, 700);
+		 bufferPanel.remove(categoriesList);
 		dataPanel.removeAll();
 		 BookAppointmentPanel bookAppointment = new BookAppointmentPanel(appointmentID);
 		 dataPanel.add(bookAppointment, "cell 0 0,grow");

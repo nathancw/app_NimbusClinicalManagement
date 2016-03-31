@@ -60,12 +60,12 @@ public class BookAppointmentPanel extends JPanel {
 	private JComboBox startcomboBox;
 	private JComboBox procedurecomboBox;
 	private JCheckBox chckbxSendEmail;
-	private JComboBox reasoncomboBox;
 	private JCheckBox chckbxChckedIn;
 	private	JTextArea textArea;
 	private int timeID;
 	private Map<String,Integer> doctorIDs;
 	private Map<String,Integer> procedureIDs;
+	private Map<Integer,Double> procedureCosts;
 	private Map<Integer,String> specialtyName;
 	private int appID;
 	private JButton btnBookNewAppointment;
@@ -103,6 +103,7 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	public void drawPanel(){
+		
 		setLayout(new BorderLayout(0, 0));
 		
 		contentPanel = new JPanel();
@@ -126,7 +127,7 @@ public class BookAppointmentPanel extends JPanel {
 		
 		JPanel TextFieldsPanel = new JPanel();
 		TextFieldsPanel.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)), "Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		contentPanel.add(TextFieldsPanel, "cell 2 2 4 5,grow");
+		contentPanel.add(TextFieldsPanel, "cell 2 1 4 5,grow");
 		TextFieldsPanel.setLayout(new MigLayout("", "[80][150,grow][100][150,grow][20]", "[30][30][30][30][30]"));
 		
 		JLabel lblPatientID = new JLabel("Patient ID:");
@@ -185,12 +186,10 @@ public class BookAppointmentPanel extends JPanel {
 		});
 		TextFieldsPanel.add(startcomboBox, "cell 3 1,growx");
 		
-		
-		JLabel lblReason = new JLabel("Reason:");
-		TextFieldsPanel.add(lblReason, "cell 0 2,alignx trailing");
-		
-		reasoncomboBox = new JComboBox();
-		TextFieldsPanel.add(reasoncomboBox, "cell 1 2,growx");
+		JLabel lblProcedure = new JLabel("Procedure:");
+		TextFieldsPanel.add(lblProcedure, "cell 0 2,alignx trailing");
+		procedurecomboBox = new JComboBox();
+		TextFieldsPanel.add(procedurecomboBox, "cell 1 2,growx");
 		
 		JLabel lblEndTime = new JLabel("End Time:");
 		TextFieldsPanel.add(lblEndTime, "cell 2 2,alignx trailing");
@@ -199,24 +198,19 @@ public class BookAppointmentPanel extends JPanel {
 		TextFieldsPanel.add(endcomboBox, "cell 3 2,growx");
 		endcomboBox.setEditable(false);
 		
-		JLabel lblProcedure = new JLabel("Procedure:");
-		TextFieldsPanel.add(lblProcedure, "cell 0 3,alignx trailing");
-		
 		procedureIDs = null;
-		procedurecomboBox = new JComboBox();
-		TextFieldsPanel.add(procedurecomboBox, "cell 1 3,growx");
-		
-		chckbxSendEmail = new JCheckBox("Send Email");
-		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
 		
 		JLabel lblSpecialty = new JLabel("Specialty:");
-		TextFieldsPanel.add(lblSpecialty, "cell 0 4,alignx trailing");
+		TextFieldsPanel.add(lblSpecialty, "cell 0 3,alignx trailing");
 		
 		//specialtyName = new HashMap<Integer,String>();
 		specialtytextField = new JTextField();
-		TextFieldsPanel.add(specialtytextField, "cell 1 4,growx");
+		TextFieldsPanel.add(specialtytextField, "cell 1 3,growx");
 		specialtytextField.setColumns(10);
 		specialtytextField.setEditable(false);
+		
+		chckbxSendEmail = new JCheckBox("Send Email");
+		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
 		
 		chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
@@ -229,7 +223,7 @@ public class BookAppointmentPanel extends JPanel {
 		textArea = new JTextArea();
 		CommentsPanel.add(textArea, "cell 0 0 4 5,grow");
 		
-		JButton btnViewOpenAppointments = new JButton("View Open Appointments");
+		/*JButton btnViewOpenAppointments = new JButton("View Open Appointments");
 		btnViewOpenAppointments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(new JFrame(),
@@ -237,7 +231,9 @@ public class BookAppointmentPanel extends JPanel {
 			
 			}
 		});
+		
 		contentPanel.add(btnViewOpenAppointments, "cell 2 12 2 1");
+		*/
 		
 		JButton btnCancel = new JButton("Cancel");
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");
@@ -341,7 +337,7 @@ public class BookAppointmentPanel extends JPanel {
 		
 		btnEdit.setEnabled(false);
 		btnSave.setEnabled(true);
-		patientIDTextField.setEditable(true);
+		//patientIDTextField.setEditable(true);
 		doctorComboBox.setEnabled(true);
 		startcomboBox.setEnabled(true);
 		procedurecomboBox.setEnabled(true);
@@ -486,6 +482,7 @@ public class BookAppointmentPanel extends JPanel {
 		DefaultComboBoxModel model = null;
 		ArrayList<String> procedures = new ArrayList<String>();
 		procedureIDs = new HashMap<String,Integer>();
+		procedureCosts = new HashMap<Integer,Double>();
 		
 		if(dao!=null){
 			String sqlQuery = "Select * from NCMSE.NCM.Clinical_Procedures";
@@ -500,7 +497,7 @@ public class BookAppointmentPanel extends JPanel {
 				while(rs.next()){
 					procedures.add(rs.getString("ProcedureName"));
 					procedureIDs.put(rs.getString("ProcedureName"),rs.getInt("Procedure_ID"));
-					
+					procedureCosts.put(rs.getInt("Procedure_ID"), rs.getDouble("Cost"));
 				}
 				
 				model = new DefaultComboBoxModel(procedures.toArray());
@@ -525,6 +522,7 @@ public class BookAppointmentPanel extends JPanel {
 		int doctorID = 0;
 		int procedureID = 0;
 		Date datePickerDate= (Date)datePicker.getModel().getValue();
+		double amount;
 		
 		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
 			
@@ -536,6 +534,7 @@ public class BookAppointmentPanel extends JPanel {
 		else{
 			doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
 			procedureID = procedureIDs.get(procedurecomboBox.getSelectedItem());
+			amount = procedureCosts.get(procedureID);
 		}
 		
 		String comments = textArea.getText();
@@ -574,12 +573,14 @@ public class BookAppointmentPanel extends JPanel {
 			else if(changeValue == 0)
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Booked Appointment.");
-			
+		
+			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDate);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	
+		
 		
 		return true;
 	}

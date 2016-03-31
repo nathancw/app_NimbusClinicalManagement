@@ -21,6 +21,7 @@ import java.io.IOException;
 public class MainMenu extends JFrame {
 
 	private JPanel contentPane;
+	private JButton btnSearchForAppointment;
 
 	/**
 	 * Launch the application.
@@ -129,9 +130,19 @@ public class MainMenu extends JFrame {
 		panel.add(panel_3, "cell 3 5 2 2,grow");
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnSearchForAppointment = new JButton("Search for Appointment");
-		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		btnSearchForAppointment = new JButton("Search Appointments");
+		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 16));
 		panel_3.add(btnSearchForAppointment, BorderLayout.CENTER);
+		
+		Image searchAppimage;
+		try {
+			searchAppimage = ImageIO.read(new File("Pictures\\SearchAppointSmallest.png"));
+			btnSearchForAppointment.setIcon(new ImageIcon(searchAppimage));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		btnSearchForAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
