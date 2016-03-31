@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +39,9 @@ public class CreateAccountFrame extends JFrame {
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JPasswordField txtConfirmPassword;
+	private JCheckBox chckbxHeart;
+	private JCheckBox chckbxPsychEval;
+	private JCheckBox chckbxOther;
 
 	/**
 	 * Launch the application.
@@ -220,7 +224,7 @@ public class CreateAccountFrame extends JFrame {
 		JPanel doctorPanel = new JPanel();
 		mainPanel.add(doctorPanel, "cell 2 1 7 5");
 		doctorPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		doctorPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100]", "[50][50][50][50][50][50][50][50][50][50][50][50][50][50]"));
+		doctorPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100]", "[50][50][50][25][50][25][50][25][50][25][50][25][50][50][50][50]"));
 		
 		JLabel lblDoctorAccount = new JLabel("Doctor Account");
 		lblDoctorAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
@@ -269,11 +273,23 @@ public class CreateAccountFrame extends JFrame {
 		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		doctorPanel.add(lblPassRules, "cell 4 8 2 2");
 		
+		JLabel lblProcedures = new JLabel("Procedure/s:");
+		doctorPanel.add(lblProcedures, "cell 1 12");
+		
+		chckbxHeart = new JCheckBox("Heart Surgery");
+		doctorPanel.add(chckbxHeart, "cell 2 12");
+		
+		chckbxPsychEval = new JCheckBox("Psych Eval");
+		doctorPanel.add(chckbxPsychEval, "cell 3 12");
+		
+		chckbxOther = new JCheckBox("(other)");
+		doctorPanel.add(chckbxOther, "cell 2 13");
+		
 		JButton btnCancel = new JButton("Cancel");
-		doctorPanel.add(btnCancel, "cell 2 12");
+		doctorPanel.add(btnCancel, "cell 2 14");
 		
 		JButton btnSave = new JButton("Save");
-		doctorPanel.add(btnSave, "cell 3 12");
+		doctorPanel.add(btnSave, "cell 3 14");
 		
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
@@ -451,8 +467,14 @@ public class CreateAccountFrame extends JFrame {
 			dao = new NimbusDAO();
 			
 			dao.createAccount(fname, lname, username, password, access);
+			
+			//ADD DOCTOR TO DOCTOR TABLE
+			if(access == 3) {
+				
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 }

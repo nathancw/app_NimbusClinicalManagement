@@ -27,6 +27,7 @@ public class ChangePasswordFrame extends JFrame {
 	private JTextField txtOldPass;
 	private JTextField txtNewPass;
 	private JTextField txtConfirmPass;
+	private JTextField txtUsername;
 
 	/**
 	 * Launch the application.
@@ -64,32 +65,39 @@ public class ChangePasswordFrame extends JFrame {
 		
 		JPanel passPanel = new JPanel();
 		passPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		contentPanel.add(passPanel, "cell 2 2 5 5,grow");
-		passPanel.setLayout(new MigLayout("", "[100,grow][100][100][100]", "[25][25][25][25][25][25]"));
+		contentPanel.add(passPanel, "cell 2 1 5 6,grow");
+		passPanel.setLayout(new MigLayout("", "[100,grow][100][100][100]", "[25][25][25][25][25][25][25][25][25][25]"));
+		
+		JLabel lblUsername = new JLabel("Please enter your username:");
+		passPanel.add(lblUsername, "cell 0 0 2 1,alignx center");
+		
+		txtUsername = new JTextField();
+		passPanel.add(txtUsername, "cell 0 1 2 1,growx");
+		txtUsername.setColumns(10);
 		
 		JLabel lblOldPass = new JLabel("Please enter your old password:");
-		passPanel.add(lblOldPass, "cell 0 0 2 1,alignx center");
+		passPanel.add(lblOldPass, "cell 0 2 2 1,alignx center");
 		
 		txtOldPass = new JTextField();
-		passPanel.add(txtOldPass, "cell 0 1 2 1,growx");
+		passPanel.add(txtOldPass, "cell 0 3 2 1,growx");
 		txtOldPass.setColumns(10);
 		
 		JLabel lblNewPass = new JLabel("Please enter your preferred new password:");
-		passPanel.add(lblNewPass, "cell 0 2 2 1,alignx center");
+		passPanel.add(lblNewPass, "cell 0 4 2 1,alignx center");
 		
 		txtNewPass = new JTextField();
-		passPanel.add(txtNewPass, "cell 0 3 2 1,growx");
+		passPanel.add(txtNewPass, "cell 0 5 2 1,growx");
 		txtNewPass.setColumns(10);
 		
 		JLabel lblPassRules = new JLabel("<html>A password must be at least <br>8 characters and must<br>contain at least one number (0-9).</html>");
 		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		passPanel.add(lblPassRules, "cell 2 3 2 1,aligny top");
+		passPanel.add(lblPassRules, "cell 2 5 2 1,aligny top");
 		
 		JLabel lblConfirmPass = new JLabel("Confirm new Password:");
-		passPanel.add(lblConfirmPass, "cell 0 4 2 1,alignx center");
+		passPanel.add(lblConfirmPass, "cell 0 6 2 1,alignx center");
 		
 		txtConfirmPass = new JTextField();
-		passPanel.add(txtConfirmPass, "cell 0 5 2 1,growx");
+		passPanel.add(txtConfirmPass, "cell 0 7 2 1,growx");
 		txtConfirmPass.setColumns(10);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -118,10 +126,14 @@ public class ChangePasswordFrame extends JFrame {
 	}
 	
 	public Boolean checkPassword() {
+		String username = txtUsername.getText();
 		String oldPass = txtOldPass.getText();
 		String newPass = txtNewPass.getText();
 		String confirmPass = txtConfirmPass.getText();
 		Boolean digit = false;
+		
+		/*NimbusDAO dao;
+		String oldPasstxt = null;
 
 		
 		if(newPass != null && !(newPass.isEmpty())) {
@@ -131,7 +143,15 @@ public class ChangePasswordFrame extends JFrame {
 			}
 		}
 		
-		//NEED TO ADD CHECKING IF OLD PASSWORD IS CORRECT
+		//ADD CHECKING IF OLD PASSWORD IS CORRECT
+		try {
+			dao = new NimbusDAO();
+			
+			oldPasstxt = dao.getAccountPassword(username);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}*/
+		
 		if(newPass.length() < 8) {
 			JOptionPane.showMessageDialog(this, "The password must be at least 8 characters long.","Cannot Change Password",
 				    JOptionPane.ERROR_MESSAGE);
@@ -152,6 +172,7 @@ public class ChangePasswordFrame extends JFrame {
 	}
 	
 	public void updateDatabase() {
+		
 		
 	}
 

@@ -285,6 +285,35 @@ public class NimbusDAO {
 		}
 	}
 	
+	public void addDoctor() {
+		
+	}
+	
+	public String getAccountPassword(String username) {
+		/*String sqlQuery = "Select * from [NCMSE].[DBO].[Account]" +
+				"where Username = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			
+			String pass = rs.getString("Password");
+			System.out.println("password: " + pass);
+			return pass;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		return null;
+	}
+	
 	public void changePassword(String password) {
 		
 	}
