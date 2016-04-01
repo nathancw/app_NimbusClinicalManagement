@@ -7,9 +7,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -243,6 +246,17 @@ public class MainMenu extends JFrame {
 			}
 		});
 		panel_7.add(btnLogout, BorderLayout.CENTER);
+		
+		JButton btnChangePass = new JButton("Change Password");
+		btnChangePass.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		panel.add(btnChangePass, "cell 8 11 2 1,alignx center");
+		btnChangePass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				dispose();
+				ChangePasswordFrame changePassword = new ChangePasswordFrame();
+				changePassword.setVisible(true);
+			}
+		});
 	}
 
 }

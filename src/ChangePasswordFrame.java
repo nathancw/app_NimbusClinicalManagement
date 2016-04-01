@@ -73,35 +73,35 @@ public class ChangePasswordFrame extends JFrame {
 		passPanel.setLayout(new MigLayout("", "[100,grow][100][100][100]", "[25][25][25][25][25][25][25][25][25][25]"));
 		
 		JLabel lblUsername = new JLabel("Please enter your username:");
-		passPanel.add(lblUsername, "cell 0 0 2 1,alignx center");
+		passPanel.add(lblUsername, "cell 0 1 2 1,alignx center");
 		
 		txtUsername = new JTextField();
-		passPanel.add(txtUsername, "cell 0 1 2 1,growx");
+		passPanel.add(txtUsername, "cell 0 2 2 1,growx");
 		txtUsername.setColumns(10);
 		
 		JLabel lblOldPass = new JLabel("Please enter your old password:");
-		passPanel.add(lblOldPass, "cell 0 2 2 1,alignx center");
+		passPanel.add(lblOldPass, "cell 0 3 2 1,alignx center");
 		
 		txtOldPass = new JTextField();
-		passPanel.add(txtOldPass, "cell 0 3 2 1,growx");
+		passPanel.add(txtOldPass, "cell 0 4 2 1,growx");
 		txtOldPass.setColumns(10);
 		
 		JLabel lblNewPass = new JLabel("Please enter your preferred new password:");
-		passPanel.add(lblNewPass, "cell 0 4 2 1,alignx center");
+		passPanel.add(lblNewPass, "cell 0 5 2 1,alignx center");
 		
 		txtNewPass = new JTextField();
-		passPanel.add(txtNewPass, "cell 0 5 2 1,growx");
+		passPanel.add(txtNewPass, "cell 0 6 2 1,growx");
 		txtNewPass.setColumns(10);
 		
 		JLabel lblPassRules = new JLabel("<html>A password must be at least <br>8 characters and must<br>contain at least one number (0-9).</html>");
 		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		passPanel.add(lblPassRules, "cell 2 5 2 1,aligny top");
+		passPanel.add(lblPassRules, "cell 2 6 2 1,aligny top");
 		
 		JLabel lblConfirmPass = new JLabel("Confirm new Password:");
-		passPanel.add(lblConfirmPass, "cell 0 6 2 1,alignx center");
+		passPanel.add(lblConfirmPass, "cell 0 7 2 1,alignx center");
 		
 		txtConfirmPass = new JTextField();
-		passPanel.add(txtConfirmPass, "cell 0 7 2 1,growx");
+		passPanel.add(txtConfirmPass, "cell 0 8 2 1,growx");
 		txtConfirmPass.setColumns(10);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -122,7 +122,9 @@ public class ChangePasswordFrame extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 				if(checkPassword()) {
 					updateDatabase();
-					//CHANGE FRAME
+					dispose();
+					LoginFrame create = new LoginFrame();
+					create.setVisible(true);
 				}
 			}
 		});
