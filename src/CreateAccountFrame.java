@@ -24,6 +24,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 
 public class CreateAccountFrame extends JFrame {
@@ -205,13 +206,11 @@ public class CreateAccountFrame extends JFrame {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 2;
-				  if(validateFields()) {
-					  if(checkPassword()) {
-						  insertDatabase(2);
-						  dispose();
-						  MainMenu menu = new MainMenu();
-						  menu.setVisible(true);
-					  }
+				  if(validateFields() && checkPassword() && checkUsernames()) {
+					  insertDatabase(3);
+					  dispose();
+					  MainMenu menu = new MainMenu();
+					  menu.setVisible(true);
 				  }
 			  }
 			});
@@ -304,13 +303,11 @@ public class CreateAccountFrame extends JFrame {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 3;
-				  if(validateFields()) {
-					  if(checkPassword()) {
-						  insertDatabase(3);
-						  dispose();
-						  MainMenu menu = new MainMenu();
-						  menu.setVisible(true);
-					  }
+				  if(validateFields() && checkPassword() && checkUsernames()) {
+					  insertDatabase(3);
+					  dispose();
+					  MainMenu menu = new MainMenu();
+					  menu.setVisible(true);
 				  }
 			  }
 			});
@@ -390,13 +387,11 @@ public class CreateAccountFrame extends JFrame {
 			  public void actionPerformed(ActionEvent evt) {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 1;
-				  if(validateFields()) {
-					  if(checkPassword()) {
-						  insertDatabase(1);
-						  dispose();
-						  MainMenu menu = new MainMenu();
-						  menu.setVisible(true);
-					  }
+				  if(validateFields() && checkPassword() && checkUsernames()) {
+					  insertDatabase(3);
+					  dispose();
+					  MainMenu menu = new MainMenu();
+					  menu.setVisible(true);
 				  }
 			  }
 			});
@@ -452,6 +447,33 @@ public class CreateAccountFrame extends JFrame {
 		}
 		else
 			return true;
+	}
+	
+	public Boolean checkUsernames() {
+		String username = txtUsername.getText();
+		NimbusDAO dao;
+		ResultSet rs = null;
+
+		try {
+			dao = new NimbusDAO();
+			
+			rs = dao.getAccountUsername(username);
+				
+			if(rs.next()) {
+				JOptionPane.showMessageDialog(this, "There is already an account with this username in the system.","Cannot Create Account",
+					    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			else
+				return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(this, "Error accessing the database.","Cannot Create Account",
+			    JOptionPane.ERROR_MESSAGE);
+		return false;
+
 	}
 	
 	

@@ -286,10 +286,24 @@ public class NimbusDAO {
 	}
 	
 	public void addDoctor() {
+		String query = "insert into [NCMSE].[DBO].[Doctor]" + " (Username,Password,Salt,AccessLevel,FirstName,LastName) " +
+				"VALUES (?,?,?,?,?,?)";
 		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(query);
+			//add doctor data
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public ResultSet getAccountPassword(String username) {
+	
+	public ResultSet getAccountUsername(String username) {
 		String sqlQuery = "Select * from [NCMSE].[DBO].[Account] " +
 				"where Username = ?";
 		
