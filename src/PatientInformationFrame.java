@@ -112,13 +112,12 @@ public class PatientInformationFrame extends JFrame {
 	
 	public void show(String selectedValue){
 	
-		if(selectedValue.equals("Search For Patient")){
+		if(selectedValue.equals("Appointments")){
 			 dataPanel.removeAll();
-			 SearchAppointmentPanel searchPanel = new SearchAppointmentPanel();
+			 AppointmentHistoryPanel searchPanel = new AppointmentHistoryPanel(patient_ID);
 			 dataPanel.add(searchPanel,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
-			 
 		 }
 		 
 		 else if(selectedValue.equals("Basic Information")){
