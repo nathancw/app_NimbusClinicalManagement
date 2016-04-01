@@ -289,32 +289,47 @@ public class NimbusDAO {
 		
 	}
 	
-	public String getAccountPassword(String username) {
-		/*String sqlQuery = "Select * from [NCMSE].[DBO].[Account]" +
+	public ResultSet getAccountPassword(String username) {
+		String sqlQuery = "Select * from [NCMSE].[DBO].[Account] " +
 				"where Username = ?";
 		
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
 		try {
 
-			///Prepare and execute query
 			stmt = conn.prepareStatement(sqlQuery);
 			stmt.setString(1, username);
-			ResultSet rs = stmt.executeQuery();
+			rs = stmt.executeQuery();
 			
-			String pass = rs.getString("Password");
-			System.out.println("password: " + pass);
-			return pass;
+			return rs;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 		
 		return null;
 	}
 	
-	public void changePassword(String password) {
+	public void changePassword(String username, String password) {
+		
+		String sqlQuery = "update [NCMSE].[DBO].[Account] set Password = ? where Username = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = conn.prepareStatement(sqlQuery);
+			
+			stmt.setString(1, password);
+			stmt.setString(2, username);
+			
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

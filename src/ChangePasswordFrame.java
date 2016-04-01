@@ -19,6 +19,7 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 
 public class ChangePasswordFrame extends JFrame {
@@ -28,6 +29,9 @@ public class ChangePasswordFrame extends JFrame {
 	private JTextField txtNewPass;
 	private JTextField txtConfirmPass;
 	private JTextField txtUsername;
+			
+	private String un;
+	private String newpass;
 
 	/**
 	 * Launch the application.
@@ -116,7 +120,6 @@ public class ChangePasswordFrame extends JFrame {
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				//ERROR CHECK AND CHANGE IN DATABASE
 				if(checkPassword()) {
 					updateDatabase();
 					//CHANGE FRAME
@@ -132,10 +135,11 @@ public class ChangePasswordFrame extends JFrame {
 		String confirmPass = txtConfirmPass.getText();
 		Boolean digit = false;
 		
-		/*NimbusDAO dao;
+		NimbusDAO dao;
 		String oldPasstxt = null;
+		ResultSet rs = null;
 
-		
+		//checking for a digit in the new password
 		if(newPass != null && !(newPass.isEmpty())) {
 			for(int i = 0; i < newPass.length(); i++) {
 				if(digit = Character.isDigit(newPass.charAt(i)))
@@ -143,15 +147,30 @@ public class ChangePasswordFrame extends JFrame {
 			}
 		}
 		
-		//ADD CHECKING IF OLD PASSWORD IS CORRECT
+		//getting the current password from database
 		try {
 			dao = new NimbusDAO();
 			
-			oldPasstxt = dao.getAccountPassword(username);
+			rs = dao.getAccountPassword(username);
+			
+			if(rs.next()) {
+				oldPasstxt = rs.getString("Password");
+			}
+			else {
+				JOptionPane.showMessageDialog(new JFrame(), "This username does not exist in the database.");
+				return false;
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 		
+		//checking if they entered the right current password
+		if(!(oldPasstxt.equals(oldPass))) {
+			JOptionPane.showMessageDialog(new JFrame(), "This password does not match the current password for " + username + ".");
+			return false;
+		}
+		
+		//checking length, digit, and confirm pass=new pass
 		if(newPass.length() < 8) {
 			JOptionPane.showMessageDialog(this, "The password must be at least 8 characters long.","Cannot Change Password",
 				    JOptionPane.ERROR_MESSAGE);
@@ -167,12 +186,24 @@ public class ChangePasswordFrame extends JFrame {
 				    JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		else
+		else {
+			un = username;
+			newpass = newPass;
 			return true;
+		}
 	}
 	
 	public void updateDatabase() {
+		NimbusDAO dao;
 		
+		try {
+			dao = new NimbusDAO();
+			
+			dao.changePassword(un, newpass);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
