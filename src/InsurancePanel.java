@@ -25,6 +25,8 @@ public class InsurancePanel extends JPanel {
 	private JTextField txtPlanStart2;
 	private JTextField txtPlanEnd2;
 	private JTextField txtPhoneNum2;
+	private JTextField txtType1;
+	private JTextField txtType2;
 
 	/**
 	 * Create the panel.
@@ -45,7 +47,7 @@ public class InsurancePanel extends JPanel {
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Primary Insurance", null, panel_1, null);
-		panel_1.setLayout(new MigLayout("", "[105][105][105][105][105][105]", "[50][50][50][50][50][50]"));
+		panel_1.setLayout(new MigLayout("", "[105][105,grow][105][105][105][105]", "[50][50][50][50][50][50]"));
 		
 		JLabel lblCompName1 = new JLabel("Company Name:");
 		lblCompName1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -101,9 +103,18 @@ public class InsurancePanel extends JPanel {
 		panel_1.add(txtPlanEnd1, "cell 1 4 2 1,growx");
 		txtPlanEnd1.setColumns(10);
 		
+		JLabel lblType1 = new JLabel("Type:");
+		lblType1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_1.add(lblType1, "cell 0 5,alignx left");
+		
+		txtType1 = new JTextField();
+		txtType1.setText("401k");
+		txtType1.setColumns(10);
+		panel_1.add(txtType1, "cell 1 5 2 1,growx");
+		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Secondary Insurance", null, panel_2, null);
-		panel_2.setLayout(new MigLayout("", "[105][105][105][105][105][105]", "[50][50][50][50][50][50]"));
+		panel_2.setLayout(new MigLayout("", "[105][105,grow][105][105][105][105]", "[50][50][50][50][50][50]"));
 		
 		JLabel lblCompName2 = new JLabel("Company Name:");
 		lblCompName2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -158,6 +169,15 @@ public class InsurancePanel extends JPanel {
 		txtPlanEnd2.setText("01/01/2017");
 		panel_2.add(txtPlanEnd2, "cell 1 4 2 1,growx");
 		txtPlanEnd2.setColumns(10);
+		
+		JLabel lblType2 = new JLabel("Type:");
+		lblType2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		panel_2.add(lblType2, "cell 0 5,alignx left");
+		
+		txtType2 = new JTextField();
+		txtType2.setText("401k");
+		txtType2.setColumns(10);
+		panel_2.add(txtType2, "cell 1 5 2 1,growx");
 
 	}
 
