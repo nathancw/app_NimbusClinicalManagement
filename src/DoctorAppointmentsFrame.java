@@ -53,7 +53,7 @@ import javax.swing.JComboBox;
 
 
 
-public class AppointmentHistoryPanel extends JPanel{
+public class DoctorAppointmentsFrame extends JPanel{
 
 	//String directoryList[] = {"Directory","Create New"};
 	String[] colNames = {"Appointment_ID","Patient_ID","FirstName","LastName","Date","StartTime","EndTime"};
@@ -68,7 +68,7 @@ public class AppointmentHistoryPanel extends JPanel{
 	private String firstName;
 	private String lastName;
 	
-	public AppointmentHistoryPanel(int patID) {
+	public DoctorAppointmentsFrame (int patID) {
 		
 		this.patient_ID = patID;
 		

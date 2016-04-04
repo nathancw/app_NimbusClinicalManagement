@@ -121,7 +121,7 @@ public class BookAppointmentPanel extends JPanel {
 		}
 		
 		
-		JLabel lblNewLabel_2 = new JLabel("Schedule Patient Appointment");
+		JLabel lblNewLabel_2 = new JLabel("Patient Appointment Details");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPanel.add(lblNewLabel_2, "cell 2 0 4 1,alignx center");
 		

@@ -135,5 +135,12 @@ public class PatientInformationFrame extends JFrame {
 			 setVisible(true);
 			 repaint();
 		 }	 
+		 else if(selectedValue.equals("Insurance")){
+			 dataPanel.removeAll();
+			 InsurancePanel insurance = new InsurancePanel();
+			 dataPanel.add(insurance,"cell 0 0,grow");
+			 setVisible(true);
+			 repaint();
+		 }	 
 	}
 }
