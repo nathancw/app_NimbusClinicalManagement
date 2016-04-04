@@ -153,7 +153,7 @@ public class ChangePasswordFrame extends JFrame {
 		try {
 			dao = new NimbusDAO();
 			
-			rs = dao.getAccountPassword(username);
+			rs = dao.getAccountUsername(username);
 			
 			if(rs.next()) {
 				oldPasstxt = rs.getString("Password");
