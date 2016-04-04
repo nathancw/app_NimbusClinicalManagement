@@ -100,7 +100,7 @@ public class NimbusDAO {
 		return null;
 	}
 	
-	public ResultSet getAppointmentDetails(int procedureID, String firstName, String lastName, int id, int appointmentID){
+	public ResultSet getAppointmentDetails(int procedureID, String firstName, String lastName, int id, int appointmentID, int doctorID){
 		
 	
 		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
@@ -122,7 +122,7 @@ public class NimbusDAO {
 				"[NCMSE].[NCM].[Doctor] doc on doc.Doctor_ID = app.Doctor_ID " +
 				"inner join " +
 				"[NCMSE].[NCM].[TimeSlot] timeSlot on timeSlot.TimeSlot_ID = app.TimeSlot_ID  " +
-				"where app.Procedure_ID = ? or pat.FirstName = ? or pat.LastName = ? or app.Patient_ID = ? or app.appointment_ID = ?";
+				"where app.Procedure_ID = ? or pat.FirstName = ? or pat.LastName = ? or app.Patient_ID = ? or app.appointment_ID = ? or app.Doctor_ID = ?";
 	
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
@@ -135,6 +135,7 @@ public class NimbusDAO {
 			stmt.setString(3, lastName);
 			stmt.setInt(4,id);
 			stmt.setInt(5,appointmentID);
+			stmt.setInt(6,doctorID);
 			ResultSet rs = stmt.executeQuery();	
 			
 			return rs;
