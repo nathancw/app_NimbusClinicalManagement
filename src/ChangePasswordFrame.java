@@ -140,6 +140,13 @@ public class ChangePasswordFrame extends JFrame {
 		NimbusDAO dao;
 		String oldPasstxt = null;
 		ResultSet rs = null;
+		
+		//checking that all fields are filled in
+		if(username.isEmpty() || oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Change Password",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 
 		//checking for a digit in the new password
 		if(newPass != null && !(newPass.isEmpty())) {
