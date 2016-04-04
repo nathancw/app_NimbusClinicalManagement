@@ -1,11 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -36,13 +38,14 @@ public class CreateAccountFrame extends JFrame {
 	private JComboBox comboBoxType;
 	private int clearanceLevel = 0;
 	private JTextField txtFirstName;
+	private JTextField txtMiddleName;
 	private JTextField txtLastName;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JPasswordField txtConfirmPassword;
-	private JCheckBox chckbxHeart;
-	private JCheckBox chckbxPsychEval;
-	private JCheckBox chckbxOther;
+	private JRadioButton rdbtnSurgery;
+	private JRadioButton rdbtnClinical;
+	private JRadioButton rdbtnOther;
 
 	/**
 	 * Launch the application.
@@ -233,8 +236,15 @@ public class CreateAccountFrame extends JFrame {
 		doctorPanel.add(lblFirstName, "cell 1 2,alignx left");
 		
 		txtFirstName = new JTextField();
-		doctorPanel.add(txtFirstName, "cell 2 2 2 1,growx");
+		doctorPanel.add(txtFirstName, "cell 2 2,growx");
 		txtFirstName.setColumns(10);
+		
+		JLabel lblMiddleName = new JLabel("Middle Name:");
+		doctorPanel.add(lblMiddleName, "cell 3 2,growx");
+		
+		txtMiddleName = new JTextField();
+		doctorPanel.add(txtMiddleName, "cell 4 2 2 1,growx");
+		txtMiddleName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
 		doctorPanel.add(lblLastName, "cell 1 4,alignx left");
@@ -272,17 +282,23 @@ public class CreateAccountFrame extends JFrame {
 		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		doctorPanel.add(lblPassRules, "cell 4 8 2 2");
 		
-		JLabel lblProcedures = new JLabel("Procedure/s:");
-		doctorPanel.add(lblProcedures, "cell 1 12");
+		JLabel lblSpecialty = new JLabel("Specialty");
+		doctorPanel.add(lblSpecialty, "cell 1 12");
 		
-		chckbxHeart = new JCheckBox("Heart Surgery");
-		doctorPanel.add(chckbxHeart, "cell 2 12");
+		rdbtnSurgery = new JRadioButton("Heart Surgery");
+		doctorPanel.add(rdbtnSurgery, "cell 2 12");
 		
-		chckbxPsychEval = new JCheckBox("Psych Eval");
-		doctorPanel.add(chckbxPsychEval, "cell 3 12");
+		rdbtnClinical = new JRadioButton("Psych Eval");
+		doctorPanel.add(rdbtnClinical, "cell 3 12");
 		
-		chckbxOther = new JCheckBox("(other)");
-		doctorPanel.add(chckbxOther, "cell 2 13");
+		rdbtnOther = new JRadioButton("(other)");
+		doctorPanel.add(rdbtnOther, "cell 2 13");
+		
+		//adding the specialty buttons to a group so that only one is selectable at a time
+		ButtonGroup specialtyGroup = new ButtonGroup();
+		specialtyGroup.add(rdbtnSurgery);
+		specialtyGroup.add(rdbtnClinical);
+		specialtyGroup.add(rdbtnOther);
 		
 		JButton btnCancel = new JButton("Cancel");
 		doctorPanel.add(btnCancel, "cell 2 14");
@@ -492,6 +508,16 @@ public class CreateAccountFrame extends JFrame {
 			
 			//ADD DOCTOR TO DOCTOR TABLE
 			if(access == 3) {
+				String middleName = txtMiddleName.getText();
+				String combinedName = lname + ", " + fname;
+				int specialtyID = 0;
+				
+				if(rdbtnSurgery.isSelected())
+					specialtyID = 1; //check
+				else if(rdbtnClinical.isSelected())
+					specialtyID = 2;
+				
+				dao.addDoctor(fname, lname, middleName, combinedName, specialtyID);
 				
 			}
 		} catch(Exception e) {

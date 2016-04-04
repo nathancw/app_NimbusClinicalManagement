@@ -285,16 +285,24 @@ public class NimbusDAO {
 		}
 	}
 	
-	public void addDoctor() {
-		String query = "insert into [NCMSE].[DBO].[Doctor]" + " (Username,Password,Salt,AccessLevel,FirstName,LastName) " +
-				"VALUES (?,?,?,?,?,?)";
+	public void addDoctor(String fname, String lname, String mname, String cname, int id) {
+		String query = "insert into [NCMSE].[DBO].[Doctor]" + " (FirstName, MiddleName, LastName, CombinedName, Specialty_ID) " +
+				"VALUES (?,?,?,?,?)";
 		
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
 		
 		try {
 			stmt = conn.prepareStatement(query);
+			
 			//add doctor data
+			stmt.setString(1, fname);
+			stmt.setString(2, mname);
+			stmt.setString(3, lname);
+			stmt.setString(4, cname);
+			stmt.setInt(5, id);
+			
+			//stmt.executeUpdate();
 			
 		}
 		catch(Exception e) {
