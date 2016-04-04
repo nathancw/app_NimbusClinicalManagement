@@ -302,7 +302,7 @@ public class NimbusDAO {
 		}
 	}
 	
-	
+	//this function gets an account from the database based on a given username
 	public ResultSet getAccountUsername(String username) {
 		String sqlQuery = "Select * from [NCMSE].[DBO].[Account] " +
 				"where Username = ?";
