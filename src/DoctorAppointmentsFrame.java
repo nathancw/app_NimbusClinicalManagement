@@ -41,36 +41,69 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import java.awt.Component;
 
 
 
-public class DoctorAppointmentsFrame extends JPanel{
+public class DoctorAppointmentsFrame extends JFrame{
 
 	//String directoryList[] = {"Directory","Create New"};
 	String[] colNames = {"Appointment_ID","Patient_ID","FirstName","LastName","Date","StartTime","EndTime"};
 	Object[][] appointments;
 	
 	private JPanel contentPanel;
-	private JTable table;
+	private JTable topTable;
+	private JTable bottomTable;
 	private JLabel topLabel;
 	private NimbusDAO dao;
 	private Map<String,Integer> procedureIDs;
-	private int patient_ID;
-	private String firstName;
-	private String lastName;
+	private int doctorID;
+	private String name;
+	private JPanel secondPanel;
+	private JLabel lblAppointmentHistory;
+	private JButton btnClose;
 	
-	public DoctorAppointmentsFrame (int patID) {
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					DoctorAppointmentsFrame frame = new DoctorAppointmentsFrame(20);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+	public DoctorAppointmentsFrame (int docID) {
 		
-		this.patient_ID = patID;
+		if(docID > 100000)
+			
+		
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 900, 600);
+		setTitle("Your appointments");
+		
+		
+		this.doctorID = docID;
+		
+		
 		
 		try {
 			dao = new NimbusDAO();
@@ -78,15 +111,17 @@ public class DoctorAppointmentsFrame extends JPanel{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		setLayout(new BorderLayout(0, 0));
+		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		
 		contentPanel = new JPanel();
-		add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100]", "[50][50][100][100][100][100][300]"));
+		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100]", "[50][50][100][100][100][100][100][100][100]"));
 	
+		setContentPane(contentPanel);
+		contentPanel.setVisible(true);
+		
 		JPanel resultsPanel = new JPanel();
-		contentPanel.add(resultsPanel, "cell 0 3 8 4,alignx center,aligny top");
+		contentPanel.add(resultsPanel, "cell 0 2 8 2,alignx center,aligny top");
 		
 		//Make the table uneditable
 		TableModel model = new DefaultTableModel(appointments, colNames)
@@ -98,21 +133,31 @@ public class DoctorAppointmentsFrame extends JPanel{
 		  };
 	
 		resultsPanel.setLayout(new BorderLayout(0, 0));
-		table = new JTable(model);
+		topTable = new JTable(model);
 		
 		//Set column widths to make table bigger
-		TableColumnModel columnModel = table.getColumnModel();
+		TableColumnModel columnModel = topTable.getColumnModel();
 		
-		table.setRowHeight(0,25);
-		table.setBorder(null);
-		DefaultTableModel queryModel= search();
-		table.setModel(queryModel);
+		topTable.setRowHeight(0,25);
+		topTable.setBorder(null);
+		DefaultTableModel queryModel= search(true);
+		topTable.setModel(queryModel);
+		
+		bottomTable = new JTable(model);
+		
+		//Set column widths to make table bigger
+		TableColumnModel columnModel2 = bottomTable.getColumnModel();
+		
+		bottomTable.setRowHeight(0,25);
+		bottomTable.setBorder(null);
+		DefaultTableModel allHistoryModel= search(false);
+		bottomTable.setModel(allHistoryModel);
 		
 		
 		
 		Image image;
 		try {
-			image = ImageIO.read(new File("Pictures\\SearchAppointSmall.png"));
+			image = ImageIO.read(new File("Pictures\\AppointIcon.png"));
 			JLabel picLabel = new JLabel(new ImageIcon(image));
 			contentPanel.add(picLabel, "flowx,cell 0 0 2 2,alignx center,aligny center");
 		} catch (IOException e) {
@@ -120,34 +165,55 @@ public class DoctorAppointmentsFrame extends JPanel{
 			e.printStackTrace();
 		}
 		
-		topLabel = new JLabel("<html>Appointment History <br> Select an appointment to view details. <br>Patient ID: " + patient_ID  + "</html>");
+		topLabel = new JLabel("<html>Todays Appointments for " + name + "<br> Select an appointment to view details. </html>");
 		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(topLabel, "cell 2 1 4 1,alignx center,aligny top");
 		
-		resultsPanel.add(table,BorderLayout.CENTER);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(700, 500));
+		resultsPanel.add(topTable,BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(topTable);
+		scrollPane.setPreferredSize(new Dimension(700, 200));
 
 		resultsPanel.add(scrollPane, BorderLayout.CENTER);
+		
+		lblAppointmentHistory = new JLabel("Appointment History");
+		lblAppointmentHistory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		contentPanel.add(lblAppointmentHistory, "cell 2 4 4 1,alignx center");
+		
+		secondPanel = new JPanel(); 
+		contentPanel.add(secondPanel, "cell 0 5 8 3,alignx center,aligny top");
+		secondPanel.setLayout(new BorderLayout(0, 0));
+		
+		secondPanel.add(bottomTable,BorderLayout.CENTER);
+		JScrollPane scrollPane2 = new JScrollPane(bottomTable);
+		scrollPane2.setPreferredSize(new Dimension(700, 200));
+
+		secondPanel.add(scrollPane2, BorderLayout.CENTER);
+		
+		btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
+		contentPanel.add(btnClose, "cell 6 8 2 1,alignx center");
+		
+		
+		
 		
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		//table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		
-		table.addMouseListener(new MouseAdapter() {
+		topTable.addMouseListener(new MouseAdapter() {
 			  public void mouseClicked(MouseEvent e) {
 			    //if (e.getClickCount() == 1) {
-				  	if(table.getSelectedColumn() == 0){
+				  	if(topTable.getSelectedColumn() == 0){
 				  		
-				  	int appointmentID = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
-				    System.out.println(table.getValueAt(table.getSelectedRow(), 0).toString());
-				    
-				    OptionMenuFrame opt = new OptionMenuFrame();
-				    opt.populateAppointment(appointmentID);
-				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
-				    //BookAppointmentPanel appPanel = new BookAppointmentPanel(appointmentID);
-				    	
-			         
-			   
+					  	int appointmentID = Integer.parseInt(topTable.getValueAt(topTable.getSelectedRow(), 0).toString());
+					    System.out.println(topTable.getValueAt(topTable.getSelectedRow(), 0).toString());
+					    
+					    OptionMenuFrame opt = new OptionMenuFrame();
+					    opt.populateAppointment(appointmentID);
+
 				  	}
 			     //}
 			   }
@@ -156,18 +222,20 @@ public class DoctorAppointmentsFrame extends JPanel{
 	
 	}
 
-	public DefaultTableModel search(){
+	public DefaultTableModel search(boolean top){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
-		 DefaultTableModel tableModel;
-	
+		 DefaultTableModel bottomtableModel;
+		 DefaultTableModel toptableModel;
 			try{
 			
 			//Get patient detials
-			ResultSet rs = dao.getAppointmentDetails(0,"", "",this.patient_ID,0);
+			ResultSet rs = dao.getAppointmentDetails(0,"", "",0,0,doctorID);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
+			
+			
 			
 			Vector<String> colNames= new Vector<String>();   // your columns names
 			colNames.add(rsMeta.getColumnName(1));
@@ -180,30 +248,75 @@ public class DoctorAppointmentsFrame extends JPanel{
 			colNames.add(rsMeta.getColumnName(9));
 			
 			//Make the cells uneditable while creating the tablemodel
-			tableModel = new DefaultTableModel(colNames, 0)	{
+			bottomtableModel = new DefaultTableModel(colNames, 0)	{
 			    public boolean isCellEditable(int row, int column)
 			    {
 			      return false;//This causes all cells to be not editable
 			    }
 			  };
+			  
+			 toptableModel = new DefaultTableModel(colNames, 0)	{
+				    public boolean isCellEditable(int row, int column)
+				    {
+				      return false;//This causes all cells to be not editable
+				    }
+				  };
 
+			 Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+	
+	         int currentDay = localCalendar.get(Calendar.DATE);
+	         int currentMonth = localCalendar.get(Calendar.MONTH) + 1;
+	         int currentYear = localCalendar.get(Calendar.YEAR);
+
+	         String currentDaycorrect = Integer.toString(currentDay);
+	         if(Integer.toString(currentDay).length() == 1)
+	        	 currentDaycorrect = "0" + currentDaycorrect;
+	         
+	         String currentMonthcorrect = Integer.toString(currentMonth);
+	         if(Integer.toString(currentMonth).length() == 1)
+	        	 currentMonthcorrect = "0" + currentMonthcorrect;
+	         
+	         String currentDate = Integer.toString(currentYear) + "-" + currentMonthcorrect + "-" + currentDaycorrect;
+
+	        	 
+			  
+	         
 			while (rs.next()) {
-				this.firstName = rs.getString("FirstName");
-				this.lastName = rs.getString("LastName");
-				int data0 = rs.getInt("Appointment_ID");	
-			    int data1 = rs.getInt("Patient_ID");
-			    String data2 = rs.getString("FirstName");
-			    String data3 = rs.getString("LastName");
-			    //String data4 = rs.getString("CombinedName");
-			    String data5 = rs.getString("Date");
-			    String data6 = rs.getString("StartTime");
-			    String data7 = rs.getString("EndTime");
-			    Object[] rowData = new Object[] {data0,data1,data2,data3,data5,data6,data7};
-			    tableModel.addRow(rowData);
+				
+				System.out.println("Currentdate: " + currentDate + " and rs.getString(Date)) : " + rs.getString("Date"));
+				if(rs.getString("Date").equals(currentDate)){
+					this.name = rs.getString("CombinedName");
+					int data0 = rs.getInt("Appointment_ID");	
+				    int data1 = rs.getInt("Patient_ID");
+				    String data2 = rs.getString("FirstName");
+				    String data3 = rs.getString("LastName");
+				    //String data4 = rs.getString("CombinedName");
+				    String data5 = rs.getString("Date");
+				    String data6 = rs.getString("StartTime");
+				    String data7 = rs.getString("EndTime");
+				    Object[] rowData = new Object[] {data0,data1,data2,data3,data5,data6,data7};
+				    toptableModel.addRow(rowData);
+				}
+				else{
+					this.name = rs.getString("CombinedName");
+					int data0 = rs.getInt("Appointment_ID");	
+				    int data1 = rs.getInt("Patient_ID");
+				    String data2 = rs.getString("FirstName");
+				    String data3 = rs.getString("LastName");
+				    //String data4 = rs.getString("CombinedName");
+				    String data5 = rs.getString("Date");
+				    String data6 = rs.getString("StartTime");
+				    String data7 = rs.getString("EndTime");
+				    Object[] rowData = new Object[] {data0,data1,data2,data3,data5,data6,data7};
+				    bottomtableModel.addRow(rowData);
+				}
+			   
 			}
 			
-			//dao.closeConnection();
-			return tableModel;
+			if(top)
+				return toptableModel;
+			else
+				return bottomtableModel;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,9 +353,7 @@ public class DoctorAppointmentsFrame extends JPanel{
 				e.printStackTrace();
 			}
 			
-			
-		
-	
+
 		}
 		else
 			System.out.println("Can't get connection");

@@ -277,7 +277,7 @@ public class BookAppointmentPanel extends JPanel {
 		
 		 
 		try {
-			ResultSet rs = dao.getAppointmentDetails(0,"","",0,appointmentID);
+			ResultSet rs = dao.getAppointmentDetails(0,"","",0,appointmentID,0);
 			if(rs.next()){
 				patientIDTextField.setText(rs.getString("Patient_ID"));
 				

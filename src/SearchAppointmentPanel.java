@@ -220,7 +220,7 @@ public class SearchAppointmentPanel extends JPanel{
 			
 			
 			//Get patient detials
-			ResultSet rs = dao.getAppointmentDetails(procedureID,firstName,lastName,id,0);
+			ResultSet rs = dao.getAppointmentDetails(procedureID,firstName,lastName,id,0,0);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();

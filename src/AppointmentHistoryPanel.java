@@ -164,7 +164,7 @@ public class AppointmentHistoryPanel extends JPanel{
 			try{
 			
 			//Get patient detials
-			ResultSet rs = dao.getAppointmentDetails(0,"", "",this.patient_ID,0);
+			ResultSet rs = dao.getAppointmentDetails(0,"", "",this.patient_ID,0,0);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
