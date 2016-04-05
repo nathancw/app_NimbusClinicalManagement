@@ -145,13 +145,13 @@ public class OptionMenuFrame extends JFrame {
 					 setVisible(true);
 					 repaint();
 				 }	 
-				 else if(selectedValue.equals("Bill Patient")){
+				 /*else if(selectedValue.equals("Bill Patient")){
 					 dataPanel.removeAll();
 					 BillingPanel searchBill = new BillingPanel();
 					 dataPanel.add(searchBill, "cell 0 0,grow");
 					 setVisible(true);
 					 repaint();
-				 }
+				 }*/
 				 else if(selectedValue.equals("Return to Main Menu")){
 					 dispose();
 					 MainMenu main = new MainMenu();
@@ -186,13 +186,13 @@ public class OptionMenuFrame extends JFrame {
 			 setVisible(true);
 			 repaint();
 		 }
-		 else if(selectedValue.equals("Billing History")){
+		/* else if(selectedValue.equals("Billing History")){
 			 dataPanel.removeAll();
 			 BillingPanel basicInfo = new BillingPanel();
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
-		 }
+		 }*/
 		 else if(selectedValue.equals("Book New Appointment")){		 
 			 dataPanel.removeAll();
 			 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();

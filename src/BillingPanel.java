@@ -35,6 +35,7 @@ public class BillingPanel extends JPanel {
 	private JFormattedTextField dateIssuedField;
 	private JFormattedTextField chargeDateField;
 	private JComboBox procedureBox;
+	private int patient_ID;
 	
 	/**
 	 * Create the panel.
@@ -53,7 +54,8 @@ public class BillingPanel extends JPanel {
 			{null,null,null,null,}};
 	
 	JTable table;
-	public BillingPanel() {
+	public BillingPanel(int pID) {
+		this.patient_ID = pID;
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
@@ -188,7 +190,6 @@ public DefaultTableModel search(){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
-		 int id = 100012;
 		 
 		 /*if(patientIDtextField.getText().equals(""))
 			 id = 0;
@@ -200,7 +201,7 @@ public DefaultTableModel search(){
 			NimbusDAO dao = new NimbusDAO();
 			
 			//Get patient detials
-			ResultSet rs = dao.getBillingHistory(id);
+			ResultSet rs = dao.getBillingHistory(patient_ID);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
