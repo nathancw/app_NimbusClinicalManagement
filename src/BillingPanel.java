@@ -47,9 +47,9 @@ public class BillingPanel extends JPanel {
 	 * 
 	 */
 	
-	String[] colNames = {"Patient_ID", "Procedure_ID", "Amount", "DateIssued", "ChargeDate"};
+	String[] colNames = {"Patient_ID", "Procedure", "Amount", "DateIssued", "ChargeDate"};
 	Object[][] patients = {
-			{"Blank","111","080808","F","F"},
+			{"Blank","Blank","080808","F","F"},
 			{null,null,null,null,}};
 	
 	JTable table;
@@ -169,6 +169,8 @@ public class BillingPanel extends JPanel {
 			    	 amountField.setValue(Double.parseDouble(amount));
 			    	 dateIssuedField.setValue(issued);
 			    	 chargeDateField.setValue(charged);
+			    	 procedureBox.addItem(procedure);
+			    	 procedureBox.setSelectedItem(procedure);
 			    	 //PatientInformationFrame patientframe = new PatientInformationFrame();
 			         //patientframe.show("Basic Information");
 			         
@@ -205,7 +207,7 @@ public DefaultTableModel search(){
 			
 			Vector<String> colNames= new Vector<String>();   // your columns names
 			colNames.add(rsMeta.getColumnName(1));
-			colNames.add(rsMeta.getColumnName(2));
+			colNames.add(rsMeta.getColumnName(8));
 			colNames.add(rsMeta.getColumnName(3));
 			colNames.add(rsMeta.getColumnName(4));
 			colNames.add(rsMeta.getColumnName(5));
@@ -220,7 +222,7 @@ public DefaultTableModel search(){
 
 			while (rs.next()) {
 				String data0 = rs.getString("Patient_ID");	
-			    String data1 = rs.getString("Procedure_ID");
+			    String data1 = rs.getString("ProcedureName");
 			    String data2 = rs.getString("Amount");
 			    String dob = rs.getString("DateIssued");
 			    String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);

@@ -235,7 +235,7 @@ public class NimbusDAO {
 		String sqlQuery = "SELECT a.[Account_ID],a.[Username],a.[Password],a.[Salt],a.[AccessLevel],a.[FirstName],a.[LastName],d.Doctor_ID "
 				+ "FROM [NCMSE].[dbo].[Account] a  "
 				+ "left outer join NCMSE.NCM.Doctor d on a.Account_ID = d.Account_ID "
-				+ "where Username = 'ncwebb' and password = '1'";
+				+ "where Username = ? and password = ?";
 		ResultSet rs = null;
 		//We are going to try to create a connection to the database using the DAO and then query it.
 		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
