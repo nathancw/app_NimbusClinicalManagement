@@ -466,7 +466,12 @@ public class NimbusDAO {
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "Select * from NCMSE.ncm.Billing where patient_ID = ?";
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName "
+				+ "from NCMSE.ncm.Billing a "
+				+ "inner join "
+				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "
+				+ "where patient_ID = ?";
+		
 		ResultSet rs = null;
 		
 		try {
