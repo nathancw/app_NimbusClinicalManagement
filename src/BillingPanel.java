@@ -78,16 +78,10 @@ public class BillingPanel extends JPanel {
 		billInformation.add(chargeDateField, "cell 2 0,growx");
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
-		billInformation.add(lblProcedure, "cell 1 1,alignx trailing");
+		billInformation.add(lblProcedure, "cell 3 0,alignx trailing");
 		
 		procedureBox = new JComboBox();
-		billInformation.add(procedureBox, "cell 2 1,growx");
-		
-		JLabel lblReason = new JLabel("Reason:");
-		billInformation.add(lblReason, "cell 3 1,alignx trailing");
-		
-		JComboBox reasonBox = new JComboBox();
-		billInformation.add(reasonBox, "cell 4 1,growx");
+		billInformation.add(procedureBox, "cell 4 0,growx");
 		
 		JLabel lblNewLabel = new JLabel("Date Issued:");
 		billInformation.add(lblNewLabel, "cell 1 2,alignx trailing");
