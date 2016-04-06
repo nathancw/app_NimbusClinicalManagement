@@ -31,6 +31,7 @@ public class LoginFrame extends JFrame {
 	private JTextField usernametextField;
 	private JPasswordField passwordField;
 	public static int accessLevel;
+	public static int doctorID;
 
 	/**
 	 * Launch the application.
@@ -125,6 +126,7 @@ public class LoginFrame extends JFrame {
 			if(rs.next()){
 				JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
 				accessLevel = rs.getInt("AccessLevel");
+				doctorID = rs.getInt("Doctor_ID");
 				return true;
 			}
 			else{

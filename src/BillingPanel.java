@@ -35,6 +35,7 @@ public class BillingPanel extends JPanel {
 	private JFormattedTextField dateIssuedField;
 	private JFormattedTextField chargeDateField;
 	private JComboBox procedureBox;
+	private int patient_ID;
 	
 	/**
 	 * Create the panel.
@@ -47,13 +48,14 @@ public class BillingPanel extends JPanel {
 	 * 
 	 */
 	
-	String[] colNames = {"Patient_ID", "Procedure_ID", "Amount", "DateIssued", "ChargeDate"};
+	String[] colNames = {"Patient_ID", "Procedure", "Amount", "DateIssued", "ChargeDate"};
 	Object[][] patients = {
-			{"Blank","111","080808","F","F"},
+			{"Blank","Blank","080808","F","F"},
 			{null,null,null,null,}};
 	
 	JTable table;
-	public BillingPanel() {
+	public BillingPanel(int pID) {
+		this.patient_ID = pID;
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPanel = new JPanel();
@@ -78,16 +80,10 @@ public class BillingPanel extends JPanel {
 		billInformation.add(chargeDateField, "cell 2 0,growx");
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
-		billInformation.add(lblProcedure, "cell 1 1,alignx trailing");
+		billInformation.add(lblProcedure, "cell 3 0,alignx trailing");
 		
 		procedureBox = new JComboBox();
-		billInformation.add(procedureBox, "cell 2 1,growx");
-		
-		JLabel lblReason = new JLabel("Reason:");
-		billInformation.add(lblReason, "cell 3 1,alignx trailing");
-		
-		JComboBox reasonBox = new JComboBox();
-		billInformation.add(reasonBox, "cell 4 1,growx");
+		billInformation.add(procedureBox, "cell 4 0,growx");
 		
 		JLabel lblNewLabel = new JLabel("Date Issued:");
 		billInformation.add(lblNewLabel, "cell 1 2,alignx trailing");
@@ -175,6 +171,8 @@ public class BillingPanel extends JPanel {
 			    	 amountField.setValue(Double.parseDouble(amount));
 			    	 dateIssuedField.setValue(issued);
 			    	 chargeDateField.setValue(charged);
+			    	 procedureBox.addItem(procedure);
+			    	 procedureBox.setSelectedItem(procedure);
 			    	 //PatientInformationFrame patientframe = new PatientInformationFrame();
 			         //patientframe.show("Basic Information");
 			         
@@ -192,7 +190,6 @@ public DefaultTableModel search(){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
-		 int id = 100012;
 		 
 		 /*if(patientIDtextField.getText().equals(""))
 			 id = 0;
@@ -204,14 +201,14 @@ public DefaultTableModel search(){
 			NimbusDAO dao = new NimbusDAO();
 			
 			//Get patient detials
-			ResultSet rs = dao.getBillingHistory(id);
+			ResultSet rs = dao.getBillingHistory(patient_ID);
 			
 			//Get metadata and prepare columnnames, even thought this shouldnt change
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			
 			Vector<String> colNames= new Vector<String>();   // your columns names
 			colNames.add(rsMeta.getColumnName(1));
-			colNames.add(rsMeta.getColumnName(2));
+			colNames.add(rsMeta.getColumnName(8));
 			colNames.add(rsMeta.getColumnName(3));
 			colNames.add(rsMeta.getColumnName(4));
 			colNames.add(rsMeta.getColumnName(5));
@@ -226,7 +223,7 @@ public DefaultTableModel search(){
 
 			while (rs.next()) {
 				String data0 = rs.getString("Patient_ID");	
-			    String data1 = rs.getString("Procedure_ID");
+			    String data1 = rs.getString("ProcedureName");
 			    String data2 = rs.getString("Amount");
 			    String dob = rs.getString("DateIssued");
 			    String data3 = dob.substring(5, 7) + "/" + dob.substring(8,10) + "/" + dob.substring(0,4);

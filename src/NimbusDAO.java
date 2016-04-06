@@ -291,7 +291,10 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 
 	public ResultSet checkCredintials(String userName, char[] password){
 		
-		String sqlQuery = "Select * from NCMSE.dbo.Account where Username = ? and password = ?";
+		String sqlQuery = "SELECT a.[Account_ID],a.[Username],a.[Password],a.[Salt],a.[AccessLevel],a.[FirstName],a.[LastName],d.Doctor_ID "
+				+ "FROM [NCMSE].[dbo].[Account] a  "
+				+ "left outer join NCMSE.NCM.Doctor d on a.Account_ID = d.Account_ID "
+				+ "where Username = ? and password = ?";
 		ResultSet rs = null;
 		//We are going to try to create a connection to the database using the DAO and then query it.
 		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
@@ -522,7 +525,12 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "Select * from NCMSE.ncm.Billing where patient_ID = ?";
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName "
+				+ "from NCMSE.ncm.Billing a "
+				+ "inner join "
+				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "
+				+ "where patient_ID = ?";
+		
 		ResultSet rs = null;
 		
 		try {

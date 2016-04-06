@@ -130,7 +130,7 @@ public class PatientInformationFrame extends JFrame {
 		 }
 		 else if(selectedValue.equals("Billing History")){
 			 dataPanel.removeAll();
-			 BillingPanel basicInfo = new BillingPanel();
+			 BillingPanel basicInfo = new BillingPanel(patient_ID);
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
