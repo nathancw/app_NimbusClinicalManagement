@@ -34,25 +34,23 @@ public class InsurancePanel extends JPanel {
 	private JTextField txtPhoneNum2;
 	private JTextField txttype1;
 	private JTextField txttype2;
+	private String firstName;
+	private String lastName;
 
-	/**
-	 * Create the panel.
-	 */
-	
 	//Will add getters & setters -Jason Wolverton
-	int patientID = 0;
-	int companyID = 0;
-	String companyName = "";
-	String companyAddress = "";
-	String companyCity = "";
-	String companyState = "";
-	int companyZip = 0;
-	String companyPhone = "";
-	String type = "";
+	private  int patientID = 0;
+	private  int companyID = 0;
+	private  String companyName = "";
+	private  String companyAddress = "";
+	private  String companyCity = "";
+	private  String companyState = "";
+	private  int companyZip = 0;
+	private  String companyPhone = "";
+	private  String type = "";
 	
-	int groupNumber = 0;
-	String planStartDate = "";
-	String planEndDate = "";
+	private  String groupNumber = "";
+	private  String planStartDate= "";
+	private  String planEndDate = "";
 	
 	
 	
@@ -62,9 +60,9 @@ public class InsurancePanel extends JPanel {
 		
 		patientID = ID;
 		
-		String firstName = "fn";
-		String lastName = "ln";
-		String dateofbirth = "dob";
+		firstName = "";
+		lastName  = "";
+		String dateofbirth = "";
 		
 		NimbusDAO daotest;
 			try{
@@ -78,8 +76,8 @@ public class InsurancePanel extends JPanel {
 					
 				}
 				
-			
-			
+			//What jason had
+			/*
 			ResultSet rs2 = daotest.getInsuranceCompanyDetails(companyID, companyName, companyAddress, companyCity, companyState, companyZip, companyPhone, type, patientID);
 				
 				if(rs2.next()){
@@ -102,8 +100,27 @@ public class InsurancePanel extends JPanel {
 					
 					
 				}
+			*/
+				
+			//What Nathan thinks should be done
 			
-			
+			ResultSet rs3 = daotest.getInsuranceDetails(patientID);
+					
+					if(rs3.next()){
+						
+						groupNumber = rs3.getString("groupNumber");
+						planStartDate = rs3.getString("planStartDate");
+						planEndDate = rs3.getString("planEndDate");
+						companyName = rs3.getString("Name");
+						companyAddress = rs3.getString("AAddress");
+						companyCity = rs3.getString("City");
+						companyState = rs3.getString("CState");
+						companyZip = rs3.getInt("Zip");
+						companyPhone = rs3.getString("Phone");
+						type = rs3.getString("Ttype");
+						
+				}	
+				
 			
 			daotest.closeConnection();
 			
@@ -122,9 +139,6 @@ public class InsurancePanel extends JPanel {
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
 		
 		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: " + firstName + " " + lastName + "</html>");
-		
-		
-		//JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: Bob Smith </html>");
 		lblInsuranceInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		panel.add(lblInsuranceInfo, "cell 3 0 3 2,alignx center");
 		
@@ -295,7 +309,7 @@ public class InsurancePanel extends JPanel {
 		add(panel);
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
 		
-		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: Bob Smith </html>");
+		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: " + firstName + " " + lastName + " </html>");
 		lblInsuranceInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		panel.add(lblInsuranceInfo, "cell 3 0 3 2,alignx center");
 		

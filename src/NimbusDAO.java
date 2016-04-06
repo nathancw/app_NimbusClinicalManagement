@@ -52,11 +52,8 @@ public class NimbusDAO {
 		sqlconn.close();
 	}
 	
-	/* This method is designed to getPatientdetails no matter what you are inserting
-	 * So the query will use the Passed in parameters in the query. But there is still a ton of issues with
-	 *querying on multiple parameters. Currently, it returns everything 
-	 * May need some error handleing when the paramters are empty strings. This will need some sql knowledge
-	 */
+	//Redundant method, its done in the getinsruancedetails
+	/*
 	public ResultSet getInsuranceCompanyDetails(int CID, String CompanyName, String CompanyAddress, String CompanyCity, String CompanyState, int CompanyZip, String CompanyPhone, String Type, int PatientID){
 		
 		//Stop gap solution -Jason Wolverton
@@ -84,12 +81,14 @@ public class NimbusDAO {
 		
 		return null;
 	}
-	
-	public ResultSet getInsuranceDetails(int patientID, int GroupNumber, String PlanStartDate, String PlanEndDate){
+	*/
+	public ResultSet getInsuranceDetails(int patientID){
 		
 		//Stop gap solution -Jason Wolverton
-		String sqlQuery = "Select * from [NCMSE].[NCM].[Insurance]" + 
-				"where Patient_ID = ?";
+		String sqlQuery = "Select a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
+				+ " from [NCMSE].[NCM].[Insurance] a " + 
+				"inner join NCMSE.NCM.Insurance_Company b on a.Company_ID = b.Company_ID "
+				+ " where a.Patient_ID = ?";
 		
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
@@ -97,11 +96,8 @@ public class NimbusDAO {
 
 			///Prepare and execute query
 			stmt = conn.prepareStatement(sqlQuery);
-	
 			stmt.setInt(1, patientID);
-		
-			
-			
+
 			ResultSet rs3 = stmt.executeQuery();	
 			
 			return rs3;
