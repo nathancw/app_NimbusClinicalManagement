@@ -57,7 +57,63 @@ public class NimbusDAO {
 	 *querying on multiple parameters. Currently, it returns everything 
 	 * May need some error handleing when the paramters are empty strings. This will need some sql knowledge
 	 */
-	public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
+	public ResultSet getInsuranceCompanyDetails(int CID, String CompanyName, String CompanyAddress, String CompanyCity, String CompanyState, int CompanyZip, String CompanyPhone, String Type, int PatientID){
+		
+		//Stop gap solution -Jason Wolverton
+		String sqlQuery = "Select * from [NCMSE].[NCM].[Insurance_Company]" + 
+				"where Patient_ID = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+	
+			stmt.setInt(1, PatientID);
+			
+			
+			
+			ResultSet rs2 = stmt.executeQuery();	
+			
+			return rs2;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return null;
+	}
+	
+	public ResultSet getInsuranceDetails(int patientID, int GroupNumber, String PlanStartDate, String PlanEndDate){
+		
+		//Stop gap solution -Jason Wolverton
+		String sqlQuery = "Select * from [NCMSE].[NCM].[Insurance]" + 
+				"where Patient_ID = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+	
+			stmt.setInt(1, patientID);
+		
+			
+			
+			ResultSet rs3 = stmt.executeQuery();	
+			
+			return rs3;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return null;
+	}
+	
+public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
 		Date dob;
 		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
@@ -99,6 +155,9 @@ public class NimbusDAO {
 		
 		return null;
 	}
+	
+	
+	
 	
 	public ResultSet getAppointmentDetails(int procedureID, String firstName, String lastName, int id, int appointmentID, int doctorID){
 		
