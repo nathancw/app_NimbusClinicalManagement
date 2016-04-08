@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,7 +27,12 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class CreateAccountFrame extends JFrame {
@@ -43,10 +49,8 @@ public class CreateAccountFrame extends JFrame {
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private JPasswordField txtConfirmPassword;
-	private JRadioButton rdbtnSurgery;
-	private JRadioButton rdbtnClinical;
-	private JRadioButton rdbtnOther;
-
+	private JComboBox comboSpecialty;
+	private Map<String,Integer> specialtyIDs;
 	/**
 	 * Launch the application.
 	 */
@@ -285,20 +289,10 @@ public class CreateAccountFrame extends JFrame {
 		JLabel lblSpecialty = new JLabel("Specialty");
 		doctorPanel.add(lblSpecialty, "cell 1 12");
 		
-		rdbtnSurgery = new JRadioButton("Heart Surgery");
-		doctorPanel.add(rdbtnSurgery, "cell 2 12");
+		comboSpecialty = new JComboBox();
+		doctorPanel.add(comboSpecialty, "cell 2 12 2 1,growx");
 		
-		rdbtnClinical = new JRadioButton("Psych Eval");
-		doctorPanel.add(rdbtnClinical, "cell 3 12");
-		
-		rdbtnOther = new JRadioButton("(other)");
-		doctorPanel.add(rdbtnOther, "cell 2 13");
-		
-		//adding the specialty buttons to a group so that only one is selectable at a time
-		ButtonGroup specialtyGroup = new ButtonGroup();
-		specialtyGroup.add(rdbtnSurgery);
-		specialtyGroup.add(rdbtnClinical);
-		specialtyGroup.add(rdbtnOther);
+		comboSpecialty.setModel(getSpecialties());
 		
 		JButton btnCancel = new JButton("Cancel");
 		doctorPanel.add(btnCancel, "cell 2 14");
@@ -413,6 +407,50 @@ public class CreateAccountFrame extends JFrame {
 			});
 	}
 	
+	public DefaultComboBoxModel getSpecialties(){
+		
+		DefaultComboBoxModel model = null;
+		ArrayList<String> specialties = new ArrayList<String>();
+		specialtyIDs = new HashMap<String,Integer>();
+		NimbusDAO dao = null;
+		
+		try {
+			dao = new NimbusDAO();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(dao!=null){
+			String sqlQuery = "Select * from NCMSE.NCM.Doctor_Specialty";
+			ResultSet rs = null;
+			try {
+				
+				PreparedStatement stmt = dao.getConnection().prepareStatement(sqlQuery);
+				rs = stmt.executeQuery();
+				ResultSetMetaData rsMeta = rs.getMetaData();
+				
+				specialties.add("");
+				while(rs.next()){
+					specialties.add(rs.getString("SpecialtyName"));
+					specialtyIDs.put(rs.getString("SpecialtyName"),rs.getInt("Specialty_ID"));
+					
+				}
+				
+				model = new DefaultComboBoxModel(specialties.toArray());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+		}
+		else
+			System.out.println("Can't get connection");
+		
+		return model;
+	}
+	
+	
 	public Boolean validateFields() {
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
@@ -512,10 +550,7 @@ public class CreateAccountFrame extends JFrame {
 				String combinedName = lname + ", " + fname;
 				int specialtyID = 0;
 				
-				if(rdbtnSurgery.isSelected())
-					specialtyID = 1; //check
-				else if(rdbtnClinical.isSelected())
-					specialtyID = 2;
+				specialtyID = specialtyIDs.get(comboSpecialty.getSelectedItem());
 				
 				dao.addDoctor(fname, lname, middleName, combinedName, specialtyID);
 				

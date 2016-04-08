@@ -290,7 +290,7 @@ public class NimbusDAO {
 	}
 	
 	public void addDoctor(String fname, String lname, String mname, String cname, int id) {
-		String query = "insert into [NCMSE].[DBO].[Doctor]" + " (FirstName, MiddleName, LastName, CombinedName, Specialty_ID) " +
+		String query = "insert into [NCMSE].[NCM].[Doctor]" + " (FirstName, MiddleName, LastName, CombinedName, Specialty_ID) " +
 				"VALUES (?,?,?,?,?)";
 		
 		Connection conn = this.getConnection();
@@ -306,7 +306,7 @@ public class NimbusDAO {
 			stmt.setString(4, cname);
 			stmt.setInt(5, id);
 			
-			//stmt.executeUpdate();
+			stmt.executeUpdate();
 			
 		}
 		catch(Exception e) {
