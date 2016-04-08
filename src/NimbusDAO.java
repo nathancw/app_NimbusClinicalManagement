@@ -1,4 +1,9 @@
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,9 +19,13 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class NimbusDAO {
 	Connection sqlconn;
@@ -285,12 +294,12 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return dob;
 	}
 
-	public ResultSet checkCredintials(String userName, char[] password){
+	public ResultSet checkCredintials(String userName){
 		
 		String sqlQuery = "SELECT a.[Account_ID],a.[Username],a.[Password],a.[Salt],a.[AccessLevel],a.[FirstName],a.[LastName],d.Doctor_ID "
 				+ "FROM [NCMSE].[dbo].[Account] a  "
 				+ "left outer join NCMSE.NCM.Doctor d on a.Account_ID = d.Account_ID "
-				+ "where Username = ? and password = ?";
+				+ "where Username = ?";
 		ResultSet rs = null;
 		//We are going to try to create a connection to the database using the DAO and then query it.
 		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
@@ -301,7 +310,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
 			stmt.setString(1, userName);
-			stmt.setString(2, new String(password));
+			//stmt.setString(2, new String(password));
 
 			rs = stmt.executeQuery();
 			
@@ -313,7 +322,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return rs;
 	}
 	
-	public void createAccount(String fname, String lname, String username, String password, int access){
+	public void createAccount(String fname, String lname, String username, String pw, int access){
 		
 		String query;
 		
@@ -327,6 +336,28 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		Random rand = new Random();
 		
 		int salt = rand.nextInt((99999 - 10000) + 1) + 10000;
+		String saltStr = Integer.toString(salt);
+		
+		String password = null;
+
+		try {
+			
+			KeySpec spec = new PBEKeySpec(pw.toCharArray(), saltStr.getBytes(), 65536, 128);
+			SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			byte[] hash = f.generateSecret(spec).getEncoded();
+			
+			//byte[] hashEncoded =  Base64.encode(hash);
+			password = Base64.encode(hash);
+			
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		
 		try {
 			stmt = conn.prepareStatement(query);

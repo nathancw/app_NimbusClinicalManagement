@@ -197,9 +197,6 @@ public class DoctorAppointmentsFrame extends JFrame{
 		});
 		contentPanel.add(btnClose, "cell 6 8 2 1,alignx center");
 		
-		
-		
-		
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		//table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		

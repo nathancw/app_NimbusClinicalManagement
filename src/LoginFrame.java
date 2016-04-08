@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,12 +19,18 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.spec.KeySpec;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
 
 
 public class LoginFrame extends JFrame {
@@ -121,13 +129,38 @@ public class LoginFrame extends JFrame {
 		
 		try {
 			NimbusDAO dao = new NimbusDAO();
-			ResultSet rs = dao.checkCredintials(userName, password);
+			ResultSet rs = dao.checkCredintials(userName);
 			
 			if(rs.next()){
-				JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
-				accessLevel = rs.getInt("AccessLevel");
-				doctorID = rs.getInt("Doctor_ID");
-				return true;
+				
+				/*MessageDigest md = MessageDigest.getInstance("SHA-256");
+				String pass = new String(password);
+				String comb = pass + Integer.toString(rs.getInt("Salt"));
+				md.update(comb.getBytes());
+				
+				byte [] digest = md.digest();
+				*/
+				String saltStr = Integer.toString(rs.getInt("Salt"));
+				KeySpec spec = new PBEKeySpec(password, saltStr.getBytes(), 65536, 128);
+				SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+				byte[] hash = f.generateSecret(spec).getEncoded();
+
+				String hashPassword = Base64.encode(hash);
+				
+				String dbPass = rs.getString("Password");
+				
+				boolean verified = hashPassword.equals(dbPass);
+				
+				//boolean verified = Arrays.equals(hash,hashedPass.getBytes());
+				
+				System.out.println(" verified: " + verified);
+				
+				//if(verified){
+					JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
+					accessLevel = rs.getInt("AccessLevel");
+					doctorID = rs.getInt("Doctor_ID");
+					return true;
+				//}
 			}
 			else{
 				JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful Login");
