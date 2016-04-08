@@ -196,7 +196,7 @@ public class MainMenu extends JFrame {
 				create.show("Billing History");
 			}
 		});
-		btnPatientBilling.setEnabled(true);
+		btnPatientBilling.setEnabled(false);
 		
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		

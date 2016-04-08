@@ -56,7 +56,7 @@ public class PatientInformationFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		setTitle("Nimbus Clincial Software - Patient Information");
+		setTitle("Nimbus Clinical Software - Patient Information");
 		setBounds(100, 100, 1000, 700);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -130,14 +130,14 @@ public class PatientInformationFrame extends JFrame {
 		 }
 		 else if(selectedValue.equals("Billing History")){
 			 dataPanel.removeAll();
-			 BillingPanel basicInfo = new BillingPanel();
+			 BillingPanel basicInfo = new BillingPanel(patient_ID);
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
 		 }	 
 		 else if(selectedValue.equals("Insurance")){
 			 dataPanel.removeAll();
-			 InsurancePanel insurance = new InsurancePanel();
+			 InsurancePanel insurance = new InsurancePanel(patient_ID);
 			 dataPanel.add(insurance,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();

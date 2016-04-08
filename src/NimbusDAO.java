@@ -52,12 +52,64 @@ public class NimbusDAO {
 		sqlconn.close();
 	}
 	
-	/* This method is designed to getPatientdetails no matter what you are inserting
-	 * So the query will use the Passed in parameters in the query. But there is still a ton of issues with
-	 *querying on multiple parameters. Currently, it returns everything 
-	 * May need some error handleing when the paramters are empty strings. This will need some sql knowledge
-	 */
-	public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
+	//Redundant method, its done in the getinsruancedetails
+	/*
+	public ResultSet getInsuranceCompanyDetails(int CID, String CompanyName, String CompanyAddress, String CompanyCity, String CompanyState, int CompanyZip, String CompanyPhone, String Type, int PatientID){
+		
+		//Stop gap solution -Jason Wolverton
+		String sqlQuery = "Select * from [NCMSE].[NCM].[Insurance_Company]" + 
+				"where Patient_ID = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+	
+			stmt.setInt(1, PatientID);
+			
+			
+			
+			ResultSet rs2 = stmt.executeQuery();	
+			
+			return rs2;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return null;
+	}
+	*/
+	public ResultSet getInsuranceDetails(int patientID){
+		
+		//Stop gap solution -Jason Wolverton
+		String sqlQuery = "Select a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
+				+ " from [NCMSE].[NCM].[Insurance] a " + 
+				"inner join NCMSE.NCM.Insurance_Company b on a.Company_ID = b.Company_ID "
+				+ " where a.Patient_ID = ?";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+
+			///Prepare and execute query
+			stmt = conn.prepareStatement(sqlQuery);
+			stmt.setInt(1, patientID);
+
+			ResultSet rs3 = stmt.executeQuery();	
+			
+			return rs3;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return null;
+	}
+	
+public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
 		Date dob;
 		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
@@ -99,6 +151,9 @@ public class NimbusDAO {
 		
 		return null;
 	}
+	
+	
+	
 	
 	public ResultSet getAppointmentDetails(int procedureID, String firstName, String lastName, int id, int appointmentID, int doctorID){
 		
@@ -235,7 +290,7 @@ public class NimbusDAO {
 		String sqlQuery = "SELECT a.[Account_ID],a.[Username],a.[Password],a.[Salt],a.[AccessLevel],a.[FirstName],a.[LastName],d.Doctor_ID "
 				+ "FROM [NCMSE].[dbo].[Account] a  "
 				+ "left outer join NCMSE.NCM.Doctor d on a.Account_ID = d.Account_ID "
-				+ "where Username = 'ncwebb' and password = '1'";
+				+ "where Username = ? and password = ?";
 		ResultSet rs = null;
 		//We are going to try to create a connection to the database using the DAO and then query it.
 		//Need to create a prepared statement so you can avoid sql injection and tie the questions to variables
@@ -466,7 +521,12 @@ public class NimbusDAO {
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "Select * from NCMSE.ncm.Billing where patient_ID = ?";
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName "
+				+ "from NCMSE.ncm.Billing a "
+				+ "inner join "
+				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "
+				+ "where patient_ID = ?";
+		
 		ResultSet rs = null;
 		
 		try {
