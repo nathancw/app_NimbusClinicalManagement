@@ -345,8 +345,6 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			KeySpec spec = new PBEKeySpec(pw.toCharArray(), saltStr.getBytes(), 65536, 128);
 			SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 			byte[] hash = f.generateSecret(spec).getEncoded();
-			
-			//byte[] hashEncoded =  Base64.encode(hash);
 			password = Base64.encode(hash);
 			
 		} catch (NoSuchAlgorithmException e1) {

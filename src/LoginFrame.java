@@ -132,14 +132,7 @@ public class LoginFrame extends JFrame {
 			ResultSet rs = dao.checkCredintials(userName);
 			
 			if(rs.next()){
-				
-				/*MessageDigest md = MessageDigest.getInstance("SHA-256");
-				String pass = new String(password);
-				String comb = pass + Integer.toString(rs.getInt("Salt"));
-				md.update(comb.getBytes());
-				
-				byte [] digest = md.digest();
-				*/
+	
 				String saltStr = Integer.toString(rs.getInt("Salt"));
 				KeySpec spec = new PBEKeySpec(password, saltStr.getBytes(), 65536, 128);
 				SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -150,24 +143,19 @@ public class LoginFrame extends JFrame {
 				String dbPass = rs.getString("Password");
 				
 				boolean verified = hashPassword.equals(dbPass);
-				
-				//boolean verified = Arrays.equals(hash,hashedPass.getBytes());
-				
-				System.out.println(" verified: " + verified);
-				
-				//if(verified){
+
+				if(verified){
 					JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
 					accessLevel = rs.getInt("AccessLevel");
 					doctorID = rs.getInt("Doctor_ID");
 					return true;
-				//}
+				}
+				else{
+					JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful Login");
+					return false;
+				}
 			}
-			else{
-				JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful Login");
-				return false;
-			}
-			
-	
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
