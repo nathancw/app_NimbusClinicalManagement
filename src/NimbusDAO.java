@@ -398,6 +398,27 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 	}
 	
+	public void addLoginOrEdit(int accountID, String username, int dateTime, String logOrEdit, String description) {
+		/*String query = "insert into [NCMSE].[NCM].[TABLE NAME]" + " (ADD NAMES FROM TABLE) " +
+				"VALUES (?,?,?,?,?)";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(query);
+			
+			//add data
+			
+			
+			stmt.executeUpdate();
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}*/
+	}
+	
 	//this function gets an account from the database based on a given username
 	public ResultSet getAccountUsername(String username) {
 		String sqlQuery = "Select * from [NCMSE].[DBO].[Account] " +

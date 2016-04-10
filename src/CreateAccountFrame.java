@@ -214,7 +214,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 2;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase();
+					  insertDatabase(3);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
@@ -314,7 +314,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 3;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase();
+					  insertDatabase(3);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
@@ -398,7 +398,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 1;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase();
+					  insertDatabase(3);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
@@ -531,7 +531,7 @@ public class CreateAccountFrame extends JFrame {
 	}
 	
 	
-	public void insertDatabase() {
+	public void insertDatabase(int access) {
 		String fname = txtFirstName.getText();
 		String lname = txtLastName.getText();
 		String username = txtUsername.getText();
@@ -541,11 +541,11 @@ public class CreateAccountFrame extends JFrame {
 		
 		try {
 			dao = new NimbusDAO();
-		
-			dao.createAccount(fname, lname, username, password, clearanceLevel);
+			
+			dao.createAccount(fname, lname, username, password, access);
 			
 			//ADD DOCTOR TO DOCTOR TABLE
-			if(clearanceLevel == 3) {
+			if(access == 3) {
 				String middleName = txtMiddleName.getText();
 				String combinedName = lname + ", " + fname;
 				int specialtyID = 0;

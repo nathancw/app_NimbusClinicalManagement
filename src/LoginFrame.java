@@ -167,4 +167,9 @@ public class LoginFrame extends JFrame {
 		return login;
 	}
 	
+	public void addLogin() {
+		//FUNCTION TO ADD LOGIN TO LOGIN TABLE
+		
+	}
+	
 }
