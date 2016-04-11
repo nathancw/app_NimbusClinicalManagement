@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +20,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -34,6 +37,8 @@ import java.awt.FlowLayout;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,6 +75,18 @@ public class SearchPatientPanel extends JPanel{
 		contentPanel = new JPanel();
 		add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100]", "[50][50][100][100][100][100][300]"));
+		
+		Image image;
+		try {
+			image = ImageIO.read(new File("Pictures\\SearchPatient.png"));
+			JLabel picLabel = new JLabel(new ImageIcon(image));
+			contentPanel.add(picLabel, "flowx,cell 0 2 2 2,alignx center,aligny center");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		topLabel = new JLabel("Search for a patient by inputting data below.");
 		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));

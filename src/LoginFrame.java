@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
@@ -48,6 +49,11 @@ public class LoginFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
+					//Look and feel
+					//UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+					//UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
+
 					LoginFrame frame = new LoginFrame();
 					login = new NimbusDAO();
 					frame.setVisible(true);

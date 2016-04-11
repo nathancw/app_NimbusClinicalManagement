@@ -4,7 +4,9 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Image;
+import java.awt.Window;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
@@ -103,6 +105,8 @@ public class BookAppointmentPanel extends JPanel {
 	}
 	
 	public void drawPanel(){
+		
+		
 		
 		setLayout(new BorderLayout(0, 0));
 		
@@ -236,6 +240,14 @@ public class BookAppointmentPanel extends JPanel {
 		*/
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 ((Window) getRootPane().getParent()).dispose();
+				  MainMenu menu = new MainMenu();
+				  menu.setVisible(true);
+				
+			}
+		});
 		contentPanel.add(btnCancel, "cell 4 12,alignx right");
 		
 		editSavePanel = new JPanel();

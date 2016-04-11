@@ -25,6 +25,9 @@ public class MainMenu extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnSearchForAppointment;
+	private JButton searchPatientBtn;
+	private JButton btnScheduleAppointment;
+	private JButton createPatientBtn;
 
 	/**
 	 * Launch the application.
@@ -101,11 +104,11 @@ public class MainMenu extends JFrame {
 		}
 		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, "cell 3 3 2 2,grow");
+		panel.add(panel_1, "cell 2 3 3 2,grow");
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		JButton createPatientBtn = new JButton("Create Patient");
-		createPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		createPatientBtn = new JButton("Create Patient");
+		createPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 18));
 		createPatientBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CreatePatientFrame create = new CreatePatientFrame();
@@ -115,11 +118,11 @@ public class MainMenu extends JFrame {
 		panel_1.add(createPatientBtn);
 		
 		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, "cell 5 3 2 2,grow");
+		panel.add(panel_2, "cell 5 3 3 2,grow");
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
-		JButton searchPatientBtn = new JButton("Search for Patient");
-		searchPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		searchPatientBtn = new JButton("Search for Patient");
+		searchPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 18));
 		searchPatientBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
@@ -130,21 +133,13 @@ public class MainMenu extends JFrame {
 		panel_2.add(searchPatientBtn, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
-		panel.add(panel_3, "cell 3 5 2 2,grow");
+		panel.add(panel_3, "cell 2 5 3 2,grow");
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		btnSearchForAppointment = new JButton("Search Appointments");
-		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 16));
+		btnSearchForAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 18));
 		panel_3.add(btnSearchForAppointment, BorderLayout.CENTER);
 		
-		Image searchAppimage;
-		try {
-			searchAppimage = ImageIO.read(new File("Pictures\\SearchAppointSmallest.png"));
-			btnSearchForAppointment.setIcon(new ImageIcon(searchAppimage));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		btnSearchForAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -155,7 +150,7 @@ public class MainMenu extends JFrame {
 		});
 		
 		JPanel panel_4 = new JPanel();
-		panel.add(panel_4, "cell 5 5 2 2,grow");
+		panel.add(panel_4, "cell 5 5 3 2,grow");
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnSearchBilling = new JButton("Search Billing Information");
@@ -163,11 +158,11 @@ public class MainMenu extends JFrame {
 		//panel_4.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_5 = new JPanel();
-		panel.add(panel_5, "cell 3 7 2 2,grow");
+		panel.add(panel_5, "cell 2 7 3 2,grow");
 		panel_5.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnScheduleAppointment = new JButton("Schedule Appointment");
-		btnScheduleAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		btnScheduleAppointment = new JButton("Schedule Appointment");
+		btnScheduleAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 17));
 		btnScheduleAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
@@ -183,7 +178,7 @@ public class MainMenu extends JFrame {
 		panel_5.add(btnSearchBilling, BorderLayout.CENTER);
 		
 		JPanel panel_6 = new JPanel();
-		panel.add(panel_6, "cell 5 7 2 2,grow");
+		panel.add(panel_6, "cell 5 7 3 2,grow");
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnPatientBilling = new JButton("Bill Patients");
@@ -201,7 +196,7 @@ public class MainMenu extends JFrame {
 		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
 		
 		JPanel panel_8 = new JPanel();
-		panel.add(panel_8, "cell 3 9 2 2,grow");
+		panel.add(panel_8, "cell 2 9 3 2,grow");
 		panel_8.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnViewPatientInformation = new JButton("View Patient Information");
@@ -217,7 +212,7 @@ public class MainMenu extends JFrame {
 		//panel_8.add(btnViewPatientInformation, BorderLayout.CENTER);
 		
 		JPanel panel_9 = new JPanel();
-		panel.add(panel_9, "cell 5 9 2 2,grow");
+		panel.add(panel_9, "cell 5 9 3 2,grow");
 		panel_9.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnInsuranceInformation = new JButton("Insurance Information");
@@ -237,7 +232,7 @@ public class MainMenu extends JFrame {
 		panel_7.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		btnLogout.setFont(new Font("Mongolian Baiti", Font.PLAIN, 18));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
@@ -248,7 +243,7 @@ public class MainMenu extends JFrame {
 		panel_7.add(btnLogout, BorderLayout.CENTER);
 		
 		JButton btnChangePass = new JButton("Change Password");
-		btnChangePass.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+		btnChangePass.setFont(new Font("Mongolian Baiti", Font.PLAIN, 17));
 		panel.add(btnChangePass, "cell 8 11 2 1,alignx center");
 		btnChangePass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -257,6 +252,44 @@ public class MainMenu extends JFrame {
 				changePassword.setVisible(true);
 			}
 		});
+		
+		
+		setIconImages();
 	}
 
+	public void setIconImages(){
+		
+		//Set all images
+		Image searchAppimage;
+		Image searchPatimage;
+		Image schAppimage;
+		Image createPatimage;
+		try {
+			searchAppimage = ImageIO.read(new File("Pictures\\SearchAppointSmallest.png"));
+			//Image newimg1 = searchAppimage.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH ) ;  
+			btnSearchForAppointment.setIcon(new ImageIcon(searchAppimage));
+			
+			searchPatimage = ImageIO.read(new File("Pictures\\SearchPatientSmallest.png"));
+			Image newimg2 = searchPatimage.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH ) ;  
+			searchPatientBtn.setIcon(new ImageIcon(newimg2));
+			
+			schAppimage = ImageIO.read(new File("Pictures\\AppointIcon.png"));
+			//btnScheduleAppointment.setIcon(new ImageIcon(schAppimage));
+			Image newimg3 = schAppimage.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH ) ;  
+			btnScheduleAppointment.setIcon(new ImageIcon(newimg3));
+			
+			createPatimage = ImageIO.read(new File("Pictures\\CreatePatientSmall.png"));
+			Image newimg4 = createPatimage.getScaledInstance(80, 80,  java.awt.Image.SCALE_SMOOTH ) ;  
+			createPatientBtn.setIcon(new ImageIcon(newimg4));
+			
+			btnScheduleAppointment.setFocusPainted(false);
+			searchPatientBtn.setFocusPainted(false);
+			btnSearchForAppointment.setFocusPainted(false);
+			createPatientBtn.setFocusPainted(false);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
