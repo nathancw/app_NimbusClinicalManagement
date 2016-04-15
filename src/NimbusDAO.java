@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -398,9 +399,9 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 	}
 	
-	public void addLoginOrEdit(int accountID, String username, int dateTime, String logOrEdit, String description) {
-		/*String query = "insert into [NCMSE].[NCM].[TABLE NAME]" + " (ADD NAMES FROM TABLE) " +
-				"VALUES (?,?,?,?,?)";
+	public void addLogin(int accountID, String username, Timestamp date) {
+		String query = "insert into [NCMSE].[DBO].[Login_Report]" + " (Account_ID, Username, Date) " +
+				"VALUES (?,?,?)";
 		
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
@@ -409,6 +410,9 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			stmt = conn.prepareStatement(query);
 			
 			//add data
+			stmt.setInt(1, accountID);
+			stmt.setString(2, username);
+			stmt.setTimestamp(3, date);
 			
 			
 			stmt.executeUpdate();
@@ -416,7 +420,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	//this function gets an account from the database based on a given username

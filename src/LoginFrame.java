@@ -31,7 +31,9 @@ import java.security.MessageDigest;
 import java.security.spec.KeySpec;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 
 
 public class LoginFrame extends JFrame {
@@ -173,8 +175,23 @@ public class LoginFrame extends JFrame {
 		return login;
 	}
 	
-	public void addLogin() {
-		//FUNCTION TO ADD LOGIN TO LOGIN TABLE
+	public void insertDatabase() {
+		String user = usernametextField.getText();
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			//ResultSet rs = dao.
+			
+			//dao.addLogin(user, timestamp);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
