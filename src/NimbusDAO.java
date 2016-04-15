@@ -443,7 +443,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return null;
 	}
 	
-	public void changePassword(String username, String password) {
+	public void changePassword(String username, String password, String salt) {
 		
 		String sqlQuery = "update [NCMSE].[DBO].[Account] set Password = ? where Username = ?";
 		
@@ -451,10 +451,26 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
+		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 128);
+		SecretKeyFactory f;
+		String hashedPass = null;
+		try {
+			
+			f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			byte[] hash = f.generateSecret(spec).getEncoded();
+			hashedPass = Base64.encode(hash);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+	
+			e.printStackTrace();
+		}
+		
 		try {
 			stmt = conn.prepareStatement(sqlQuery);
 			
-			stmt.setString(1, password);
+			stmt.setString(1, hashedPass);
 			stmt.setString(2, username);
 			
 			stmt.executeUpdate();
