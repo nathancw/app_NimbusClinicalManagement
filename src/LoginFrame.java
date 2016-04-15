@@ -121,6 +121,7 @@ public class LoginFrame extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(checkLogin(usernametextField.getText(),passwordField.getPassword())){
+					insertDatabase();
 					dispose();
 					MainMenu menu = new MainMenu();
 					menu.setVisible(true);
@@ -179,14 +180,18 @@ public class LoginFrame extends JFrame {
 		String user = usernametextField.getText();
 		Calendar cal = Calendar.getInstance();
 		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
 		NimbusDAO dao;
 		
 		try {
 			dao = new NimbusDAO();
 			
-			//ResultSet rs = dao.
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
 			
-			//dao.addLogin(user, timestamp);
+			dao.addLogin(id, user, timestamp);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
