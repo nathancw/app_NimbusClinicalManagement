@@ -403,7 +403,7 @@ public class BasicInformationPanel extends JPanel {
 		Calendar cal = Calendar.getInstance();
 		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
 		int id = 0;
-		String description = "Edited patient information.";
+		String description = "Edited patient information for " + firstnametextField.getText() + " " + lastnametextField.getText() +".";
 		NimbusDAO dao;
 		
 		try {
