@@ -423,6 +423,31 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 	}
 	
+	public void addEdit(int accountID, String username, Timestamp date, String des) {
+		String query = "insert into [NCMSE].[DBO].[Data_Change_Report]" + " (Account_ID, Username, Date, Description) " +
+				"VALUES (?,?,?,?)";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(query);
+			
+			//add data
+			stmt.setInt(1, accountID);
+			stmt.setString(2, username);
+			stmt.setTimestamp(3, date);
+			stmt.setString(4, des);
+			
+			
+			stmt.executeUpdate();
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	//this function gets an account from the database based on a given username
 	public ResultSet getAccountUsername(String username) {
 		String sqlQuery = "Select * from [NCMSE].[DBO].[Account] " +
