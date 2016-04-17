@@ -18,6 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -223,6 +224,7 @@ public class BasicInformationPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				boolean updated = updateDatabase();
+				insertEdit();
 				setAllUnEditable();
 				if(updated)
 					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
@@ -394,6 +396,29 @@ public class BasicInformationPanel extends JPanel {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited patient information.";
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 }
