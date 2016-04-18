@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,22 +18,32 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
+import javax.swing.JPasswordField;
 
 
 public class ChangePasswordFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtOldPass;
-	private JTextField txtNewPass;
-	private JTextField txtConfirmPass;
 	private JTextField txtUsername;
 			
 	private String un;
 	private String newpass;
+	private String salt;
+	private JPasswordField txtOldPass;
+	private JPasswordField txtNewPass;
+	private JPasswordField txtConfirmPass;
 
 	/**
 	 * Launch the application.
@@ -70,45 +82,39 @@ public class ChangePasswordFrame extends JFrame {
 		JPanel passPanel = new JPanel();
 		passPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		contentPanel.add(passPanel, "cell 2 1 5 6,grow");
-		passPanel.setLayout(new MigLayout("", "[100,grow][100][100][100]", "[25][25][25][25][25][25][25][25][25][25]"));
+		passPanel.setLayout(new MigLayout("", "[125][125][125][125]", "[25][25][25][25][25][25][25][25][25][25]"));
 		
 		JLabel lblUsername = new JLabel("Please enter your username:");
-		passPanel.add(lblUsername, "cell 0 1 2 1,alignx center");
+		passPanel.add(lblUsername, "cell 1 1 2 1,alignx center");
 		
 		txtUsername = new JTextField();
-		passPanel.add(txtUsername, "cell 0 2 2 1,growx");
+		passPanel.add(txtUsername, "cell 1 2 2 1,growx");
 		txtUsername.setColumns(10);
 		
 		JLabel lblOldPass = new JLabel("Please enter your old password:");
-		passPanel.add(lblOldPass, "cell 0 3 2 1,alignx center");
+		passPanel.add(lblOldPass, "cell 1 3 2 1,alignx center");
 		
-		txtOldPass = new JTextField();
-		passPanel.add(txtOldPass, "cell 0 4 2 1,growx");
-		txtOldPass.setColumns(10);
+		txtOldPass = new JPasswordField();
+		passPanel.add(txtOldPass, "cell 1 4 2 1,growx");
 		
 		JLabel lblNewPass = new JLabel("Please enter your preferred new password:");
-		passPanel.add(lblNewPass, "cell 0 5 2 1,alignx center");
+		passPanel.add(lblNewPass, "cell 1 5 2 1,alignx center");
 		
-		txtNewPass = new JTextField();
-		passPanel.add(txtNewPass, "cell 0 6 2 1,growx");
-		txtNewPass.setColumns(10);
-		
-		JLabel lblPassRules = new JLabel("<html>A password must be at least <br>8 characters and must<br>contain at least one number (0-9).</html>");
-		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		passPanel.add(lblPassRules, "cell 2 6 2 1,aligny top");
+		txtNewPass = new JPasswordField();
+		passPanel.add(txtNewPass, "cell 1 6 2 1,growx");
 		
 		JLabel lblConfirmPass = new JLabel("Confirm new Password:");
-		passPanel.add(lblConfirmPass, "cell 0 7 2 1,alignx center");
+		passPanel.add(lblConfirmPass, "cell 1 7 2 1,alignx center");
 		
-		txtConfirmPass = new JTextField();
-		passPanel.add(txtConfirmPass, "cell 0 8 2 1,growx");
-		txtConfirmPass.setColumns(10);
+		txtConfirmPass = new JPasswordField();
+		passPanel.add(txtConfirmPass, "cell 1 8 2 1,growx");
+		
+		JLabel lblPassRules = new JLabel("<html>A password must be at least 8 characters and must<br>contain at least one number (0-9).</html>");
+		lblPassRules.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		passPanel.add(lblPassRules, "cell 1 9 3 1,aligny top");
 		
 		JButton btnCancel = new JButton("Cancel");
-		contentPanel.add(btnCancel, "cell 3 7");
-		
-		JButton btnSave = new JButton("Save");
-		contentPanel.add(btnSave, "cell 4 7");
+		contentPanel.add(btnCancel, "cell 5 7");
 		
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
@@ -118,10 +124,14 @@ public class ChangePasswordFrame extends JFrame {
 			  }
 			});
 		
+		JButton btnSave = new JButton("Save");
+		contentPanel.add(btnSave, "cell 6 7");
+		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if(checkPassword()) {
 					updateDatabase();
+					insertEdit();
 					dispose();
 					LoginFrame create = new LoginFrame();
 					create.setVisible(true);
@@ -132,13 +142,13 @@ public class ChangePasswordFrame extends JFrame {
 	
 	public Boolean checkPassword() {
 		String username = txtUsername.getText();
-		String oldPass = txtOldPass.getText();
-		String newPass = txtNewPass.getText();
-		String confirmPass = txtConfirmPass.getText();
+		String oldPass = new String(txtOldPass.getPassword());
+		String newPass = new String(txtNewPass.getPassword());
+		String confirmPass = new String(txtConfirmPass.getPassword());
 		Boolean digit = false;
 		
 		NimbusDAO dao;
-		String oldPasstxt = null;
+		String oldPassdatabase = null;
 		ResultSet rs = null;
 		
 		//checking that all fields are filled in
@@ -163,7 +173,9 @@ public class ChangePasswordFrame extends JFrame {
 			rs = dao.getAccountUsername(username);
 			
 			if(rs.next()) {
-				oldPasstxt = rs.getString("Password");
+				//This old pass we pull from the database will be hashed
+				oldPassdatabase = rs.getString("Password");
+				salt = rs.getString("Salt");
 			}
 			else {
 				JOptionPane.showMessageDialog(new JFrame(), "This username does not exist in the database.");
@@ -174,7 +186,26 @@ public class ChangePasswordFrame extends JFrame {
 		}
 		
 		//checking if they entered the right current password
-		if(!(oldPasstxt.equals(oldPass))) {
+		
+		//Hash the oldpasswordtext that was in the text box
+		KeySpec spec = new PBEKeySpec(oldPass.toCharArray(), salt.getBytes(), 65536, 128);
+		SecretKeyFactory f;
+		String oldPassHashed = null;
+		try {
+			
+			f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			byte[] hash = f.generateSecret(spec).getEncoded();
+			oldPassHashed = Base64.encode(hash);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+	
+			e.printStackTrace();
+		}
+		////////End hashing///////////////////////////////////////////
+		
+		if(!(oldPassdatabase.equals(oldPassHashed))) {
 			JOptionPane.showMessageDialog(new JFrame(), "This password does not match the current password for " + username + ".");
 			return false;
 		}
@@ -208,9 +239,33 @@ public class ChangePasswordFrame extends JFrame {
 		try {
 			dao = new NimbusDAO();
 			
-			dao.changePassword(un, newpass);
+			dao.changePassword(un, newpass,salt);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited account password.";
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		

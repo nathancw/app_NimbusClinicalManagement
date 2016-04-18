@@ -47,6 +47,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -264,8 +265,10 @@ public class BookAppointmentPanel extends JPanel {
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(changeAppointmentData(true))
+				if(changeAppointmentData(true)) {
 					setAllUneditable();
+					insertEdit();
+				}
 			}
 		});
 		editSavePanel.add(btnSave);
@@ -600,5 +603,29 @@ public class BookAppointmentPanel extends JPanel {
 		
 		
 		return true;
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited appointment information.";
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

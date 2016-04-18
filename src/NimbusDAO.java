@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -398,9 +399,9 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 	}
 	
-	public void addLoginOrEdit(int accountID, String username, int dateTime, String logOrEdit, String description) {
-		/*String query = "insert into [NCMSE].[NCM].[TABLE NAME]" + " (ADD NAMES FROM TABLE) " +
-				"VALUES (?,?,?,?,?)";
+	public void addLogin(int accountID, String username, Timestamp date) {
+		String query = "insert into [NCMSE].[DBO].[Login_Report]" + " (Account_ID, Username, Date) " +
+				"VALUES (?,?,?)";
 		
 		Connection conn = this.getConnection();
 		PreparedStatement stmt = null;
@@ -409,6 +410,9 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			stmt = conn.prepareStatement(query);
 			
 			//add data
+			stmt.setInt(1, accountID);
+			stmt.setString(2, username);
+			stmt.setTimestamp(3, date);
 			
 			
 			stmt.executeUpdate();
@@ -416,7 +420,32 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-		}*/
+		}
+	}
+	
+	public void addEdit(int accountID, String username, Timestamp date, String des) {
+		String query = "insert into [NCMSE].[DBO].[Data_Change_Report]" + " (Account_ID, Username, Date, Description) " +
+				"VALUES (?,?,?,?)";
+		
+		Connection conn = this.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(query);
+			
+			//add data
+			stmt.setInt(1, accountID);
+			stmt.setString(2, username);
+			stmt.setTimestamp(3, date);
+			stmt.setString(4, des);
+			
+			
+			stmt.executeUpdate();
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//this function gets an account from the database based on a given username
@@ -443,7 +472,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return null;
 	}
 	
-	public void changePassword(String username, String password) {
+	public void changePassword(String username, String password, String salt) {
 		
 		String sqlQuery = "update [NCMSE].[DBO].[Account] set Password = ? where Username = ?";
 		
@@ -451,10 +480,26 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
+		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 128);
+		SecretKeyFactory f;
+		String hashedPass = null;
+		try {
+			
+			f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			byte[] hash = f.generateSecret(spec).getEncoded();
+			hashedPass = Base64.encode(hash);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+	
+			e.printStackTrace();
+		}
+		
 		try {
 			stmt = conn.prepareStatement(sqlQuery);
 			
-			stmt.setString(1, password);
+			stmt.setString(1, hashedPass);
 			stmt.setString(2, username);
 			
 			stmt.executeUpdate();

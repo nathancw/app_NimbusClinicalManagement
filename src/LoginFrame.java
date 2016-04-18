@@ -31,7 +31,9 @@ import java.security.MessageDigest;
 import java.security.spec.KeySpec;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
 
 
 public class LoginFrame extends JFrame {
@@ -41,6 +43,7 @@ public class LoginFrame extends JFrame {
 	private JPasswordField passwordField;
 	public static int accessLevel;
 	public static int doctorID;
+	public static String username;
 
 	/**
 	 * Launch the application.
@@ -119,6 +122,7 @@ public class LoginFrame extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(checkLogin(usernametextField.getText(),passwordField.getPassword())){
+					insertDatabase();
 					dispose();
 					MainMenu menu = new MainMenu();
 					menu.setVisible(true);
@@ -154,6 +158,7 @@ public class LoginFrame extends JFrame {
 					JOptionPane.showMessageDialog(new JFrame(), "Successful Login");
 					accessLevel = rs.getInt("AccessLevel");
 					doctorID = rs.getInt("Doctor_ID");
+					username = rs.getString("Username");
 					return true;
 				}
 				else{
@@ -173,8 +178,27 @@ public class LoginFrame extends JFrame {
 		return login;
 	}
 	
-	public void addLogin() {
-		//FUNCTION TO ADD LOGIN TO LOGIN TABLE
+	public void insertDatabase() {
+		String user = usernametextField.getText();
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addLogin(id, user, timestamp);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	

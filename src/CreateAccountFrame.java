@@ -214,7 +214,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 2;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase(3);
+					  insertDatabase(clearanceLevel);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
@@ -314,7 +314,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 3;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase(3);
+					  insertDatabase(clearanceLevel);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
@@ -398,7 +398,7 @@ public class CreateAccountFrame extends JFrame {
 				  //SUCCESS/PUT IN DATABASE
 				  clearanceLevel = 1;
 				  if(validateFields() && checkPassword() && checkUsernames()) {
-					  insertDatabase(3);
+					  insertDatabase(clearanceLevel);
 					  dispose();
 					  MainMenu menu = new MainMenu();
 					  menu.setVisible(true);
