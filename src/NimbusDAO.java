@@ -541,24 +541,28 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return patient_ID;
 	}
 	
-	public void editBillingHistory(boolean update, int patient_ID,int procedure_ID, double amount, Date date){
+	public void editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, Date dateIssued, Date chargeDate, int paid, Date datePaid){
 		
 		String sqlQuery = null;
 		
 		if(!update)
-		sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID,Procedure_ID,Amount,DateIssued,ChargeDate,Paid) " +
-						"values(?,?,?,?,?,0)";
+		sqlQuery = "upate NCMSE.NCM.Billing set Procedure_ID = ?,Amount = ?,DateIssued = ?,ChargeDate = ?,Paid = ?,DatePaid = ?,Billing_ID = ?";
+		//sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID, DateIssued)" + "values(?,?)";
+		//sqlQuery = "insert into NCMSE.NCM.Billing (Procedure_ID,Amount,DateIssued,ChargeDate,Paid,DatePaid) " +
+						//"values(?,?,?,?,0,?)";
 		
 		ResultSet rs = null;
 		
 		try {
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
-			stmt.setInt(1, patient_ID);
-			stmt.setInt(2, procedure_ID);
-			stmt.setDouble(3, amount);
-			stmt.setDate(4, new java.sql.Date(date.getTime()));
-			stmt.setDate(5, new java.sql.Date(date.getTime()));
+			stmt.setInt(1, procedure_ID);
+			stmt.setDouble(2, amount);
+			stmt.setString(3, dateIssued.toString()); //just add parameters
+			stmt.setString(4, chargeDate.toString());
+			stmt.setInt(5, paid);
+			stmt.setString(6,  datePaid.toString());
+			//stmt.setDate(6, new java.sql.Date(datePaid.getTime()));
 			
 			stmt.executeUpdate();
 			
@@ -571,7 +575,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName "
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName,a.[Billing_ID] "
 				+ "from NCMSE.ncm.Billing a "
 				+ "inner join "
 				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "

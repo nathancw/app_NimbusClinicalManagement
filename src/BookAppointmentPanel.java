@@ -535,6 +535,11 @@ public class BookAppointmentPanel extends JPanel {
 		int procedureID = 0;
 		Date datePickerDate= (Date)datePicker.getModel().getValue();
 		double amount;
+		int paid = 0;
+		Calendar charge = Calendar.getInstance();
+		charge.setTime(datePickerDate);
+		charge.add(Calendar.MONTH, 1);
+		Date chargeDate = charge.getTime();
 		
 		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
 			
@@ -586,7 +591,7 @@ public class BookAppointmentPanel extends JPanel {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Booked Appointment.");
 		
-			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDate);
+			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDate,chargeDate,paid,null);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

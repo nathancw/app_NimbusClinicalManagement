@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
 import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,6 +29,10 @@ import java.util.Vector;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
+import java.util.HashMap;
+import java.util.Map;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class BillingPanel extends JPanel {
@@ -34,8 +40,14 @@ public class BillingPanel extends JPanel {
 	private JFormattedTextField amountField;
 	private JFormattedTextField dateIssuedField;
 	private JFormattedTextField chargeDateField;
+	private JFormattedTextField datePaidField;
+	private JRadioButton rdbtnYes;
+	private JRadioButton rdbtnNo;
 	private JComboBox procedureBox;
+	private JButton btnEdit;
+	private JButton btnSave;
 	private int patient_ID;
+	private Map<Integer,Integer> billingIDs;
 	
 	/**
 	 * Create the panel.
@@ -57,10 +69,11 @@ public class BillingPanel extends JPanel {
 	public BillingPanel(int pID) {
 		this.patient_ID = pID;
 		setLayout(new BorderLayout(0, 0));
+		setAllUneditable();
 		
 		JPanel contentPanel = new JPanel();
 		add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][100][100][100][100][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30]"));
+		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][100][100][100][100,grow][100,grow][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30,grow][30][30][30][30]"));
 		
 		JLabel lblSelectAPatient = new JLabel("Select a Patient Bill to view its data below");
 		contentPanel.add(lblSelectAPatient, "cell 2 0 5 1,alignx center");
@@ -108,16 +121,16 @@ public class BillingPanel extends JPanel {
 		JPanel billInfoPanel = new JPanel();
 		billInformation.add(billInfoPanel, "cell 2 3,grow");
 		
-		JRadioButton rdbtnYes = new JRadioButton("Yes");
+		rdbtnYes = new JRadioButton("Yes");
 		billInfoPanel.add(rdbtnYes);
 		
-		JRadioButton rdbtnNo = new JRadioButton("No");
+		rdbtnNo = new JRadioButton("No");
 		billInfoPanel.add(rdbtnNo);
 		
 		JLabel lblDatePaid = new JLabel("Date Paid:");
 		billInformation.add(lblDatePaid, "cell 3 3,alignx trailing");
 		
-		JFormattedTextField datePaidField = new JFormattedTextField();
+		datePaidField = new JFormattedTextField();
 		billInformation.add(datePaidField, "cell 4 3,growx");
 		
 		MaskFormatter dateMask;
@@ -152,6 +165,37 @@ public class BillingPanel extends JPanel {
 		
 		//NEED THE BELOW PIECE OF CODE TO LIMIT THE SIZE. Or else it gets super large for some reason.
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		
+		JPanel savebtnpanel = new JPanel();
+		contentPanel.add(savebtnpanel, "cell 7 16,grow");
+		savebtnpanel.setLayout(new BorderLayout(0, 0));
+		//savebtnpanel.setVisible(false);
+		
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				boolean updated = updateDatabase();
+				setAllUneditable();
+				if(updated)
+					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
+				else
+					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occurred.");
+			}
+		});
+		savebtnpanel.add(btnSave, BorderLayout.CENTER);
+		
+		JPanel editbtnpanel = new JPanel();
+		contentPanel.add(editbtnpanel, "cell 7 17,grow");
+		editbtnpanel.setLayout(new BorderLayout(0, 0));
+		//editbtnpanel.setVisible(false);
+		
+		btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				setAllEditable();
+			}
+		});
+		editbtnpanel.add(btnEdit, BorderLayout.CENTER);
 			
 		
 		table.addMouseListener(new MouseAdapter() {
@@ -190,6 +234,8 @@ public DefaultTableModel search(){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel
 		 DefaultTableModel tableModel;
+		 billingIDs = new HashMap<Integer,Integer>();
+		 int count = 0;
 		 
 		 /*if(patientIDtextField.getText().equals(""))
 			 id = 0;
@@ -230,6 +276,9 @@ public DefaultTableModel search(){
 			    String cob = rs.getString("ChargeDate");
 			    String data4 = cob.substring(5, 7) + "/" + cob.substring(8,10) + "/" + cob.substring(0,4);
 			    Object[] rowData = new Object[] {data0,data1,data2,data3,data4};
+			    count++;
+			    billingIDs.put(table.getSelectedRow(),count);
+			    
 			    tableModel.addRow(rowData);
 			}
 			
@@ -242,8 +291,72 @@ public DefaultTableModel search(){
 		
 		return null;	
 	}
+
+	public void setAllUneditable(){
+		btnSave.setEnabled(false);
+		btnEdit.setEnabled(true);
+		amountField.setEditable(false);
+		datePaidField.setEditable(false);
+		chargeDateField.setEditable(false);
+		dateIssuedField.setEditable(false);
+		procedureBox.setEditable(false);
+		rdbtnYes.setEnabled(false);
+		rdbtnNo.setEnabled(false);
+	}
 	
+	public void setAllEditable(){
+		btnSave.setEnabled(true);
+		btnEdit.setEnabled(false);
+		amountField.setEditable(true);
+		datePaidField.setEditable(true);
+		chargeDateField.setEditable(true);
+		dateIssuedField.setEditable(true);
+		procedureBox.setEditable(true);
+		rdbtnYes.setEnabled(true);
+		rdbtnNo.setEnabled(true);
+		
+	}
 	
+	public boolean updateDatabase(){
+		String chargeDate = chargeDateField.getText();
+		String dateIssued = dateIssuedField.getText();
+		String procedure = String.valueOf(procedureBox.getSelectedItem());
+		int procedure_id = 0;
+		if (procedureBox.getSelectedItem() != null)
+		{
+			if (procedure.equals("Heart Surgery"))
+			{
+				procedure_id = 1;
+			}
+			else if (procedure.equals("Therapy"))
+			{
+				procedure_id = 2;
+			}
+			else
+			{
+				procedure_id = 3;
+			}
+		}
+		String amount = amountField.getText();
+		String datePaid = datePaidField.getText();
+		
+		String paid;
+		if(rdbtnYes.isSelected())
+			paid = "Yes";
+		else
+			paid = "No";
+		
+		NimbusDAO dao;
+		boolean updated = false;
+		try{
+			dao = new NimbusDAO();
+			//updated = dao.editBillingHistory(update, patient_ID, procedure_ID, amount, date);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return updated;
+	}
 	
 
 }
