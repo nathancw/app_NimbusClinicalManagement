@@ -33,6 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 
 public class BillingPanel extends JPanel {
@@ -69,7 +72,6 @@ public class BillingPanel extends JPanel {
 	public BillingPanel(int pID) {
 		this.patient_ID = pID;
 		setLayout(new BorderLayout(0, 0));
-		setAllUneditable();
 		
 		JPanel contentPanel = new JPanel();
 		add(contentPanel, BorderLayout.CENTER);
@@ -175,11 +177,11 @@ public class BillingPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				boolean updated = updateDatabase();
-				setAllUneditable();
 				if(updated)
 					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
 				else
 					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occurred.");
+				setAllUneditable();
 			}
 		});
 		savebtnpanel.add(btnSave, BorderLayout.CENTER);
@@ -219,12 +221,15 @@ public class BillingPanel extends JPanel {
 			    	 procedureBox.setSelectedItem(procedure);
 			    	 //PatientInformationFrame patientframe = new PatientInformationFrame();
 			         //patientframe.show("Basic Information");
+			    	 setAllUneditable();
 			         
 			         
 				  	
 			     //}
 			   }
 			});
+		grayOutEverything();
+		
 
 	}
 	
@@ -317,10 +322,21 @@ public DefaultTableModel search(){
 		
 	}
 	
+	public void grayOutEverything(){
+		btnSave.setEnabled(false);
+		btnEdit.setEnabled(false);
+		amountField.setEditable(false);
+		datePaidField.setEditable(false);
+		chargeDateField.setEditable(false);
+		dateIssuedField.setEditable(false);
+		procedureBox.setEditable(false);
+		rdbtnYes.setEnabled(false);
+		rdbtnNo.setEnabled(false);
+	}
+	
 	public boolean updateDatabase(){
-		String chargeDate = chargeDateField.getText();
-		String dateIssued = dateIssuedField.getText();
 		String procedure = String.valueOf(procedureBox.getSelectedItem());
+		String amount = amountField.getText();
 		int procedure_id = 0;
 		if (procedureBox.getSelectedItem() != null)
 		{
@@ -337,20 +353,48 @@ public DefaultTableModel search(){
 				procedure_id = 3;
 			}
 		}
-		String amount = amountField.getText();
-		String datePaid = datePaidField.getText();
 		
-		String paid;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		/*java.util.Date charge = df.parse(chargeDateField.getText());
+		java.sql.Date chargeDate = new java.sql.Date(charge.getTime());
+		
+		java.util.Date issued = df.parse(dateIssuedField.getText());
+		java.sql.Date dateIssued = new java.sql.Date(issued.getTime());
+		
+		java.util.Date payment = df.parse(datePaidField.getText());
+		java.sql.Date datePaid = new java.sql.Date(payment.getTime());*/
+		
+		java.util.Date charge = null;
+		java.util.Date issued = null;
+		java.util.Date payment = null;
+		
+		try{
+			charge = df.parse(chargeDateField.getText());
+			
+			issued = df.parse(dateIssuedField.getText());
+			
+			payment = df.parse(datePaidField.getText());
+		}
+		catch(ParseException e){
+			e.printStackTrace();
+		}
+		
+		java.sql.Date chargeDate = new java.sql.Date(charge.getTime());
+		java.sql.Date dateIssued = new java.sql.Date(issued.getTime());
+		java.sql.Date datePaid = new java.sql.Date(payment.getTime());
+			
+		int paid;
 		if(rdbtnYes.isSelected())
-			paid = "Yes";
+			paid = 1;
 		else
-			paid = "No";
+			paid = 0;
 		
 		NimbusDAO dao;
 		boolean updated = false;
 		try{
 			dao = new NimbusDAO();
-			//updated = dao.editBillingHistory(update, patient_ID, procedure_ID, amount, date);
+			updated = dao.editBillingHistory(true, patient_ID, procedure_id, Double.parseDouble(amount), dateIssuedField.getText(), chargeDateField.getText(), paid, datePaidField.getText());
 		}
 		catch (Exception e){
 			e.printStackTrace();

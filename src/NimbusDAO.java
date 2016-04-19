@@ -586,7 +586,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return patient_ID;
 	}
 	
-	public void editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, Date dateIssued, Date chargeDate, int paid, Date datePaid){
+	public Boolean editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, String dateIssued, String chargeDate, int paid, String datePaid){
 		
 		String sqlQuery = null;
 		
@@ -597,16 +597,19 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 						//"values(?,?,?,?,0,?)";
 		
 		ResultSet rs = null;
-		
 		try {
+			
+			Date charge = parseTextFieldDate(chargeDate);
+			Date issued = parseTextFieldDate(dateIssued);
+			Date payment = parseTextFieldDate(datePaid);
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
 			stmt.setInt(1, procedure_ID);
 			stmt.setDouble(2, amount);
-			stmt.setString(3, dateIssued.toString()); //just add parameters
-			stmt.setString(4, chargeDate.toString());
+			stmt.setDate(3, new java.sql.Date(issued.getTime())); //just add parameters
+			stmt.setDate(4, new java.sql.Date(charge.getTime()));
 			stmt.setInt(5, paid);
-			stmt.setString(6,  datePaid.toString());
+			stmt.setDate(6,  new java.sql.Date(payment.getTime()));
 			//stmt.setDate(6, new java.sql.Date(datePaid.getTime()));
 			
 			stmt.executeUpdate();
@@ -615,7 +618,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return false;
 	}
 	
 	public ResultSet getBillingHistory(int patient_ID){
