@@ -282,7 +282,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		//System.out.println("at 0: " + (int)dateofbirth.charAt(0));
 		try {
-			if((dateofbirth.charAt(0) != 32))
+			if((dateofbirth.charAt(0) != 32) || dateofbirth.charAt(6) == 6)
 			dob = df.parse(dobYMD);
 			else{
 				//Set to todays date if none is specified
@@ -586,16 +586,17 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return patient_ID;
 	}
 	
-	public Boolean editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, String dateIssued, String chargeDate, int paid, String datePaid){
+	public Boolean editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, String dateIssued, String chargeDate, int paid, String datePaid,int billing_ID){
 		
 		String sqlQuery = null;
 		
-		if(!update)
-		sqlQuery = "upate NCMSE.NCM.Billing set Procedure_ID = ?,Amount = ?,DateIssued = ?,ChargeDate = ?,Paid = ?,DatePaid = ?,Billing_ID = ?";
-		//sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID, DateIssued)" + "values(?,?)";
-		//sqlQuery = "insert into NCMSE.NCM.Billing (Procedure_ID,Amount,DateIssued,ChargeDate,Paid,DatePaid) " +
-						//"values(?,?,?,?,0,?)";
-		
+		if(!update){
+		sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID,Procedure_ID,Amount,DateIssued,ChargeDate,Paid,DatePaid) " +
+					" values(?,?,?,?,?,?,?)";
+		}
+		else
+			sqlQuery = "update NCMSE.NCM.Billing set Patient_ID = ?, Procedure_ID = ?,Amount = ?,DateIssued = ?,ChargeDate = ?,Paid = ?,DatePaid = ? where Billing_ID = ?";
+
 		ResultSet rs = null;
 		try {
 			
@@ -604,16 +605,22 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			Date payment = parseTextFieldDate(datePaid);
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
-			stmt.setInt(1, procedure_ID);
-			stmt.setDouble(2, amount);
-			stmt.setDate(3, new java.sql.Date(issued.getTime())); //just add parameters
-			stmt.setDate(4, new java.sql.Date(charge.getTime()));
-			stmt.setInt(5, paid);
-			stmt.setDate(6,  new java.sql.Date(payment.getTime()));
-			//stmt.setDate(6, new java.sql.Date(datePaid.getTime()));
+			stmt.setInt(1, patient_ID);
+			stmt.setInt(2, procedure_ID);
+			stmt.setDouble(3, amount);
+			stmt.setDate(4, new java.sql.Date(issued.getTime()));
+			stmt.setDate(5, new java.sql.Date(charge.getTime()));
+			if(!update)
+				stmt.setInt(6,0);
+			else
+				stmt.setInt(6, paid);
 			
+			stmt.setDate(7,  new java.sql.Date(payment.getTime()));
+			
+			if(update)
+				stmt.setInt(8, billing_ID);
 			stmt.executeUpdate();
-			
+			return true;
 	
 		} catch (Exception e) {
 			e.printStackTrace();

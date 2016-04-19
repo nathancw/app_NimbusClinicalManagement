@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -544,6 +545,14 @@ public class BookAppointmentPanel extends JPanel {
 		charge.add(Calendar.MONTH, 1);
 		Date chargeDate = charge.getTime();
 		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		
+		//Format to mm/dd/yyyy so we can format it back to yyyy-mm-dd ROFL
+		String chargeDateFormat = df.format(chargeDate);
+		String datePickerDateFormat = df.format(datePickerDate);
+		
+		System.out.println("Charge date: " + chargeDateFormat + " Datepickerdateformat: " + datePickerDateFormat);
+		
 		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
 			
 			JOptionPane.showMessageDialog(this,
@@ -594,7 +603,7 @@ public class BookAppointmentPanel extends JPanel {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Booked Appointment.");
 		
-			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDate,chargeDate,paid,null);
+			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDateFormat,chargeDateFormat,paid,"12/31/2999",0);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
