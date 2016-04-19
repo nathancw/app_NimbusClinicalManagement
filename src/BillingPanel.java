@@ -219,12 +219,7 @@ public class BillingPanel extends JPanel {
 			  public void mouseClicked(MouseEvent e) {
 			    //if (e.getClickCount() == 1) {
 				  	
-				  		
-				  	//Edit on table click
-			    	 //System.out.println(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn()).toString());
-			    	 //System.out.println(table.getValueAt(table.getSelectedRow(),0).toString());
-				  	//System.out.println("selected row: " + table.getSelectedRow() + " and billingids: "  + billingIDs.get(table.getSelectedRow()) );
-				  	 billing_ID = billingIDs.get(table.getSelectedRow());
+				  	billing_ID = billingIDs.get(table.getSelectedRow());
 				  	 
 			    	 String id = table.getValueAt(table.getSelectedRow(),0).toString();
 			    	 String procedure = table.getValueAt(table.getSelectedRow(),1).toString();
