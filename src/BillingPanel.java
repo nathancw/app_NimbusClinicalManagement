@@ -56,17 +56,6 @@ public class BillingPanel extends JPanel {
 	private Map<Integer,Integer> billingIDs = new HashMap<Integer,Integer>();
 	private NimbusDAO dao;
 	
-	/**
-	 * Create the panel.
-	 * 
-	 */
-	/*
-	 * Ideas: Will they ever want to create a new bill or will the bill be created when they schedule an appointment? but that means the bill
-	 * can not be paid because the patient never showed up. So only if they show up to the appointment, check in, then the bill will be generated?
-	 * 
-	 * 
-	 */
-	
 	String[] colNames = {"Patient_ID", "Procedure", "Amount", "DateIssued", "ChargeDate, DatePaid"};
 	Object[][] patients = {
 			{"Blank","Blank","080808","F","F"},
@@ -118,13 +107,10 @@ public class BillingPanel extends JPanel {
 		
 		JLabel lblAmount = new JLabel("Amount:");
 		billInformation.add(lblAmount, "cell 3 2,alignx trailing");
-		
-		//For amount, the dollar sign will be added when you set value. Maybe just leave it at this and 
-		//Whenever they save the changes the dollar sign will be added
+	
 		NumberFormat paymentFormat = NumberFormat.getCurrencyInstance();
 		amountField = new JFormattedTextField(paymentFormat);
-		amountField.setValue(500.0);
-		
+
 		billInformation.add(amountField, "cell 4 2,growx");
 		
 		JLabel lblPaid = new JLabel("Paid:");
@@ -160,8 +146,6 @@ public class BillingPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		
 		
 		TableModel model = new DefaultTableModel(patients, colNames)
 		  {
@@ -392,14 +376,17 @@ public DefaultTableModel search(){
 		boolean updated = false;
 		try{
 			
-			
-			if(paid == 1){
+			///NEED ERROR CHECKING WHEN UPDATING. Dates can be all messed up
+			if(paid == 1 && datePaidField.getText().substring(6,10).equals("2999")){
 				Calendar today = Calendar.getInstance();
 				Date todayDate = today.getTime();
 				DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 				datePaid = df.format(todayDate);
 			}
 			else{
+				datePaid = datePaidField.getText();
+			}
+			if(paid==0){
 				datePaid = "12/31/2999";
 			}
 				

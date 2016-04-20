@@ -54,7 +54,7 @@ public class LoginFrame extends JFrame {
 				try {
 					
 					//Look and feel
-					//UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+					UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
 					//UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
 
 					LoginFrame frame = new LoginFrame();
