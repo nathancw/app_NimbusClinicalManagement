@@ -78,6 +78,8 @@ public class BookAppointmentPanel extends JPanel {
 	private UtilDateModel model;
 	private JButton btnEdit;
 	private JButton btnSave;
+	private JButton btnClose;
+	private JButton btnCancel;
 	/**
 	 * Create the panel.
 	 */
@@ -137,13 +139,16 @@ public class BookAppointmentPanel extends JPanel {
 		TextFieldsPanel.setLayout(new MigLayout("", "[80][150,grow][100][150,grow][20]", "[30][30][30][30][30]"));
 		
 		JLabel lblPatientID = new JLabel("Patient ID:");
+		lblPatientID.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblPatientID, "cell 0 0,alignx trailing");
 		
 		patientIDTextField = new JTextField();
+		patientIDTextField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(patientIDTextField, "cell 1 0,growx");
 		patientIDTextField.setColumns(10);
 		
 		JLabel lblDate = new JLabel("Date:");
+		lblDate.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblDate, "cell 2 0,alignx trailing");
 		//
 		
@@ -154,15 +159,18 @@ public class BookAppointmentPanel extends JPanel {
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
 		datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
+		datePicker.getJFormattedTextField().setFont(new Font("Dialog", Font.PLAIN, 14));
 		
 		TextFieldsPanel.add(datePicker, "cell 3 0,growx");
 		///		
 		///
 		JLabel lblDoctor = new JLabel("Doctor:");
+		lblDoctor.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblDoctor, "cell 0 1,alignx trailing");
 		
 		doctorIDs = null;
 		doctorComboBox = new JComboBox();
+		doctorComboBox.setFont(new Font("Dialog", Font.PLAIN, 14));
 		doctorComboBox.setModel(getDoctors());
 		doctorComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -176,10 +184,12 @@ public class BookAppointmentPanel extends JPanel {
 		
 		
 		JLabel lblStartTime = new JLabel("Start Time:");
+		lblStartTime.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblStartTime, "cell 2 1,alignx trailing");
 		
 		timeID = 0;
 		startcomboBox = new JComboBox();
+		startcomboBox.setFont(new Font("Dialog", Font.PLAIN, 14));
 		startcomboBox.setModel(getStartTimes());
 		startcomboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,24 +203,30 @@ public class BookAppointmentPanel extends JPanel {
 		TextFieldsPanel.add(startcomboBox, "cell 3 1,growx");
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
+		lblProcedure.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblProcedure, "cell 0 2,alignx trailing");
 		procedurecomboBox = new JComboBox();
+		procedurecomboBox.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(procedurecomboBox, "cell 1 2,growx");
 		
 		JLabel lblEndTime = new JLabel("End Time:");
+		lblEndTime.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblEndTime, "cell 2 2,alignx trailing");
 		
 		endcomboBox = new JComboBox();
+		endcomboBox.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(endcomboBox, "cell 3 2,growx");
 		endcomboBox.setEditable(false);
 		
 		procedureIDs = null;
 		
 		JLabel lblSpecialty = new JLabel("Specialty:");
+		lblSpecialty.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(lblSpecialty, "cell 0 3,alignx trailing");
 		
 		//specialtyName = new HashMap<Integer,String>();
 		specialtytextField = new JTextField();
+		specialtytextField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		TextFieldsPanel.add(specialtytextField, "cell 1 3,growx");
 		specialtytextField.setColumns(10);
 		specialtytextField.setEditable(false);
@@ -227,6 +243,7 @@ public class BookAppointmentPanel extends JPanel {
 		CommentsPanel.setLayout(new MigLayout("", "[100,grow][150][100][150]", "[30,grow][30][30][30][30]"));
 		
 		textArea = new JTextArea();
+		textArea.setFont(new Font("Dialog", Font.PLAIN, 14));
 		CommentsPanel.add(textArea, "cell 0 0 4 5,grow");
 		
 		/*JButton btnViewOpenAppointments = new JButton("View Open Appointments");
@@ -241,12 +258,23 @@ public class BookAppointmentPanel extends JPanel {
 		contentPanel.add(btnViewOpenAppointments, "cell 2 12 2 1");
 		*/
 		
-		JButton btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 ((Window) getRootPane().getParent()).dispose();
 				  MainMenu menu = new MainMenu();
 				  menu.setVisible(true);
+				
+			}
+		});
+		
+		btnClose = new JButton("Close");
+		btnClose.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 ((Window) getRootPane().getParent()).dispose();
+		
 				
 			}
 		});
@@ -256,6 +284,7 @@ public class BookAppointmentPanel extends JPanel {
 	
 		
 		btnEdit = new JButton("Edit");
+		btnEdit.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setAllEditable();
@@ -264,6 +293,7 @@ public class BookAppointmentPanel extends JPanel {
 		editSavePanel.add(btnEdit);
 		
 		btnSave = new JButton("Save");
+		btnSave.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(changeAppointmentData(true)) {
@@ -277,6 +307,7 @@ public class BookAppointmentPanel extends JPanel {
 		btnSave.setEnabled(false);
 		
 		btnBookNewAppointment = new JButton("Book New Appointment");
+		btnBookNewAppointment.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnBookNewAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				changeAppointmentData(false);
@@ -289,7 +320,9 @@ public class BookAppointmentPanel extends JPanel {
 	public void populate(int appointmentID){
 		
 		contentPanel.remove(btnBookNewAppointment);
+		contentPanel.remove(btnCancel);
 		contentPanel.add(editSavePanel, "cell 5 12,grow");
+		contentPanel.add(btnClose, "cell 4 12,alignx right");
 		
 		 
 		try {
@@ -327,6 +360,10 @@ public class BookAppointmentPanel extends JPanel {
 		}
 		
 		setAllUneditable();
+	}
+	
+	public JButton getDefaultButton(){
+		return btnBookNewAppointment;
 	}
 	
 	public void setAllUneditable(){
@@ -540,19 +577,13 @@ public class BookAppointmentPanel extends JPanel {
 		Date datePickerDate= (Date)datePicker.getModel().getValue();
 		double amount;
 		int paid = 0;
-		Calendar charge = Calendar.getInstance();
-		charge.setTime(datePickerDate);
-		charge.add(Calendar.MONTH, 1);
-		Date chargeDate = charge.getTime();
+		Calendar charge;
+		Date chargeDate = null;
 		
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-		
-		//Format to mm/dd/yyyy so we can format it back to yyyy-mm-dd ROFL
-		String chargeDateFormat = df.format(chargeDate);
-		String datePickerDateFormat = df.format(datePickerDate);
-		
-		System.out.println("Charge date: " + chargeDateFormat + " Datepickerdateformat: " + datePickerDateFormat);
-		
+		String chargeDateFormat;
+		String datePickerDateFormat;
+
 		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
 			
 			JOptionPane.showMessageDialog(this,
@@ -564,6 +595,14 @@ public class BookAppointmentPanel extends JPanel {
 			doctorID = doctorIDs.get(doctorComboBox.getSelectedItem());
 			procedureID = procedureIDs.get(procedurecomboBox.getSelectedItem());
 			amount = procedureCosts.get(procedureID);
+			charge = Calendar.getInstance();
+			charge.setTime(datePickerDate);
+			charge.add(Calendar.MONTH, 1);
+			chargeDate = charge.getTime();
+			
+			//Format to mm/dd/yyyy so we can format it back to yyyy-mm-dd ROFL
+			chargeDateFormat = df.format(chargeDate);
+			datePickerDateFormat = df.format(datePickerDate);
 		}
 		
 		String comments = textArea.getText();

@@ -134,6 +134,7 @@ public class DoctorAppointmentsFrame extends JFrame{
 	
 		resultsPanel.setLayout(new BorderLayout(0, 0));
 		topTable = new JTable(model);
+		topTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		//Set column widths to make table bigger
 		TableColumnModel columnModel = topTable.getColumnModel();
@@ -144,6 +145,7 @@ public class DoctorAppointmentsFrame extends JFrame{
 		topTable.setModel(queryModel);
 		
 		bottomTable = new JTable(model);
+		bottomTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		//Set column widths to make table bigger
 		TableColumnModel columnModel2 = bottomTable.getColumnModel();
@@ -190,6 +192,7 @@ public class DoctorAppointmentsFrame extends JFrame{
 		secondPanel.add(scrollPane2, BorderLayout.CENTER);
 		
 		btnClose = new JButton("Close");
+		btnClose.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();

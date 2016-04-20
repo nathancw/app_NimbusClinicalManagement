@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 public class PatientInformationFrame extends JFrame {
 
@@ -79,6 +80,7 @@ public class PatientInformationFrame extends JFrame {
 		
 		
 		categoriesList = new JList(directoryList);
+		categoriesList.setFont(new Font("Tahoma", Font.BOLD, 13));
 		categoriesList.setBorder(new LineBorder(new Color(0, 0, 0)));
 			
 		bufferPanel.add(categoriesList, "cell 0 0 1 6,grow");

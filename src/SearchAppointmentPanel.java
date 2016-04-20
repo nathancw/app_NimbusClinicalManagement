@@ -70,6 +70,7 @@ public class SearchAppointmentPanel extends JPanel{
 	private JComboBox procedureComboBox;
 	private NimbusDAO dao;
 	private Map<String,Integer> procedureIDs;
+	private JButton searchButton;
 	
 	public SearchAppointmentPanel() {
 		try {
@@ -96,38 +97,47 @@ public class SearchAppointmentPanel extends JPanel{
 		}
 		
 		topLabel = new JLabel("Search for an Appointment by inputting data below.");
-		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		contentPanel.add(topLabel, "cell 1 0 6 1,alignx center,aligny top");
 	
 		JLabel lblPatientID = new JLabel("Patient ID:");
+		lblPatientID.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblPatientID, "cell 0 1,alignx right,aligny center");
 		
 		patientIDTextField = new JTextField();
+		patientIDTextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(patientIDTextField, "cell 1 1,alignx left,aligny center");
 		patientIDTextField.setColumns(10);
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
+		lblProcedure.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblProcedure, "cell 2 1,alignx trailing,aligny center");
 		
 		procedureComboBox = new JComboBox();
+		procedureComboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(procedureComboBox, "cell 3 1,growx");
 		procedureComboBox.setModel(getProcedures());
 		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblFirstName, "cell 4 1,alignx right,aligny center");
 		
 		firstNameTextField = new JTextField();
+		firstNameTextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(firstNameTextField, "cell 5 1,alignx left,aligny center");
 		firstNameTextField.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblLastName, "cell 6 1,alignx right,aligny center");
 		
 		lastNameTextField = new JTextField();
+		lastNameTextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lastNameTextField, "cell 7 1,alignx left,aligny center");
 		lastNameTextField.setColumns(10);
 		
-		JButton searchButton = new JButton("Search");
+		searchButton = new JButton("Search");
+		searchButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel queryModel= search();
@@ -139,9 +149,11 @@ public class SearchAppointmentPanel extends JPanel{
 		contentPanel.add(searchButton, "cell 2 2 2 1,alignx center,aligny center");
 		
 		btnBookNewAppointment = new JButton("Book New Appointment");
+		btnBookNewAppointment.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(btnBookNewAppointment, "cell 4 2 2 1,alignx center");
 		
 		lblMiddle = new JLabel("Click on a Respective Patient ID row to pull up their information.");
+		lblMiddle.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(lblMiddle, "cell 2 3 4 1,alignx center");
 		
 		JPanel resultsPanel = new JPanel();
@@ -158,6 +170,7 @@ public class SearchAppointmentPanel extends JPanel{
 	
 		resultsPanel.setLayout(new BorderLayout(0, 0));
 		table = new JTable(model);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		//Set column widths to make table bigger
 		TableColumnModel columnModel = table.getColumnModel();
@@ -192,10 +205,14 @@ public class SearchAppointmentPanel extends JPanel{
 			     //}
 			   }
 			});
-		
 	
 	}
 
+
+	public JButton getDefaultButton(){
+		return searchButton;
+	}
+	
 	public DefaultTableModel search(){
 		
 		//http://stackoverflow.com/questions/22238641/create-vector-for-defaulttablemodel

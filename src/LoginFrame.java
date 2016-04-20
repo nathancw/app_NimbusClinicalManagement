@@ -34,6 +34,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.awt.Font;
 
 
 public class LoginFrame extends JFrame {
@@ -106,16 +107,20 @@ public class LoginFrame extends JFrame {
 		signInpanel.setLayout(new MigLayout("", "[50][100][100][50]", "[30][][30][][40]"));
 		
 		JLabel lblNewLabel = new JLabel("Username");
+		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		signInpanel.add(lblNewLabel, "cell 1 0 2 1,aligny bottom");
 		
 		usernametextField = new JTextField();
+		usernametextField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		signInpanel.add(usernametextField, "cell 1 1 2 1,growx,aligny top");
 		usernametextField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Password");
+		lblNewLabel_1.setFont(new Font("Dialog", Font.PLAIN, 14));
 		signInpanel.add(lblNewLabel_1, "cell 1 2 2 1,aligny bottom");
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		signInpanel.add(passwordField, "cell 1 3 2 1,growx,aligny top");
 		
 		JButton loginBtn = new JButton("Log in");

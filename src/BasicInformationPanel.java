@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.awt.Font;
 
 
 public class BasicInformationPanel extends JPanel {
@@ -62,7 +63,8 @@ public class BasicInformationPanel extends JPanel {
 		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][100][100][100][100][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30]"));
 		
 		JLabel lblViewPatientInformation = new JLabel("View Patient Information");
-		contentPanel.add(lblViewPatientInformation, "cell 3 0 3 1,aligny top");
+		lblViewPatientInformation.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		contentPanel.add(lblViewPatientInformation, "cell 3 0 3 1,alignx center,aligny center");
 		
 		JPanel BasicPanel = new JPanel();
 		BasicPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -70,19 +72,24 @@ public class BasicInformationPanel extends JPanel {
 		BasicPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100]", "[30][30][30]"));
 		
 		JLabel lblFirstNamel = new JLabel("First Name:");
+		lblFirstNamel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblFirstNamel, "cell 0 0");
 		
 		firstnametextField = new JTextField();
+		firstnametextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(firstnametextField, "cell 1 0");
 		firstnametextField.setColumns(10);
 		
 		JLabel lblSex = new JLabel("Sex:");
+		lblSex.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblSex, "cell 2 0,alignx left");
 		
 		maleRadioButton = new JRadioButton("Male");
+		maleRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(maleRadioButton, "cell 3 0,alignx left");
 		
 		femaleRadioButton = new JRadioButton("Female");
+		femaleRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(femaleRadioButton, "cell 4 0,alignx left");
 		
 		//Button group so only one can be checked at once
@@ -91,23 +98,29 @@ public class BasicInformationPanel extends JPanel {
 		group.add(femaleRadioButton);
 		
 		JLabel lblPatientId = new JLabel("Patient ID:");
+		lblPatientId.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblPatientId, "cell 5 0,alignx left");
 		
 		patientidtextField = new JTextField();
+		patientidtextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(patientidtextField, "cell 6 0,growx");
 		patientidtextField.setColumns(10);
 		
 		JLabel lblMiddleName = new JLabel("Middle Name:");
+		lblMiddleName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblMiddleName, "cell 0 1");
 		
 		middlenametextField = new JTextField();
+		middlenametextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(middlenametextField, "cell 1 1");
 		middlenametextField.setColumns(10);
 		
 		JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
+		lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblDateOfBirth, "cell 2 1,alignx left");
 		
 		dobTextField = new JFormattedTextField();
+		dobTextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(dobTextField, "cell 3 1,growx");
 		dobTextField.setColumns(10);
 		
@@ -126,16 +139,20 @@ public class BasicInformationPanel extends JPanel {
 		
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblLastName, "cell 0 2");
 		
 		lastnametextField = new JTextField();
+		lastnametextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lastnametextField, "cell 1 2");
 		lastnametextField.setColumns(10);
 		
 		JLabel lblAge = new JLabel("Age:");
+		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(lblAge, "cell 2 2,alignx left");
 		
 		agetextField = new JFormattedTextField();
+		agetextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		BasicPanel.add(agetextField, "cell 3 2,growx");
 		agetextField.setColumns(10);
 		
@@ -145,16 +162,18 @@ public class BasicInformationPanel extends JPanel {
 		addressPanel.setLayout(new MigLayout("", "[100][100][100]", "[30][30][30][30]"));
 		
 		JLabel lblAddress = new JLabel("Address:");
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(lblAddress, "cell 0 0,alignx left");
 		
 		addresstextField = new JTextField();
+		addresstextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(addresstextField, "cell 1 0 2 1,growx");
 		addresstextField.setColumns(10);
-		addresstextField.setText("Test");
 		//addresstextField.setEnabled(false);
 		addresstextField.setEditable(false);
 		
 		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(lblCity, "cell 0 1,alignx left");
 		
 		citytextField = new JTextField();
@@ -162,16 +181,20 @@ public class BasicInformationPanel extends JPanel {
 		citytextField.setColumns(10);
 		
 		JLabel lblState = new JLabel("State:");
+		lblState.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(lblState, "cell 0 2,alignx left");
 		
 		statetextField = new JFormattedTextField();
+		statetextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(statetextField, "cell 1 2,growx");
 		statetextField.setColumns(2);
 		
 		JLabel lblZip = new JLabel("Zip:");
+		lblZip.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(lblZip, "cell 0 3,alignx left");
 		
 		ziptextField = new JFormattedTextField();
+		ziptextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addressPanel.add(ziptextField, "cell 1 3,growx");
 		ziptextField.setColumns(5);
 		
@@ -181,30 +204,38 @@ public class BasicInformationPanel extends JPanel {
 		contactPanel.setLayout(new MigLayout("", "[100][100][100]", "[30][30][30][30]"));
 		
 		JLabel lblPhoneNumber = new JLabel("Home Phone:");
+		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(lblPhoneNumber, "cell 0 0,alignx left");
 		
 		homephonetextField = new JFormattedTextField();
+		homephonetextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(homephonetextField, "cell 1 0,growx");
 		homephonetextField.setColumns(10);
 		
 		JLabel lblMobile = new JLabel("Mobile:");
+		lblMobile.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(lblMobile, "cell 0 1,alignx left");
 		
 		mobilephonetextField = new JFormattedTextField();
+		mobilephonetextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(mobilephonetextField, "cell 1 1,growx");
 		mobilephonetextField.setColumns(10);
 		
 		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(lblEmail, "cell 0 2,alignx left");
 		
 		emailtextField = new JTextField();
+		emailtextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(emailtextField, "cell 1 2,growx");
 		emailtextField.setColumns(10);
 		
 		JLabel lblFax = new JLabel("Fax:");
+		lblFax.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(lblFax, "cell 0 3,alignx left");
 		
 		faxtextField = new JFormattedTextField();
+		faxtextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contactPanel.add(faxtextField, "cell 1 3,growx");
 		faxtextField.setColumns(10);
 		
@@ -213,6 +244,7 @@ public class BasicInformationPanel extends JPanel {
 		editbtnPanel.setLayout(new BorderLayout(0, 0));
 		
 		btnEdit = new JButton("Edit");
+		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setAllEditable();
@@ -225,6 +257,7 @@ public class BasicInformationPanel extends JPanel {
 		savebtnPanel.setLayout(new BorderLayout(0, 0));
 		
 		btnSave = new JButton("Save");
+		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -243,6 +276,10 @@ public class BasicInformationPanel extends JPanel {
 
 		//setAllUnEditable();
 		setFormatting();
+	}
+	
+	public JButton getDefaultButton(){
+		return btnSave;
 	}
 
 	public void setAllUnEditable(){

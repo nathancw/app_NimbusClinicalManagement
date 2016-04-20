@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
+import java.awt.Font;
 
 public class OptionMenuFrame extends JFrame {
 
@@ -81,6 +82,7 @@ public class OptionMenuFrame extends JFrame {
 		
 		
 		categoriesList = new JList(directoryList);
+		categoriesList.setFont(new Font("Tahoma", Font.BOLD, 12));
 		categoriesList.setBorder(new LineBorder(new Color(0, 0, 0)));
 			
 		bufferPanel.add(categoriesList, "cell 0 0 1 6,grow");
@@ -96,73 +98,10 @@ public class OptionMenuFrame extends JFrame {
 		{
 		  public void valueChanged(ListSelectionEvent ev)
 		  {	
-			  if (!ev.getValueIsAdjusting()) {//This line prevents double events Put the code for when to switch based on specific values in this if statement.
-			
-				 
+			  if (!ev.getValueIsAdjusting()) {//This line prevents double events Put the code for when to switch based on specific values in this if statement.		 
 				 String selectedValue = (String)categoriesList.getSelectedValue();
-				 System.out.println("Selected:" + selectedValue); 		 
-				 
-				 /////////////////////////////////////////////////////////////////
-				 ///Selecting Which Frame to show below///////////////////////////
-				 ///These will need to be changed from hardcoded stuff to array values I believe
-				 if(selectedValue.equals("Search For Patient")){
-					 dataPanel.removeAll();
-					 SearchPatientPanel searchPanel = new SearchPatientPanel();
-					 dataPanel.add(searchPanel,"cell 0 0,grow");
-					 getRootPane().setDefaultButton(searchPanel.getDefaultButton());
-					 setVisible(true);
-					 repaint();
-					 
-				 }
-				 
-				 else if(selectedValue.equals("View Patient Information")){
-					 dataPanel.removeAll();
-					 BasicInformationPanel basicInfo = new BasicInformationPanel();
-					 dataPanel.add(basicInfo,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-				 }	 
-				 else if(selectedValue.equals("Book New Appointment")){
-					 dataPanel.removeAll();
-					 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();
-					 dataPanel.add(bookAppointment,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-					 
-				 }
-				 
-				 else if(selectedValue.equals("Insurance Information")){
-					 dataPanel.removeAll();
-					 InsurancePanel insInfo = new InsurancePanel();
-					 dataPanel.add(insInfo,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-				 }	 
-				 else if(selectedValue.equals("Search For Appointment")){
-					 dataPanel.removeAll();
-					 SearchAppointmentPanel searchApp = new SearchAppointmentPanel();
-					 dataPanel.add(searchApp,"cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-				 }	 
-				 /*else if(selectedValue.equals("Bill Patient")){
-					 dataPanel.removeAll();
-					 BillingPanel searchBill = new BillingPanel();
-					 dataPanel.add(searchBill, "cell 0 0,grow");
-					 setVisible(true);
-					 repaint();
-				 }*/
-				 else if(selectedValue.equals("Return to Main Menu")){
-					 dispose();
-					 MainMenu main = new MainMenu();
-					 main.setVisible(true);
-				 }	 
-				 	
-				 /////////////////////////////////////////////////////////////
-				 
-				 
+				 show(selectedValue);
 			  }
-		
 		  } 
 		  
 		});
@@ -173,6 +112,7 @@ public class OptionMenuFrame extends JFrame {
 		if(selectedValue.equals("Search For Patient")){
 			 dataPanel.removeAll();
 			 SearchPatientPanel searchPanel = new SearchPatientPanel();
+			 getRootPane().setDefaultButton(searchPanel.getDefaultButton());
 			 dataPanel.add(searchPanel,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
@@ -182,38 +122,32 @@ public class OptionMenuFrame extends JFrame {
 		 else if(selectedValue.equals("Basic Information")){
 			 dataPanel.removeAll();
 			 BasicInformationPanel basicInfo = new BasicInformationPanel();
+			 getRootPane().setDefaultButton(basicInfo.getDefaultButton());
 			 dataPanel.add(basicInfo,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
 		 }
-		/* else if(selectedValue.equals("Billing History")){
-			 dataPanel.removeAll();
-			 BillingPanel basicInfo = new BillingPanel();
-			 dataPanel.add(basicInfo,"cell 0 0,grow");
-			 setVisible(true);
-			 repaint();
-		 }*/
 		 else if(selectedValue.equals("Book New Appointment")){		 
 			 dataPanel.removeAll();
 			 BookAppointmentPanel bookAppointment = new BookAppointmentPanel();
+			 getRootPane().setDefaultButton(bookAppointment.getDefaultButton());
 			 dataPanel.add(bookAppointment, "cell 0 0,grow");
-			 setVisible(true);
-			 repaint();
-		 }
-		 else if(selectedValue.equals("Insurance Information")){
-			 dataPanel.removeAll();
-			 InsurancePanel insuranceInfo = new InsurancePanel();
-			 dataPanel.add(insuranceInfo, "cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
 		 }
 		 else if(selectedValue.equals("Search For Appointment")){
 			 dataPanel.removeAll();
 			 SearchAppointmentPanel searchApp = new SearchAppointmentPanel();
+			 getRootPane().setDefaultButton(searchApp.getDefaultButton());
 			 dataPanel.add(searchApp,"cell 0 0,grow");
 			 setVisible(true);
 			 repaint();
 		 }	 
+		 else if(selectedValue.equals("Return to Main Menu")){
+			 dispose();
+			 MainMenu main = new MainMenu();
+			 main.setVisible(true);
+		 }
 	}
 	
 	public void populateAppointment(int appointmentID){

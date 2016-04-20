@@ -99,6 +99,7 @@ public class AppointmentHistoryPanel extends JPanel{
 	
 		resultsPanel.setLayout(new BorderLayout(0, 0));
 		table = new JTable(model);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		//Set column widths to make table bigger
 		TableColumnModel columnModel = table.getColumnModel();
@@ -121,7 +122,7 @@ public class AppointmentHistoryPanel extends JPanel{
 		}
 		
 		topLabel = new JLabel("<html>Appointment History <br> Select an appointment to view details. <br>Patient ID: " + patient_ID  + "</html>");
-		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		contentPanel.add(topLabel, "cell 2 1 4 1,alignx center,aligny top");
 		
 		resultsPanel.add(table,BorderLayout.CENTER);

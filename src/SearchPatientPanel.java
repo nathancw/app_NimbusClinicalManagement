@@ -89,20 +89,24 @@ public class SearchPatientPanel extends JPanel{
 		
 		
 		topLabel = new JLabel("Search for a patient by inputting data below.");
-		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		contentPanel.add(topLabel, "cell 1 0 6 1,alignx center,aligny top");
 	
 		JLabel lblPatientID = new JLabel("Patient ID:");
+		lblPatientID.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblPatientID, "cell 0 1,alignx right,aligny center");
 		
 		patientIDtextField = new JTextField();
+		patientIDtextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(patientIDtextField, "cell 1 1,alignx left,aligny center");
 		patientIDtextField.setColumns(10);
 		
 		JLabel lblDOB = new JLabel("Date of Birth:");
+		lblDOB.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblDOB, "cell 2 1,alignx right,aligny center");		
 		
 		dOBtextField = new JFormattedTextField();
+		dOBtextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(dOBtextField, "cell 3 1,alignx left,aligny center");
 		dOBtextField.setColumns(10);
 		
@@ -116,34 +120,35 @@ public class SearchPatientPanel extends JPanel{
 		}
 		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblFirstName, "cell 4 1,alignx right,aligny center");
 		
 		firstNametextField = new JTextField();
+		firstNametextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(firstNametextField, "cell 5 1,alignx left,aligny center");
 		firstNametextField.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lblLastName, "cell 6 1,alignx right,aligny center");
 		
 		lastNametextField = new JTextField();
+		lastNametextField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPanel.add(lastNametextField, "cell 7 1,alignx left,aligny center");
 		lastNametextField.setColumns(10);
 		
 		searchButton = new JButton("Search");
+		searchButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//when we search, we need to update the patients list
-				//But when we click on the patient name we need to QUERY AGAIN? Like damn this is going to be so long and touhg
-				//Do I create a PatientDAO? 
 				DefaultTableModel queryModel= search(patients);
-					
-				table.setModel(queryModel);
-				System.out.println("Search button pressed!");
+				table.setModel(queryModel);	
 			}
 		});
 		contentPanel.add(searchButton, "cell 3 2,alignx right,aligny center");
 		
 		lblMiddle = new JLabel("Click on a Patient Name to pull up their information.");
+		lblMiddle.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		contentPanel.add(lblMiddle, "cell 1 3 6 1,alignx center");
 		
 		JPanel resultsPanel = new JPanel();
@@ -159,6 +164,7 @@ public class SearchPatientPanel extends JPanel{
 		    }
 		  };
 		table = new JTable(model);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		  
 		table.setBorder(null);
 		resultsPanel.add(table);
