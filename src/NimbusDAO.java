@@ -700,11 +700,13 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName,a.[Billing_ID] "
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName,a.[Billing_ID],c.FirstName,c.LastName,c.Email "
 				+ "from NCMSE.ncm.Billing a "
-				+ "inner join "
-				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "
-				+ "where patient_ID = ?";
+				+ " inner join "
+				+ " NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID " +
+				" inner join " +
+				"  NCMSE.NCM.Patient c on a.patient_ID = c.patient_ID "
+				+ " where a.patient_ID = ? ";
 		
 		ResultSet rs = null;
 		

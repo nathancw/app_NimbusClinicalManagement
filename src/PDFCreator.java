@@ -17,13 +17,30 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class PDFCreator {
-
-	public static void main(String[] args)
-	{
-	    Document document = new Document();
+	
+	private String amount;
+	private String dateIssued;
+	private String chargeDate;
+	private String procedure;
+	private int patient_ID;
+	private int billing_ID;
+	private String name;
+	
+	
+	public PDFCreator(String name, String amount, String procedure, String dateIssued, String chargeDate, int patient_ID, int billing_ID){
+	   
+		this.name = name;
+		this.amount = amount;
+		this.procedure = procedure;
+		this.dateIssued = dateIssued;
+		this.chargeDate = chargeDate;
+		this.patient_ID = patient_ID;
+		this.billing_ID = billing_ID;
+		
+		Document document = new Document();
 	    try
 	    {
-	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("AddTableExample.pdf"));
+	        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Bill" + billing_ID +".pdf"));
 	        document.open();
 	 
 	   /*     PdfPTable table = new PdfPTable(4); // 3 columns.
@@ -81,14 +98,14 @@ public class PDFCreator {
 	        //Add to document
 	        document.add(image1);
 	     
-	        Paragraph name = new Paragraph("Nimbus Clinical Management \n8421 West Forest Drive,\nFayetteville, Arkansas, 72701\n555-382-9876\n12/31/2016");
-	        name.setSpacingBefore(55f);
-	        name.setSpacingAfter(10f);
+	        Paragraph companyInfo = new Paragraph("Nimbus Clinical Management \n8421 West Forest Drive,\nFayetteville, Arkansas, 72701\n555-382-9876\n12/31/2016");
+	        companyInfo.setSpacingBefore(55f);
+	        companyInfo.setSpacingAfter(10f);
 	   
 	        Paragraph billingInvoice = new Paragraph("Billing Invoice");
 	        billingInvoice.setAlignment(Element.ALIGN_CENTER);
 	        
-	        document.add(name);
+	        document.add(companyInfo);
 	        document.add(billingInvoice);
 	        //document.add(paragraphTable1);
 	        document.add(createFirstTable());
@@ -101,7 +118,7 @@ public class PDFCreator {
 	    }
 	}
 
-	 public static PdfPTable createFirstTable() {
+	 public PdfPTable createFirstTable() {
 		
 	    	// a table with three columns
 	        PdfPTable table = new PdfPTable(2);
@@ -116,8 +133,7 @@ public class PDFCreator {
 				e.printStackTrace();
 			}
 	        
-	        
-	        
+	  
 	        PdfPCell cell;
 	        // we add a cell with colspan 3
 	        cell = new PdfPCell(new Phrase("Patient Information"));
@@ -129,7 +145,7 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("Nathaniel Webb"));
+	        cell = new PdfPCell(new Phrase(name));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
@@ -137,7 +153,7 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("100012"));
+	        cell = new PdfPCell(new Phrase(Integer.toString(patient_ID)));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
@@ -151,7 +167,7 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("12/31/2016"));
+	        cell = new PdfPCell(new Phrase(dateIssued));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
@@ -159,7 +175,7 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("12/31/2018"));
+	        cell = new PdfPCell(new Phrase(chargeDate));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
@@ -175,11 +191,11 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.BOTTOM);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("Heart Surgery"));
+	        cell = new PdfPCell(new Phrase(procedure));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("$5,000"));
+	        cell = new PdfPCell(new Phrase(amount));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
@@ -194,7 +210,7 @@ public class PDFCreator {
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        
-	        cell = new PdfPCell(new Phrase("$5,000"));
+	        cell = new PdfPCell(new Phrase(amount));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        table.addCell(cell);
 	        

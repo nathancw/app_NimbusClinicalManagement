@@ -44,6 +44,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 
 public class BillingPanel extends JPanel {
@@ -63,6 +64,8 @@ public class BillingPanel extends JPanel {
 	private NimbusDAO dao;
 	private Map<String,Integer> procedureIDs;
 	private Map<Integer,Double> procedureCosts;
+	private String patientName;
+	private String email;
 	
 	String[] colNames = {"Patient_ID", "Procedure", "Amount", "DateIssued", "ChargeDate, DatePaid"};
 	Object[][] patients = {
@@ -85,6 +88,7 @@ public class BillingPanel extends JPanel {
 		contentPanel.setLayout(new MigLayout("", "[100][100.00][100][100][100][100][100][100][100]", "[100][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30][30]"));
 		
 		JLabel lblSelectAPatient = new JLabel("Select a Patient Bill to view its data below");
+		lblSelectAPatient.setFont(new Font("Dialog", Font.PLAIN, 18));
 		contentPanel.add(lblSelectAPatient, "cell 2 0 5 1,alignx center");
 		
 		JPanel tablePanel = new JPanel();
@@ -96,32 +100,41 @@ public class BillingPanel extends JPanel {
 		billInformation.setLayout(new MigLayout("", "[25][100][125][100][125][25]", "[30][30][30][30,grow]"));
 		
 		JLabel lblChargeDate = new JLabel("Charge Date:");
+		lblChargeDate.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblChargeDate, "cell 1 0,alignx right");
 		
 		chargeDateField = new JFormattedTextField();
+		chargeDateField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(chargeDateField, "cell 2 0,growx");
 		
 		JLabel lblProcedure = new JLabel("Procedure:");
+		lblProcedure.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblProcedure, "cell 3 0,alignx right");
 		
 		procedureBox = new JComboBox();
+		procedureBox.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(procedureBox, "cell 4 0,growx");
 		
 		JLabel lblNewLabel = new JLabel("Date Issued:");
+		lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblNewLabel, "cell 1 2,alignx right");
 		
 		dateIssuedField = new JFormattedTextField();
+		dateIssuedField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(dateIssuedField, "cell 2 2,growx");
 		
 		JLabel lblAmount = new JLabel("Amount:");
+		lblAmount.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblAmount, "cell 3 2,alignx right");
 	
 		NumberFormat paymentFormat = NumberFormat.getCurrencyInstance();
 		amountField = new JFormattedTextField(paymentFormat);
+		amountField.setFont(new Font("Dialog", Font.PLAIN, 14));
 
 		billInformation.add(amountField, "cell 4 2,growx");
 		
 		JLabel lblPaid = new JLabel("Paid:");
+		lblPaid.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblPaid, "cell 1 3,alignx right");
 		
 		JPanel billInfoPanel = new JPanel();
@@ -139,9 +152,11 @@ public class BillingPanel extends JPanel {
 		
 		
 		JLabel lblDatePaid = new JLabel("Date Paid:");
+		lblDatePaid.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(lblDatePaid, "cell 3 3,alignx right");
 		
 		datePaidField = new JFormattedTextField();
+		datePaidField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		billInformation.add(datePaidField, "cell 4 3,growx");
 		
 		MaskFormatter dateMask;
@@ -164,6 +179,7 @@ public class BillingPanel extends JPanel {
 		  };
 		tablePanel.setLayout(new BorderLayout(0, 0));
 		table = new JTable(model);
+		table.setFont(new Font("Dialog", Font.PLAIN, 14));
 		table.setModel(search());
 		  
 		//table.setRowHeight(0,30);
@@ -176,6 +192,12 @@ public class BillingPanel extends JPanel {
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		
 		JButton btnGenerateBill = new JButton("Generate PDF Bill");
+		btnGenerateBill.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnGenerateBill.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				generateAndSendPDF();
+			}
+		});
 		contentPanel.add(btnGenerateBill, "cell 2 15 2 1");
 		
 		JPanel savebtnpanel = new JPanel();
@@ -184,6 +206,7 @@ public class BillingPanel extends JPanel {
 		//savebtnpanel.setVisible(false);
 		
 		btnSave = new JButton("Save");
+		btnSave.setFont(new Font("Dialog", Font.PLAIN, 14));
 		savebtnpanel.add(btnSave, BorderLayout.CENTER);
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -202,6 +225,7 @@ public class BillingPanel extends JPanel {
 		//editbtnpanel.setVisible(false);
 		
 		btnEdit = new JButton("Edit");
+		btnEdit.setFont(new Font("Dialog", Font.PLAIN, 14));
 		editbtnpanel.add(btnEdit, BorderLayout.CENTER);
 		btnEdit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -279,6 +303,8 @@ public class BillingPanel extends JPanel {
 			  };
 
 			while (rs.next()) {
+				email = rs.getString("Email");
+				patientName = rs.getString("FirstName") + " " + rs.getString("LastName");
 				String data0 = rs.getString("Patient_ID");	
 			    String data1 = rs.getString("ProcedureName");
 			    String data2 = rs.getString("Amount");
@@ -408,5 +434,14 @@ public class BillingPanel extends JPanel {
 		return updated;
 	}
 	
-
+	public void generateAndSendPDF(){
+		
+		if(billing_ID > 0){
+			PDFCreator billPDF = new PDFCreator(patientName,amountField.getText(),String.valueOf(procedureBox.getSelectedItem()),dateIssuedField.getText(),chargeDateField.getText(),patient_ID,billing_ID);
+		
+		}
+		
+	}
+	
+	
 }
