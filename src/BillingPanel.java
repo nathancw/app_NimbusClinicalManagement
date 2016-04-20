@@ -200,11 +200,9 @@ public class BillingPanel extends JPanel {
 			
 		
 		table.addMouseListener(new MouseAdapter() {
-			  public void mouseClicked(MouseEvent e) {
-			    //if (e.getClickCount() == 1) {
-				  	
-				  	billing_ID = billingIDs.get(table.getSelectedRow());
-				  	 
+			  public void mouseClicked(MouseEvent e) {	
+				  billing_ID = billingIDs.get(table.getSelectedRow());
+
 			    	 String id = table.getValueAt(table.getSelectedRow(),0).toString();
 			    	 String procedure = table.getValueAt(table.getSelectedRow(),1).toString();
 			    	 String amount = table.getValueAt(table.getSelectedRow(),2).toString();
@@ -376,6 +374,7 @@ public DefaultTableModel search(){
 		boolean updated = false;
 		try{
 			
+
 			///NEED ERROR CHECKING WHEN UPDATING. Dates can be all messed up
 			if(paid == 1 && datePaidField.getText().substring(6,10).equals("2999")){
 				Calendar today = Calendar.getInstance();
