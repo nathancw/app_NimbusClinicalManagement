@@ -352,7 +352,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		//System.out.println("at 0: " + (int)dateofbirth.charAt(0));
 		try {
-			if((dateofbirth.charAt(0) != 32))
+			if((dateofbirth.charAt(0) != 32) || dateofbirth.charAt(6) == 6)
 			dob = df.parse(dobYMD);
 			else{
 				//Set to todays date if none is specified
@@ -656,37 +656,51 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		return patient_ID;
 	}
 	
-	public void editBillingHistory(boolean update, int patient_ID,int procedure_ID, double amount, Date date){
+	public Boolean editBillingHistory(boolean update, int patient_ID, int procedure_ID, double amount, String dateIssued, String chargeDate, int paid, String datePaid,int billing_ID){
 		
 		String sqlQuery = null;
 		
-		if(!update)
-		sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID,Procedure_ID,Amount,DateIssued,ChargeDate,Paid) " +
-						"values(?,?,?,?,?,0)";
-		
+		if(!update){
+		sqlQuery = "insert into NCMSE.NCM.Billing (Patient_ID,Procedure_ID,Amount,DateIssued,ChargeDate,Paid,DatePaid) " +
+					" values(?,?,?,?,?,?,?)";
+		}
+		else
+			sqlQuery = "update NCMSE.NCM.Billing set Patient_ID = ?, Procedure_ID = ?,Amount = ?,DateIssued = ?,ChargeDate = ?,Paid = ?,DatePaid = ? where Billing_ID = ?";
+
 		ResultSet rs = null;
-		
 		try {
+			
+			Date charge = parseTextFieldDate(chargeDate);
+			Date issued = parseTextFieldDate(dateIssued);
+			Date payment = parseTextFieldDate(datePaid);
 			
 			PreparedStatement stmt = this.getConnection().prepareStatement(sqlQuery);
 			stmt.setInt(1, patient_ID);
 			stmt.setInt(2, procedure_ID);
 			stmt.setDouble(3, amount);
-			stmt.setDate(4, new java.sql.Date(date.getTime()));
-			stmt.setDate(5, new java.sql.Date(date.getTime()));
+			stmt.setDate(4, new java.sql.Date(issued.getTime()));
+			stmt.setDate(5, new java.sql.Date(charge.getTime()));
+			if(!update)
+				stmt.setInt(6,0);
+			else
+				stmt.setInt(6, paid);
 			
+			stmt.setDate(7,  new java.sql.Date(payment.getTime()));
+			
+			if(update)
+				stmt.setInt(8, billing_ID);
 			stmt.executeUpdate();
-			
+			return true;
 	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return false;
 	}
 	
 	public ResultSet getBillingHistory(int patient_ID){
 		
-		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName "
+		String sqlQuery = "select a.[Patient_ID],a.[Procedure_ID],a.[Amount],a.[DateIssued],a.[ChargeDate],a.[Paid],a.[DatePaid],b.ProcedureName,a.[Billing_ID] "
 				+ "from NCMSE.ncm.Billing a "
 				+ "inner join "
 				+ "NCMSE.NCM.Clinical_Procedures b  on b.Procedure_ID = a.Procedure_ID "

@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -264,8 +266,10 @@ public class BookAppointmentPanel extends JPanel {
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(changeAppointmentData(true))
+				if(changeAppointmentData(true)) {
 					setAllUneditable();
+					insertEdit();
+				}
 			}
 		});
 		editSavePanel.add(btnSave);
@@ -535,6 +539,19 @@ public class BookAppointmentPanel extends JPanel {
 		int procedureID = 0;
 		Date datePickerDate= (Date)datePicker.getModel().getValue();
 		double amount;
+		int paid = 0;
+		Calendar charge = Calendar.getInstance();
+		charge.setTime(datePickerDate);
+		charge.add(Calendar.MONTH, 1);
+		Date chargeDate = charge.getTime();
+		
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		
+		//Format to mm/dd/yyyy so we can format it back to yyyy-mm-dd ROFL
+		String chargeDateFormat = df.format(chargeDate);
+		String datePickerDateFormat = df.format(datePickerDate);
+		
+		System.out.println("Charge date: " + chargeDateFormat + " Datepickerdateformat: " + datePickerDateFormat);
 		
 		if(procedureIDs == null || doctorIDs == null || datePickerDate == null || procedurecomboBox.getSelectedItem() == "" || timeID == 0){
 			
@@ -586,7 +603,7 @@ public class BookAppointmentPanel extends JPanel {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Booked Appointment.");
 		
-			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDate);
+			dao.editBillingHistory(false,Integer.parseInt(patient_ID),procedureID,amount,datePickerDateFormat,chargeDateFormat,paid,"12/31/2999",0);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -595,5 +612,29 @@ public class BookAppointmentPanel extends JPanel {
 		
 		
 		return true;
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited appointment information.";
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

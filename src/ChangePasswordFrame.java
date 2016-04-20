@@ -27,6 +27,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import javax.swing.JPasswordField;
 
 
@@ -128,6 +131,7 @@ public class ChangePasswordFrame extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 				if(checkPassword()) {
 					updateDatabase();
+					insertEdit();
 					dispose();
 					LoginFrame create = new LoginFrame();
 					create.setVisible(true);
@@ -238,6 +242,30 @@ public class ChangePasswordFrame extends JFrame {
 			dao.changePassword(un, newpass,salt);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited account password.";
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
