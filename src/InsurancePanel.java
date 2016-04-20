@@ -3,11 +3,18 @@
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import java.awt.Color;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.text.DateFormat;
@@ -18,6 +25,10 @@ import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.JTabbedPane;
+
+//Added Imports
+
+
 
 public class InsurancePanel extends JPanel {
 	private JTextField txtCompName1;
@@ -34,10 +45,13 @@ public class InsurancePanel extends JPanel {
 	private JTextField txtPhoneNum2;
 	private JTextField txttype1;
 	private JTextField txttype2;
+	private JTextField txttype3;
 	private String firstName;
 	private String lastName;
 
-	//Will add getters & setters -Jason Wolverton
+
+	//Pull insurance Information
+	
 	private  int patientID = 0;
 	private  int companyID = 0;
 	private  String companyName = "";
@@ -49,8 +63,21 @@ public class InsurancePanel extends JPanel {
 	private  String type = "";
 	
 	private  String groupNumber = "";
-	private  String planStartDate= "";
+	private  String planStartDate= "1799";
 	private  String planEndDate = "";
+	
+	
+	//Edit & Save Insurance Information
+	private JPanel contentPane;
+	private JPanel contentPanel;	
+	private JPanel bufferPanel;
+	private JList categoriesList;
+	private JPanel dataPanel;
+	private JPanel removeablePanel;
+	private int patient_ID;
+	
+	private JButton btnEdit;
+	private JButton btnSave;
 	
 	
 	
@@ -58,11 +85,12 @@ public class InsurancePanel extends JPanel {
 	//Changed to display insurance info - Jason Wolverton 4/5/16
 	public InsurancePanel(int ID) {
 		
+		System.out.print("Hello im insurance panel!");
 		patientID = ID;
 		
 		firstName = "";
 		lastName  = "";
-		String dateofbirth = "";
+		
 		
 		NimbusDAO daotest;
 			try{
@@ -75,40 +103,21 @@ public class InsurancePanel extends JPanel {
 					lastName = rs.getString("LastName");
 					
 				}
-				
-			//What jason had
-			/*
-			ResultSet rs2 = daotest.getInsuranceCompanyDetails(companyID, companyName, companyAddress, companyCity, companyState, companyZip, companyPhone, type, patientID);
-				
-				if(rs2.next()){
-					companyName = rs2.getString("Name");
-					companyAddress = rs2.getString("AAddress");
-					companyCity = rs2.getString("City");
-					companyState = rs2.getString("CState");
-					companyZip = rs2.getInt("Zip");
-					companyPhone = rs2.getString("Phone");
-					type = rs2.getString("Ttype");
-					
-				}
 			
-			ResultSet rs3 = daotest.getInsuranceDetails(patientID, groupNumber, planStartDate, planEndDate);
+				ResultSet rs3 = daotest.getInsuranceDetails(patientID);
+					
 				
-				if(rs3.next()){
-					groupNumber = rs3.getInt("groupNumber");
-					planStartDate = rs3.getString("planStartDate");
-					planEndDate = rs3.getString("planEndDate");
-					
-					
-				}
-			*/
-				
-			//What Nathan thinks should be done
-			
-			ResultSet rs3 = daotest.getInsuranceDetails(patientID);
-					
 					if(rs3.next()){
 						
 						groupNumber = rs3.getString("groupNumber");
+						System.out.print("This is my group #: " + groupNumber);
+						if (groupNumber == null){
+							groupNumber = "0000";
+						}
+						if (groupNumber == ""){
+							
+							groupNumber = "0000";
+						}
 						planStartDate = rs3.getString("planStartDate");
 						planEndDate = rs3.getString("planEndDate");
 						companyName = rs3.getString("Name");
@@ -117,7 +126,8 @@ public class InsurancePanel extends JPanel {
 						companyState = rs3.getString("CState");
 						companyZip = rs3.getInt("Zip");
 						companyPhone = rs3.getString("Phone");
-						type = rs3.getString("Ttype");
+						type = rs3.getString("TType");
+						
 						
 				}	
 				
@@ -131,9 +141,14 @@ public class InsurancePanel extends JPanel {
 		
 		
 		
-		
+		///
+		/// PANELS
+		///
 		setLayout(new BorderLayout(0, 0));
+		System.out.print("This is also my start date: " + planStartDate);
 		
+		JPanel testPanel = new JPanel();
+		add(testPanel);
 		JPanel panel = new JPanel();
 		add(panel);
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
@@ -208,7 +223,7 @@ public class InsurancePanel extends JPanel {
 		panel_1.add(txtPlanEnd1, "cell 1 4 2 1,growx");
 		txtPlanEnd1.setColumns(10);
 		
-		JLabel lbltype1 = new JLabel("type:");
+		JLabel lbltype1 = new JLabel("Type:");
 		lbltype1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_1.add(lbltype1, "cell 0 5,alignx left");
 		
@@ -221,7 +236,6 @@ public class InsurancePanel extends JPanel {
 		
 		
 		///Secondary Insurance
-		
 		
 		
 		JPanel panel_2 = new JPanel();
@@ -282,7 +296,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(txtPlanEnd2, "cell 1 4 2 1,growx");
 		txtPlanEnd2.setColumns(10);
 		
-		JLabel lbltype2 = new JLabel("type:");
+		JLabel lbltype2 = new JLabel("Type:");
 		lbltype2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_2.add(lbltype2, "cell 0 5,alignx left");
 		
@@ -290,8 +304,71 @@ public class InsurancePanel extends JPanel {
 		txttype2.setText("401k");
 		txttype2.setColumns(10);
 		panel_2.add(txttype2, "cell 1 5 2 1,growx");
-
+		
+		
+		
+		///
+		///Save Buttons
+		///
+		
+		JButton button1 = new JButton("Save");
+		button1.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			saveChanges();
+			}
+		});
+		
+		panel_1.add(button1,"cell 6 6,growx");
+		
+		
+		JButton button2 = new JButton("Save");
+		panel_2.add(button2,"cell 6 6,growx");
+		
 	}
+		
+		
+		
+	public void saveChanges(){
+		
+		
+		
+		//Primary Insurance
+		companyName = txtCompName1.getText();
+		String patientID = txtPatientId1.getText();
+		groupNumber = txtGroupNum1.getText();
+		planStartDate = txtPlanStart1.getText();
+		txtPlanStart1.setText(planStartDate);
+		//if(planStartDate == null){
+		//	planStartDate = "FAIL";
+		//}
+		String planEndDate = txtPlanEnd1.getText();
+		String type = txttype1.getText();
+		
+		String phoneNumber = txtPhoneNum1.getText();
+
+		System.out.print("Hello, i am " + planStartDate);
+
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			boolean updated = false;
+			
+			
+			
+			dao.changeInsuranceData(updated, companyName, patientID, groupNumber, planStartDate, planEndDate, type, phoneNumber);
+						
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
+		
+		//return updated;
+		
+	};
 	
 	
 	
@@ -301,6 +378,22 @@ public class InsurancePanel extends JPanel {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///
+	/// GENERIC CONSTRUCTOR
+	///
 	
 	public InsurancePanel() {
 		setLayout(new BorderLayout(0, 0));
@@ -449,6 +542,7 @@ public class InsurancePanel extends JPanel {
 		txttype2.setText("401k");
 		txttype2.setColumns(10);
 		panel_2.add(txttype2, "cell 1 5 2 1,growx");
+		
 
 	}
 

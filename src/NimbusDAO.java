@@ -94,7 +94,8 @@ public class NimbusDAO {
 	*/
 	public ResultSet getInsuranceDetails(int patientID){
 		
-		//Stop gap solution -Jason Wolverton
+		
+		
 		String sqlQuery = "Select a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
 				+ " from [NCMSE].[NCM].[Insurance] a " + 
 				"inner join NCMSE.NCM.Insurance_Company b on a.Company_ID = b.Company_ID "
@@ -273,7 +274,76 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 
 		
 	}
+	
+	
+	//Work in Progress
+	public boolean changeInsuranceData(boolean update, String companyName, String patientID, String groupNumber, String planStartDate, String planEndDate, String type, String phoneNumber ){
+		
+		String sqlQuery = null;
+		String sqlQuery2 = null;
+		String sqlQuery3 = null;
+		String sqlQuery4 = null;
+		
+		String effDate = "2077-01-01";
+		String compID = "108709";
+		String grpN = "117";
+		String pSD = "2078-01-01";
+		
+		System.out.print(planStartDate);
+		//System.out.print(patientID);
+			//Insurance Company key MUST be updated FIRST or the company ID must be changed to a matching value
+			//Primary Insurance
 
+			
+			sqlQuery = "IF EXISTS (SELECT * FROM [NCMSE].[NCM].[Insurance] WHERE Patient_ID = ?)" + " BEGIN " + 
+			"UPDATE [NCMSE].[NCM].[Insurance] SET EffectiveDate = ?, GroupNumber = ?, PlanStartDate = ?, PlanEndDate = ? " + " WHERE Patient_ID = ?" + " END " + 
+			" ELSE " + " BEGIN " + "insert into [NCMSE].[NCM].[Insurance] (EffectiveDate, GroupNumber, PlanStartDate, PlanEndDate)" + " VALUES(?,?,?,?)" + " END ";
+			//" ELSE " + " BEGIN " + "insert into [NCMSE].[NCM].[Insurance] (EffectiveDate)" + " VALUES(?)" + " END ";
+		//	sqlQuery2 = "IF (NOT EXISTS (Select * FROM [NCMSE].[NCM].[Insurance] WHERE Patient_ID = '100013'))" + " BEGIN " +
+		
+			
+		Connection sqlconn = this.getConnection();
+		PreparedStatement stmt = null;
+		try {
+			
+			//stmt.executeUpdate("SET IDENTITY_INSERT [NCMSE].[NCM].[Insurance] ON");
+			stmt = sqlconn.prepareStatement(sqlQuery);
+			
+			stmt.setString(1, patientID);
+			
+			stmt.setString(2, effDate);
+			stmt.setString(3, groupNumber);
+			stmt.setString(4, planStartDate);
+			stmt.setString(5, planEndDate);
+			
+			stmt.setString(6, patientID);
+			
+			stmt.setString(7, effDate);
+			stmt.setString(8, groupNumber);
+			stmt.setString(9, planStartDate);
+			stmt.setString(10, planEndDate);
+			
+			
+			
+			
+		
+			stmt.executeUpdate();		
+			//rs = stmt.executeQuery();
+			return true;
+		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+
+		return false;
+	}
+	
+	
+	
+	
 	public Date parseTextFieldDate(String dateofbirth){
 		
 		String dobYMD = dateofbirth.substring(6,10) + "-" + dateofbirth.substring(0,2) + "-" + dateofbirth.substring(3,5);

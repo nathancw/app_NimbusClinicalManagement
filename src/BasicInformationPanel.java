@@ -119,6 +119,11 @@ public class BasicInformationPanel extends JPanel {
 			e1.printStackTrace();
 		}
 		
+		//Testing
+		//JButton button = new JButton("Edit");
+		//BasicPanel.add(button);
+		
+		
 		JLabel lblLastName = new JLabel("Last Name:");
 		BasicPanel.add(lblLastName, "cell 0 2");
 		
