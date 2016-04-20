@@ -85,7 +85,7 @@ public class InsurancePanel extends JPanel {
 	//Changed to display insurance info - Jason Wolverton 4/5/16
 	public InsurancePanel(int ID) {
 		
-		System.out.print("Hello im insurance panel!");
+		//System.out.print("Hello im insurance panel!");
 		patientID = ID;
 		
 		firstName = "";
@@ -110,7 +110,7 @@ public class InsurancePanel extends JPanel {
 					if(rs3.next()){
 						
 						groupNumber = rs3.getString("groupNumber");
-						System.out.print("This is my group #: " + groupNumber);
+						//System.out.print("This is my group #: " + groupNumber);
 						if (groupNumber == null){
 							groupNumber = "0000";
 						}
@@ -145,7 +145,7 @@ public class InsurancePanel extends JPanel {
 		/// PANELS
 		///
 		setLayout(new BorderLayout(0, 0));
-		System.out.print("This is also my start date: " + planStartDate);
+		//System.out.print("This is also my start date: " + planStartDate);
 		
 		JPanel testPanel = new JPanel();
 		add(testPanel);
@@ -346,7 +346,7 @@ public class InsurancePanel extends JPanel {
 		
 		String phoneNumber = txtPhoneNum1.getText();
 
-		System.out.print("Hello, i am " + planStartDate);
+		//System.out.print("Hello, i am " + planStartDate);
 
 		NimbusDAO dao;
 		

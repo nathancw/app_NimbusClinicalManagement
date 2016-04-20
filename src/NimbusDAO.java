@@ -289,7 +289,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 		String grpN = "117";
 		String pSD = "2078-01-01";
 		
-		System.out.print(planStartDate);
+		//System.out.print(planStartDate);
 		//System.out.print(patientID);
 			//Insurance Company key MUST be updated FIRST or the company ID must be changed to a matching value
 			//Primary Insurance
