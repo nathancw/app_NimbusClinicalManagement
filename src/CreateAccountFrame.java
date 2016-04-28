@@ -95,7 +95,7 @@ public class CreateAccountFrame extends JFrame {
 		JPanel accountTypePanel = new JPanel();
 		bgPanel.add(accountTypePanel, BorderLayout.CENTER);
 		accountTypePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		accountTypePanel.setLayout(new MigLayout("", "[100][100][100][100][50]", "[100][100][100]"));
+		accountTypePanel.setLayout(new MigLayout("", "[100][100][100][100]", "[100][100][100]"));
 		
 		JLabel lblAccountType = new JLabel("What type of account would you like to set up?");
 		lblAccountType.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
