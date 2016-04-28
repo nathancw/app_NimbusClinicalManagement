@@ -58,6 +58,7 @@ public class BillingPanel extends JPanel {
 	private JComboBox procedureBox;
 	private JButton btnEdit;
 	private JButton btnSave;
+	private JButton btnGenerateBill;
 	private int patient_ID;
 	private int billing_ID;
 	private Map<Integer,Integer> billingIDs = new HashMap<Integer,Integer>();
@@ -191,7 +192,7 @@ public class BillingPanel extends JPanel {
 		//NEED THE BELOW PIECE OF CODE TO LIMIT THE SIZE. Or else it gets super large for some reason.
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		
-		JButton btnGenerateBill = new JButton("Generate PDF Bill");
+		btnGenerateBill = new JButton("Generate PDF Bill");
 		btnGenerateBill.setFont(new Font("Dialog", Font.PLAIN, 14));
 		btnGenerateBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -261,11 +262,11 @@ public class BillingPanel extends JPanel {
 			    		 rdbtnNo.setSelected(false);
 			    	 }
 			    	 
-			    	 
+			    	 setAllUneditable();
 			   }
 			});
 		
-		setAllUneditable();
+		grayOutEverything();
 		
 		//End of constructor
 	}
@@ -342,6 +343,7 @@ public class BillingPanel extends JPanel {
 		procedureBox.setEnabled(false);
 		rdbtnYes.setEnabled(false);
 		rdbtnNo.setEnabled(false);
+		btnGenerateBill.setEnabled(true);
 	}
 	
 	public void setAllEditable(){
@@ -354,7 +356,22 @@ public class BillingPanel extends JPanel {
 		procedureBox.setEditable(true);
 		rdbtnYes.setEnabled(true);
 		rdbtnNo.setEnabled(true);
+		btnGenerateBill.setEnabled(false);
 		
+	}
+	
+	public void grayOutEverything(){
+		UIManager.put("ComboBox.disabledForeground", Color.black);
+		btnSave.setEnabled(false);
+		btnEdit.setEnabled(false);
+		amountField.setEditable(false);
+		datePaidField.setEditable(false);
+		chargeDateField.setEditable(false);
+		dateIssuedField.setEditable(false);
+		procedureBox.setEnabled(false);
+		rdbtnYes.setEnabled(false);
+		rdbtnNo.setEnabled(false);
+		btnGenerateBill.setEnabled(false);
 	}
 	
 	public DefaultComboBoxModel getProcedures(){
