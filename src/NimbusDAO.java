@@ -274,9 +274,91 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 
 		
 	}
+	//
+	//
+	//Called when a new patient is created to populate insurance fields
+	public boolean createInsuranceData(int patientID){
+		
+		//System.out.println("In Create insurance!");
+		String pID = Integer.toString(patientID);
+		
+		
+		String efDate = "2001-01-01";
+		String gN = "0000";
+		String pSD = "2001-01-01";
+		String pED = "2001-01-01";
+		String cID = "108712";
+		
+		
+		
+		String sqlQuery5 = null;
+		
+		sqlQuery5 = "insert into [NCMSE].[NCM].[Insurance]" +
+				"(Patient_ID, EffectiveDate, GroupNumber, PlanStartDate, PlanEndDate, Company_ID)" +
+				"VALUES (?,?,?,?,?,?)";	
+		
+		
+		Connection sqlconn = this.getConnection();
+		PreparedStatement stmt2 = null;
+		try {
+			
+			
+			stmt2 = sqlconn.prepareStatement(sqlQuery5);
+			
+			
+			stmt2.setString(1, pID);
+			stmt2.setString(2, efDate);
+			stmt2.setString(3, gN);
+			stmt2.setString(4, pSD);
+			stmt2.setString(5, pED);
+			stmt2.setString(6, cID);	
+		
+			stmt2.executeUpdate();		
+		
+			return true;		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		//Secondary Insurance
+		
+		String sqlQuery6 = null;
+		
+		sqlQuery6 = "insert into [NCMSE].[NCM].[Insurance]" +
+				"(Patient_ID, EffectiveDate, GroupNumber, PlanStartDate, PlanEndDate, Company_ID)" +
+				"VALUES (?,?,?,?,?,?)";	
+		
+		
+		Connection sqlconn2 = this.getConnection();
+		PreparedStatement stmt3 = null;
+		try {
+			
+			
+			stmt3 = sqlconn2.prepareStatement(sqlQuery6);
+			
+			
+			stmt3.setString(1, pID);
+			stmt3.setString(2, efDate);
+			stmt3.setString(3, gN);
+			stmt3.setString(4, pSD);
+			stmt3.setString(5, pED);
+			stmt3.setString(6, cID);	
+		
+			stmt3.executeUpdate();		
+		
+			return true;		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 	
 	
-	//Work in Progress
+	
+	
+	
 	public boolean changeInsuranceData(boolean update, String companyName, String patientID, String groupNumber, String planStartDate, String planEndDate, String type, String phoneNumber ){
 		
 		String sqlQuery = null;
@@ -322,10 +404,6 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			stmt.setString(8, groupNumber);
 			stmt.setString(9, planStartDate);
 			stmt.setString(10, planEndDate);
-			
-			
-			
-			
 		
 			stmt.executeUpdate();		
 			//rs = stmt.executeQuery();

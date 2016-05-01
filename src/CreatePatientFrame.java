@@ -341,7 +341,12 @@ public class CreatePatientFrame extends JFrame {
 					 emailtext, faxtext);
 			
 			
+			
 			patientID = dao.getMaxPatientIDNumber();
+			
+			dao.createInsuranceData(patientID);
+			
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -66,6 +66,20 @@ public class InsurancePanel extends JPanel {
 	private  String planStartDate= "1799";
 	private  String planEndDate = "";
 	
+	//Secondary Insurance
+	private  int patientID2 = 0;
+	private  int companyID2 = 0;
+	private  String companyName2 = "";
+	private  String companyAddress2 = "";
+	private  String companyCity2 = "";
+	private  String companyState2 = "";
+	private  int companyZip2 = 0;
+	private  String companyPhone2 = "";
+	private  String type2 = "";
+	
+	private  String groupNumber2 = "";
+	private  String planStartDate2 = "1799";
+	private  String planEndDate2 = "";
 	
 	//Edit & Save Insurance Information
 	private JPanel contentPane;
@@ -91,7 +105,7 @@ public class InsurancePanel extends JPanel {
 		firstName = "";
 		lastName  = "";
 		
-		
+		//Primary Insurance connection
 		NimbusDAO daotest;
 			try{
 				daotest = new NimbusDAO();
@@ -106,18 +120,20 @@ public class InsurancePanel extends JPanel {
 			
 				ResultSet rs3 = daotest.getInsuranceDetails(patientID);
 					
+				//groupNumber = "Blank";
+				//planStartDate = "Blank";
 				
 					if(rs3.next()){
 						
 						groupNumber = rs3.getString("groupNumber");
-						//System.out.print("This is my group #: " + groupNumber);
-						if (groupNumber == null){
-							groupNumber = "0000";
-						}
+						System.out.print("This is my group #: " + groupNumber);
 						if (groupNumber == ""){
-							
 							groupNumber = "0000";
 						}
+						//if (groupNumber == ""){
+							
+						//	groupNumber = "0000";
+						//}
 						planStartDate = rs3.getString("planStartDate");
 						planEndDate = rs3.getString("planEndDate");
 						companyName = rs3.getString("Name");
@@ -140,7 +156,61 @@ public class InsurancePanel extends JPanel {
 		}
 		
 		
-		
+		//Secondary Insurance	
+			NimbusDAO daotest2;
+			try{
+				daotest2 = new NimbusDAO();
+				ResultSet rs5 = daotest2.getPatientDetails(patientID,"","","");
+				
+				if(rs5.next()){
+					
+					firstName = rs5.getString("FirstName");
+					lastName = rs5.getString("LastName");
+					
+				}
+			
+				ResultSet rs6 = daotest2.getInsuranceDetails(patientID);
+					
+				//groupNumber = "Blank";
+				//planStartDate = "Blank";
+				
+					if(rs6.next()){
+						
+						groupNumber = rs6.getString("groupNumber");
+						System.out.print("This is my group #: " + groupNumber2);
+						if (groupNumber2 == ""){
+							groupNumber2 = "0000";
+						}
+						//if (groupNumber == ""){
+							
+						//	groupNumber = "0000";
+						//}
+						planStartDate2 = rs6.getString("planStartDate");
+						planEndDate2 = rs6.getString("planEndDate");
+						companyName2 = rs6.getString("Name");
+						companyAddress2 = rs6.getString("AAddress");
+						companyCity2 = rs6.getString("City");
+						companyState2 = rs6.getString("CState");
+						companyZip2 = rs6.getInt("Zip");
+						companyPhone2 = rs6.getString("Phone");
+						type2 = rs6.getString("TType");
+						
+						
+				}	
+				
+			
+			daotest2.closeConnection();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			
+			
+			
+			
+			
 		///
 		/// PANELS
 		///
@@ -247,7 +317,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblCompName2, "cell 0 0,alignx left");
 		
 		txtCompName2 = new JTextField();
-		txtCompName2.setText("Medicare");
+		txtCompName2.setText(companyName2);
 		panel_2.add(txtCompName2, "cell 1 0 2 1,growx");
 		txtCompName2.setColumns(10);
 		
@@ -256,7 +326,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblPhoneNum2, "cell 3 0,alignx left");
 		
 		txtPhoneNum2 = new JTextField();
-		txtPhoneNum2.setText(companyPhone);
+		txtPhoneNum2.setText(companyPhone2);
 		panel_2.add(txtPhoneNum2, "cell 4 0 2 1,growx");
 		txtPhoneNum2.setColumns(10);
 		
@@ -265,7 +335,9 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblPatientId2, "cell 0 1,alignx left");
 		
 		txtPatientId2 = new JTextField();
-		txtPatientId2.setText("985401");
+		
+		String x2 = String.valueOf(patientID);
+		txtPatientId2.setText(x2);
 		panel_2.add(txtPatientId2, "cell 1 1 2 1,growx");
 		txtPatientId2.setColumns(10);
 		
@@ -274,7 +346,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblGroupNum2, "cell 0 2,alignx left");
 		
 		txtGroupNum2 = new JTextField();
-		txtGroupNum2.setText("1110");
+		txtGroupNum2.setText(groupNumber2);
 		panel_2.add(txtGroupNum2, "cell 1 2 2 1,growx");
 		txtGroupNum2.setColumns(10);
 		
@@ -283,7 +355,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblPlanStart2, "cell 0 3,alignx left");
 		
 		txtPlanStart2 = new JTextField();
-		txtPlanStart2.setText("01/01/2016");
+		txtPlanStart2.setText(planStartDate2);
 		panel_2.add(txtPlanStart2, "cell 1 3 2 1,growx");
 		txtPlanStart2.setColumns(10);
 		
@@ -292,7 +364,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lblPlanEnd2, "cell 0 4,alignx left");
 		
 		txtPlanEnd2 = new JTextField();
-		txtPlanEnd2.setText("01/01/2017");
+		txtPlanEnd2.setText(planEndDate2);
 		panel_2.add(txtPlanEnd2, "cell 1 4 2 1,growx");
 		txtPlanEnd2.setColumns(10);
 		
@@ -301,7 +373,7 @@ public class InsurancePanel extends JPanel {
 		panel_2.add(lbltype2, "cell 0 5,alignx left");
 		
 		txttype2 = new JTextField();
-		txttype2.setText("401k");
+		txttype2.setText(type2);
 		txttype2.setColumns(10);
 		panel_2.add(txttype2, "cell 1 5 2 1,growx");
 		
@@ -331,16 +403,32 @@ public class InsurancePanel extends JPanel {
 	public void saveChanges(){
 		
 		
-		
-		//Primary Insurance
+		System.out.println("In save changes");
+		//Primary Insurance & Checking for Blanks
 		companyName = txtCompName1.getText();
-		String patientID = txtPatientId1.getText();
-		groupNumber = txtGroupNum1.getText();
-		planStartDate = txtPlanStart1.getText();
-		txtPlanStart1.setText(planStartDate);
-		//if(planStartDate == null){
-		//	planStartDate = "FAIL";
+		
+		
+		
+		
+		
+		//if (companyName == "") {
+		//	companyName = "Blank";
 		//}
+		String patientID = txtPatientId1.getText();
+	//	if (patientID == "") {
+	//		patientID = "99999";
+	//	}
+		groupNumber = txtGroupNum1.getText();
+	//	if (groupNumber == "") {
+	//		groupNumber = "Blank";
+	//	}
+		planStartDate = txtPlanStart1.getText();
+	//	if (planStartDate == ""){
+	//		planStartDate = "Blank";
+			
+	//	}
+		//txtPlanStart1.setText(planStartDate);
+		
 		String planEndDate = txtPlanEnd1.getText();
 		String type = txttype1.getText();
 		
