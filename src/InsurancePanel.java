@@ -314,7 +314,8 @@ public class InsurancePanel extends JPanel {
 		JButton button1 = new JButton("Save");
 		button1.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			saveChanges();
+			if(checkFields())
+				saveChanges();
 			}
 		});
 		
@@ -371,21 +372,16 @@ public class InsurancePanel extends JPanel {
 	};
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public Boolean checkFields() {
+		if(txtCompName1.getText().isEmpty() || txtGroupNum1.getText().isEmpty() || txtPlanStart1.getText().isEmpty() 
+				|| txtPlanEnd1.getText().isEmpty() || txtPhoneNum1.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Create Account",
+				    JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else
+			return true;
+	}
 	
 	
 	
