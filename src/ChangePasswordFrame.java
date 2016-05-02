@@ -74,17 +74,19 @@ public class ChangePasswordFrame extends JFrame {
 		
 		JPanel contentPanel = new JPanel();
 		contentPane.add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100][100]", "[100][50][50][50][50][50][50][100][100]"));
+		contentPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100][100][100][100]", "[100][50][50][50][50][50][50][50][50][100]"));
 		
-		JLabel titleLbl = new JLabel("Change your Password");
-		contentPanel.add(titleLbl, "cell 3 0 3 1,alignx center");
+		JLabel titleLbl = new JLabel("Change Your Password");
+		titleLbl.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		contentPanel.add(titleLbl, "cell 0 0 9 2,alignx center");
 		
 		JPanel passPanel = new JPanel();
 		passPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		contentPanel.add(passPanel, "cell 2 1 5 6,grow");
+		contentPanel.add(passPanel, "cell 2 2 5 6,grow");
 		passPanel.setLayout(new MigLayout("", "[125][125][125][125]", "[25][25][25][25][25][25][25][25][25][25]"));
 		
 		JLabel lblUsername = new JLabel("Please enter your username:");
+		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		passPanel.add(lblUsername, "cell 1 1 2 1,alignx center");
 		
 		txtUsername = new JTextField();
@@ -92,18 +94,21 @@ public class ChangePasswordFrame extends JFrame {
 		txtUsername.setColumns(10);
 		
 		JLabel lblOldPass = new JLabel("Please enter your old password:");
+		lblOldPass.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		passPanel.add(lblOldPass, "cell 1 3 2 1,alignx center");
 		
 		txtOldPass = new JPasswordField();
 		passPanel.add(txtOldPass, "cell 1 4 2 1,growx");
 		
 		JLabel lblNewPass = new JLabel("Please enter your preferred new password:");
+		lblNewPass.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		passPanel.add(lblNewPass, "cell 1 5 2 1,alignx center");
 		
 		txtNewPass = new JPasswordField();
 		passPanel.add(txtNewPass, "cell 1 6 2 1,growx");
 		
 		JLabel lblConfirmPass = new JLabel("Confirm new Password:");
+		lblConfirmPass.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		passPanel.add(lblConfirmPass, "cell 1 7 2 1,alignx center");
 		
 		txtConfirmPass = new JPasswordField();
@@ -114,7 +119,7 @@ public class ChangePasswordFrame extends JFrame {
 		passPanel.add(lblPassRules, "cell 1 9 3 1,aligny top");
 		
 		JButton btnCancel = new JButton("Cancel");
-		contentPanel.add(btnCancel, "cell 5 7");
+		contentPanel.add(btnCancel, "cell 5 8");
 		
 		btnCancel.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
@@ -125,7 +130,7 @@ public class ChangePasswordFrame extends JFrame {
 			});
 		
 		JButton btnSave = new JButton("Save");
-		contentPanel.add(btnSave, "cell 6 7");
+		contentPanel.add(btnSave, "cell 6 8");
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {

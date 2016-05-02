@@ -82,11 +82,11 @@ public class CreateAccountFrame extends JFrame {
 		
 		mainPanel = new JPanel();
 		contentPane.add(mainPanel, BorderLayout.CENTER);
-		mainPanel.setLayout(new MigLayout("", "[100][50][50,grow][100,grow][100][100,grow][100][100][50][50][100]", "[100][100,grow][100][100][100][100][100]"));
+		mainPanel.setLayout(new MigLayout("", "[100][50][50][100][100][100][100][100][50][50][100]", "[100][100,grow][100][100][100][100][100]"));
 		
 		JLabel lblCreateAnAccount = new JLabel("Create an Account");
-		lblCreateAnAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		mainPanel.add(lblCreateAnAccount, "cell 4 0 3 1,alignx center");
+		lblCreateAnAccount.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		mainPanel.add(lblCreateAnAccount, "cell 4 0 3 2,alignx center");
 		
 		bgPanel = new JPanel();
 		mainPanel.add(bgPanel, "flowx,cell 3 2 5 3");
@@ -98,7 +98,7 @@ public class CreateAccountFrame extends JFrame {
 		accountTypePanel.setLayout(new MigLayout("", "[100][100][100][100]", "[100][100][100]"));
 		
 		JLabel lblAccountType = new JLabel("What type of account would you like to set up?");
-		lblAccountType.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblAccountType.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		accountTypePanel.add(lblAccountType, "cell 0 0 5 1,alignx center");
 		
 		comboBoxType = new JComboBox();
@@ -126,7 +126,7 @@ public class CreateAccountFrame extends JFrame {
 		btnNext.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent evt) {
 				  //BRING UP NEXT PANEL TO CREATE INFO
-				  bgPanel.removeAll();
+				  mainPanel.removeAll();
 				  repaint();
 				  if(comboBoxType.getSelectedItem() == "Office Employee")
 					  employeeAccount();
@@ -148,10 +148,11 @@ public class CreateAccountFrame extends JFrame {
 		employeePanel.setLayout(new MigLayout("", "[100][100][100][100][100][100]", "[50][50][50][50][50][50][50][50][50][50][50][50][50][50]"));
 		
 		JLabel lblEmployeeAccount = new JLabel("Employee Account");
-		lblEmployeeAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblEmployeeAccount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		employeePanel.add(lblEmployeeAccount, "cell 2 0 2 1,alignx center");
 		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		employeePanel.add(lblFirstName, "cell 1 2,alignx left");
 		
 		txtFirstName = new JTextField();
@@ -159,6 +160,7 @@ public class CreateAccountFrame extends JFrame {
 		txtFirstName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		employeePanel.add(lblLastName, "cell 1 4,alignx left");
 		
 		txtLastName = new JTextField();
@@ -166,6 +168,7 @@ public class CreateAccountFrame extends JFrame {
 		txtLastName.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		employeePanel.add(lblUsername, "cell 1 6,alignx left");
 		
 		txtUsername = new JTextField();
@@ -177,6 +180,7 @@ public class CreateAccountFrame extends JFrame {
 		employeePanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
 		
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		employeePanel.add(lblPassword, "cell 1 8,alignx left");
 		
 		txtPassword = new JPasswordField();
@@ -184,6 +188,7 @@ public class CreateAccountFrame extends JFrame {
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
+		lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		employeePanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
 		txtConfirmPassword = new JPasswordField();
@@ -233,10 +238,11 @@ public class CreateAccountFrame extends JFrame {
 		doctorPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100]", "[50][50][50][25][50][25][50][25][50][25][50][25][50][50][50][50]"));
 		
 		JLabel lblDoctorAccount = new JLabel("Doctor Account");
-		lblDoctorAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblDoctorAccount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		doctorPanel.add(lblDoctorAccount, "cell 2 0 2 1,alignx center");
 		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblFirstName, "cell 1 2,alignx left");
 		
 		txtFirstName = new JTextField();
@@ -244,6 +250,7 @@ public class CreateAccountFrame extends JFrame {
 		txtFirstName.setColumns(10);
 		
 		JLabel lblMiddleName = new JLabel("Middle Name:");
+		lblMiddleName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblMiddleName, "cell 3 2,growx");
 		
 		txtMiddleName = new JTextField();
@@ -251,6 +258,7 @@ public class CreateAccountFrame extends JFrame {
 		txtMiddleName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblLastName, "cell 1 4,alignx left");
 		
 		txtLastName = new JTextField();
@@ -258,6 +266,7 @@ public class CreateAccountFrame extends JFrame {
 		txtLastName.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblUsername, "cell 1 6,alignx left");
 		
 		txtUsername = new JTextField();
@@ -269,6 +278,7 @@ public class CreateAccountFrame extends JFrame {
 		doctorPanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
 		
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblPassword, "cell 1 8,alignx left");
 		
 		txtPassword = new JPasswordField();
@@ -276,6 +286,7 @@ public class CreateAccountFrame extends JFrame {
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
+		lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
 		txtConfirmPassword = new JPasswordField();
@@ -287,6 +298,7 @@ public class CreateAccountFrame extends JFrame {
 		doctorPanel.add(lblPassRules, "cell 4 8 2 2");
 		
 		JLabel lblSpecialty = new JLabel("Specialty");
+		lblSpecialty.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		doctorPanel.add(lblSpecialty, "cell 1 12");
 		
 		comboSpecialty = new JComboBox();
@@ -332,10 +344,11 @@ public class CreateAccountFrame extends JFrame {
 		adminPanel.setLayout(new MigLayout("", "[100][100][100][100][100][100]", "[50][50][50][50][50][50][50][50][50][50][50][50][50][50]"));
 		
 		JLabel lblAdminAccount = new JLabel("Administrator Account");
-		lblAdminAccount.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblAdminAccount.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		adminPanel.add(lblAdminAccount, "cell 2 0 2 1,alignx center");
 		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		adminPanel.add(lblFirstName, "cell 1 2,alignx left");
 		
 		txtFirstName = new JTextField();
@@ -343,6 +356,7 @@ public class CreateAccountFrame extends JFrame {
 		txtFirstName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		adminPanel.add(lblLastName, "cell 1 4,alignx left");
 		
 		txtLastName = new JTextField();
@@ -350,6 +364,7 @@ public class CreateAccountFrame extends JFrame {
 		txtLastName.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		adminPanel.add(lblUsername, "cell 1 6,alignx left");
 		
 		txtUsername = new JTextField();
@@ -361,6 +376,7 @@ public class CreateAccountFrame extends JFrame {
 		adminPanel.add(lblNewLabel, "cell 4 6 2 2,aligny top");
 		
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		adminPanel.add(lblPassword, "cell 1 8,alignx left");
 		
 		txtPassword = new JPasswordField();
@@ -368,6 +384,7 @@ public class CreateAccountFrame extends JFrame {
 		txtPassword.setColumns(10);
 		
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
+		lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		adminPanel.add(lblConfirmPassword, "cell 1 10,alignx left");
 		
 		txtConfirmPassword = new JPasswordField();
