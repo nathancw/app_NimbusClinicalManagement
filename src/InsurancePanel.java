@@ -1,7 +1,9 @@
 
 
 import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
+
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.DefaultComboBoxModel;
@@ -11,17 +13,22 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
+
 import java.awt.Color;
+
 import javax.swing.JTextArea;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -329,6 +336,7 @@ public class InsurancePanel extends JPanel {
 		btnSave2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(checkFields())
+					insertEdit();
 					saveChanges(2);
 				}
 			});
@@ -502,6 +510,30 @@ public class InsurancePanel extends JPanel {
 			System.out.println("Can't get connection");
 		
 		return model;
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Edited insurance information for " + firstName + " " + lastName;
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

@@ -1,6 +1,9 @@
 import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
+
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.Timestamp;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -212,8 +216,10 @@ public class BillingPanel extends JPanel {
 		btnSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				boolean updated = updateDatabase();
-				if(updated)
+				if(updated) {
+					insertEdit();
 					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
+				}
 				else
 					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occurred.");
 				setAllUneditable();
@@ -456,6 +462,30 @@ public class BillingPanel extends JPanel {
 		if(billing_ID > 0){
 			PDFCreator billPDF = new PDFCreator(patientName,amountField.getText(),String.valueOf(procedureBox.getSelectedItem()),dateIssuedField.getText(),chargeDateField.getText(),patient_ID,billing_ID);
 		
+		}
+		
+	}
+	
+	public void insertEdit() {
+		String user = LoginFrame.username;
+		Calendar cal = Calendar.getInstance();
+		Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
+		int id = 0;
+		String description = "Billed " + patientName;
+		NimbusDAO dao;
+		
+		try {
+			dao = new NimbusDAO();
+			
+			ResultSet rs = dao.getAccountUsername(user);
+			if(rs.next()) {
+				id = rs.getInt("Account_ID");
+			}
+			
+			dao.addEdit(id, user, timestamp, description);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 	}
