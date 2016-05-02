@@ -103,7 +103,7 @@ public class MainMenu extends JFrame {
 		}
 		
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, "cell 2 3 3 2,grow");
+		panel.add(panel_1, "cell 2 3 3 3,grow");
 		panel_1.setLayout(new BorderLayout(0, 0));
 			
 		createPatientBtn = new JButton("Create Patient");
@@ -117,7 +117,7 @@ public class MainMenu extends JFrame {
 		panel_1.add(createPatientBtn, BorderLayout.CENTER);
 		
 		JPanel panel_2 = new JPanel();
-		panel.add(panel_2, "cell 5 3 3 2,grow");
+		panel.add(panel_2, "cell 5 3 3 3,grow");
 		panel_2.setLayout(new BorderLayout(0, 0));
 		
 		searchPatientBtn = new JButton("Search for Patient");
@@ -132,7 +132,7 @@ public class MainMenu extends JFrame {
 		panel_2.add(searchPatientBtn, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
-		panel.add(panel_3, "cell 2 5 3 2,grow");
+		panel.add(panel_3, "cell 2 6 3 3,grow");
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		btnSearchForAppointment = new JButton("Search Appointments");
@@ -149,16 +149,8 @@ public class MainMenu extends JFrame {
 		});
 		
 		JPanel panel_4 = new JPanel();
-		panel.add(panel_4, "cell 5 5 3 2,grow");
+		panel.add(panel_4, "cell 5 6 3 3,grow");
 		panel_4.setLayout(new BorderLayout(0, 0));
-		
-		JButton btnSearchBilling = new JButton("Search Billing Information");
-		btnSearchBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		//panel_4.add(btnSearchBilling, BorderLayout.CENTER);
-		
-		JPanel panel_5 = new JPanel();
-		panel.add(panel_5, "cell 2 7 3 2,grow");
-		panel_5.setLayout(new BorderLayout(0, 0));
 		
 		btnScheduleAppointment = new JButton("Schedule Appointment");
 		btnScheduleAppointment.setFont(new Font("Mongolian Baiti", Font.PLAIN, 17));
@@ -172,32 +164,6 @@ public class MainMenu extends JFrame {
 		});
 		panel_4.add(btnScheduleAppointment, BorderLayout.CENTER);
 		
-		btnSearchBilling.setEnabled(false);
-		
-		panel_5.add(btnSearchBilling, BorderLayout.CENTER);
-		
-		JPanel panel_6 = new JPanel();
-		panel.add(panel_6, "cell 5 7 3 2,grow");
-		panel_6.setLayout(new BorderLayout(0, 0));
-		
-		JButton btnPatientBilling = new JButton("Bill Patients");
-		btnPatientBilling.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		btnPatientBilling.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-				OptionMenuFrame create = new OptionMenuFrame();
-				create.setVisible(true);
-				create.show("Bill Patient");
-			}
-		});
-		btnPatientBilling.setEnabled(false);
-		
-		panel_6.add(btnPatientBilling, BorderLayout.CENTER);
-		
-		JPanel panel_8 = new JPanel();
-		panel.add(panel_8, "cell 2 9 3 2,grow");
-		panel_8.setLayout(new BorderLayout(0, 0));
-		
 		JButton btnViewPatientInformation = new JButton("View Patient Information");
 		btnViewPatientInformation.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
 		btnViewPatientInformation.addActionListener(new ActionListener() {
@@ -208,11 +174,6 @@ public class MainMenu extends JFrame {
 				create.show("Basic Information");
 			}
 		});
-		//panel_8.add(btnViewPatientInformation, BorderLayout.CENTER);
-		
-		JPanel panel_9 = new JPanel();
-		panel.add(panel_9, "cell 5 9 3 2,grow");
-		panel_9.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnInsuranceInformation = new JButton("Insurance Information");
 		btnInsuranceInformation.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
