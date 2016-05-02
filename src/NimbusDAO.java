@@ -95,7 +95,7 @@ public class NimbusDAO {
 	public ResultSet getInsuranceDetails(int patientID){
 		
 		
-		String sqlQuery = "Select a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
+		String sqlQuery = "Select a.Insurance_ID,a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
 				+ " from [NCMSE].[NCM].[Insurance] a " + 
 				"inner join NCMSE.NCM.Insurance_Company b on a.Company_ID = b.Company_ID "
 				+ " where a.Patient_ID = ?";
@@ -358,7 +358,7 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 	
 	
 	
-	public boolean changeInsuranceData(boolean update, String companyName, String patientID, String groupNumber, String planStartDate, String planEndDate, String type, String phoneNumber ){
+	public boolean changeInsuranceData(boolean update, int insuranceID, int company_ID, int patientID, String groupNumber, String planStartDate, String planEndDate, String type, String phoneNumber ){
 		
 		String sqlQuery = null;
 		String sqlQuery2 = null;
@@ -376,36 +376,36 @@ public ResultSet getPatientDetails(int id, String firstName, String lastName, St
 			//Primary Insurance
 
 			
-			sqlQuery = "IF EXISTS (SELECT * FROM [NCMSE].[NCM].[Insurance] WHERE Patient_ID = ?)" + " BEGIN " + 
-			"UPDATE [NCMSE].[NCM].[Insurance] SET EffectiveDate = ?, GroupNumber = ?, PlanStartDate = ?, PlanEndDate = ? " + " WHERE Patient_ID = ?" + " END " + 
-			" ELSE " + " BEGIN " + "insert into [NCMSE].[NCM].[Insurance] (EffectiveDate, GroupNumber, PlanStartDate, PlanEndDate)" + " VALUES(?,?,?,?)" + " END ";
-			//" ELSE " + " BEGIN " + "insert into [NCMSE].[NCM].[Insurance] (EffectiveDate)" + " VALUES(?)" + " END ";
-		//	sqlQuery2 = "IF (NOT EXISTS (Select * FROM [NCMSE].[NCM].[Insurance] WHERE Patient_ID = '100013'))" + " BEGIN " +
-		
-			
+			sqlQuery = "IF EXISTS (SELECT * FROM [NCMSE].[NCM].[Insurance] WHERE Insurance_ID = ?)" + " BEGIN " + 
+			"UPDATE [NCMSE].[NCM].[Insurance] SET EffectiveDate = ?, GroupNumber = ?, PlanStartDate = ?, PlanEndDate = ?, Company_ID = ?" + " WHERE Insurance_ID = ?" + " END " + 
+			" ELSE " + " BEGIN " + "insert into [NCMSE].[NCM].[Insurance] (Patient_ID,EffectiveDate, GroupNumber, PlanStartDate, PlanEndDate,Company_ID)" + " VALUES(?,?,?,?,?,?)" + " END ";
+	
 		Connection sqlconn = this.getConnection();
 		PreparedStatement stmt = null;
 		try {
 			
-			//stmt.executeUpdate("SET IDENTITY_INSERT [NCMSE].[NCM].[Insurance] ON");
 			stmt = sqlconn.prepareStatement(sqlQuery);
 			
-			stmt.setString(1, patientID);
+			stmt.setInt(1, insuranceID);
 			
 			stmt.setString(2, effDate);
 			stmt.setString(3, groupNumber);
 			stmt.setString(4, planStartDate);
 			stmt.setString(5, planEndDate);
+			stmt.setInt(6, company_ID);
 			
-			stmt.setString(6, patientID);
+			stmt.setInt(7, insuranceID);
 			
-			stmt.setString(7, effDate);
-			stmt.setString(8, groupNumber);
-			stmt.setString(9, planStartDate);
-			stmt.setString(10, planEndDate);
+			
+			
+			stmt.setInt(8, patientID);
+			stmt.setString(9, effDate);
+			stmt.setString(10, groupNumber);
+			stmt.setString(11, planStartDate);
+			stmt.setString(12, planEndDate);
+			stmt.setInt(13,company_ID);
 		
 			stmt.executeUpdate();		
-			//rs = stmt.executeQuery();
 			return true;
 		
 			

@@ -67,7 +67,7 @@ public class InsurancePanel extends JPanel {
 	private  String type = "";
 	
 	private  String groupNumber = "";
-	private  String planStartDate= "1799";
+	private  String planStartDate= "";
 	private  String planEndDate = "";
 	
 	//Secondary Insurance
@@ -82,7 +82,7 @@ public class InsurancePanel extends JPanel {
 	private  String type2 = "";
 	
 	private  String groupNumber2 = "";
-	private  String planStartDate2 = "1799";
+	private  String planStartDate2 = "";
 	private  String planEndDate2 = "";
 	
 	//Edit & Save Insurance Information
@@ -102,6 +102,10 @@ public class InsurancePanel extends JPanel {
 	private HashMap<String, String> companyType;
 	private HashMap<String,Integer> comapnyIDs;
 	private HashMap<Integer, String> companyNamesFromID;
+	private JButton btnSave2;
+	private int insuranceID1 = 0;
+	private int insuranceID2 = 0;
+	private JComboBox companyBox2;
 	
 	
 	
@@ -116,9 +120,8 @@ public class InsurancePanel extends JPanel {
 		}
 		patientID = ID;
 		
-		firstName = "";
-		lastName  = "";
 
+		
 		///
 		/// Draw PANELS first
 		///
@@ -130,10 +133,7 @@ public class InsurancePanel extends JPanel {
 		add(panel);
 		panel.setLayout(new MigLayout("", "[100,grow][100][100][100][100][100][100][100][100,grow]", "[100,grow][100][100,grow][100][100][100][100]"));
 		
-		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: " + firstName + " " + lastName + "</html>");
-		lblInsuranceInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		panel.add(lblInsuranceInfo, "cell 3 0 3 2,alignx center");
-		
+	
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		panel.add(tabbedPane, "cell 1 2 7 4,grow");
 		
@@ -150,11 +150,9 @@ public class InsurancePanel extends JPanel {
 		companyBox1.setModel(getCompanies());
 		companyBox1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Company changed.");
 				txtPhoneNum1.setText(phoneNumbers.get(companyBox1.getSelectedItem()));
 				txttype1.setText(companyType.get(companyBox1.getSelectedItem()));
-				//procedurecomboBox.setModel(getProcedures());
-				//specialtytextField.setText(specialtyName.get(doctorIDs.get(doctorComboBox.getSelectedItem()))); 
+
 			}
 
 		});
@@ -219,6 +217,7 @@ public class InsurancePanel extends JPanel {
 		txttype1.setColumns(10);
 		panel_1.add(txttype1, "cell 1 5 2 1,growx");
 		
+		
 
 		///Secondary Insurance
 		
@@ -231,8 +230,17 @@ public class InsurancePanel extends JPanel {
 		lblCompName2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		panel_2.add(lblCompName2, "cell 0 0,alignx trailing");
 		
-		JComboBox companyBox2 = new JComboBox();
-		panel_2.add(companyBox2, "cell 1 0 2 1,growx");
+		 companyBox2 = new JComboBox();
+		 panel_2.add(companyBox2, "cell 1 0 2 1,growx");
+		 companyBox2.setModel(getCompanies());
+		 companyBox2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					txtPhoneNum2.setText(phoneNumbers.get(companyBox2.getSelectedItem()));
+					txttype2.setText(companyType.get(companyBox2.getSelectedItem()));
+				
+				}
+
+			});
 		
 		JLabel lblPhoneNum2 = new JLabel("Phone Number:");
 		lblPhoneNum2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -297,59 +305,72 @@ public class InsurancePanel extends JPanel {
 		populateInsurance(ID);
 
 		
+		JLabel lblInsuranceInfo = new JLabel("<html>Patient Insurance Information <br><br> Patient Name: " + firstName + " " + lastName + "</html>");
+		lblInsuranceInfo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		panel.add(lblInsuranceInfo, "cell 3 0 3 2,alignx center");
+		
+		
 		
 		///
 		///Save Buttons
 		///
 		
-		JButton button1 = new JButton("Save");
-		button1.addActionListener(new ActionListener() {
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(checkFields())
-				saveChanges();
+				saveChanges(1);
 			}
 		});
 		
-		panel_1.add(button1,"cell 6 6,growx");
+		panel_1.add(btnSave,"cell 6 6,growx");
 		
+		btnSave2 = new JButton("Save");
+		btnSave2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(checkFields())
+					saveChanges(2);
+				}
+			});
 		
-		JButton button2 = new JButton("Save");
-		panel_2.add(button2,"cell 6 6,growx");
+		panel_2.add(btnSave2,"cell 6 6,growx");
 		
 	}
 		
 		
 		
-	public void saveChanges(){
+	public void saveChanges(int val){
 		
 		
-		System.out.println("In save changes");
-		//Primary Insurance & Checking for Blanks
-		//if (companyName == "") {
-		//	companyName = "Blank";
-		//}
-		String patientID = txtPatientId1.getText();
-	//	if (patientID == "") {
-	//		patientID = "99999";
-	//	}
-		groupNumber = txtGroupNum1.getText();
-	//	if (groupNumber == "") {
-	//		groupNumber = "Blank";
-	//	}
-		planStartDate = txtPlanStart1.getText();
-	//	if (planStartDate == ""){
-	//		planStartDate = "Blank";
+		String planEndDate;
+		String type;
+		String phoneNumber;
+		int company_ID;
+		int insuranceID;
+		
+		if(val==1){
+		
+			groupNumber = txtGroupNum1.getText();
+			planStartDate = txtPlanStart1.getText();
+			planEndDate = txtPlanEnd1.getText();
+			type = txttype1.getText();
+			phoneNumber = txtPhoneNum1.getText();
+			company_ID = comapnyIDs.get(companyBox1.getSelectedItem());
+			insuranceID = insuranceID1;
+		}
+		else{
+			groupNumber = txtGroupNum2.getText();
+			planStartDate = txtPlanStart2.getText();
+			planEndDate = txtPlanEnd2.getText();
+			type = txttype2.getText();
+			phoneNumber = txtPhoneNum2.getText();
+			company_ID = comapnyIDs.get(companyBox2.getSelectedItem());
+			insuranceID = insuranceID2;
 			
-	//	}
-		//txtPlanStart1.setText(planStartDate);
-		
-		String planEndDate = txtPlanEnd1.getText();
-		String type = txttype1.getText();
-		
-		String phoneNumber = txtPhoneNum1.getText();
-
-		//System.out.print("Hello, i am " + planStartDate);
-
+			
+			
+		}
+	
 		NimbusDAO dao;
 		
 		try {
@@ -357,25 +378,27 @@ public class InsurancePanel extends JPanel {
 			
 			boolean updated = false;
 			
+			System.out.println("Saving secondary insurance with insurance id: " + insuranceID);
+			dao.changeInsuranceData(updated, insuranceID,company_ID, patientID, groupNumber, planStartDate, planEndDate, type, phoneNumber);
 			
-			
-			dao.changeInsuranceData(updated, companyName, patientID, groupNumber, planStartDate, planEndDate, type, phoneNumber);
+			//Repopulate after we change it to update all variables
+			populateInsurance(patientID);
 						
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
-		
-		//return updated;
-		
+	
 	};
 	
 	
 	public Boolean checkFields() {
 		if(txtGroupNum1.getText().isEmpty() || txtPlanStart1.getText().isEmpty() 
-				|| txtPlanEnd1.getText().isEmpty() || txtPhoneNum1.getText().isEmpty()) {
+				|| txtPlanEnd1.getText().isEmpty() || txtPhoneNum1.getText().isEmpty() 
+				|| txtGroupNum2.getText().isEmpty() || txtPlanStart2.getText().isEmpty() 
+				|| txtPlanEnd2.getText().isEmpty() || txtPhoneNum2.getText().isEmpty()	
+				) {
 			JOptionPane.showMessageDialog(this, "Please fill out all of the fields.","Cannot Create Account",
 				    JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -398,19 +421,36 @@ public class InsurancePanel extends JPanel {
 				
 			}
 		
+			boolean first = true;
 			ResultSet rs = dao.getInsuranceDetails(patientID);
 			
-				if(rs.next()){
-						
-				  txtGroupNum1.setText(rs.getString("GroupNumber"));
-				  txtPlanStart1.setText(rs.getString("PlanStartDate"));	 
-				  txtPlanEnd1.setText(rs.getString("PlanEndDate"));
-				  companyBox1.setSelectedItem(companyNamesFromID.get(rs.getInt("Company_ID")));
-				  txtPhoneNum1.setText(phoneNumbers.get(rs.getString("Name")));
-				  txttype1.setText(companyType.get(rs.getString("Name")));
-				 
-
+				while(rs.next()){
+				  
+				  if(first){
+					  insuranceID1 = rs.getInt("Insurance_ID");
+					  txtGroupNum1.setText(rs.getString("GroupNumber"));
+					  txtPlanStart1.setText(rs.getString("PlanStartDate"));	 
+					  txtPlanEnd1.setText(rs.getString("PlanEndDate"));
+					  companyBox1.setSelectedItem(companyNamesFromID.get(rs.getInt("Company_ID")));
+					  txtPhoneNum1.setText(phoneNumbers.get(rs.getString("Name")));
+					  txttype1.setText(companyType.get(rs.getString("Name")));
+					  first = false;
+				  }
+				  else{
+					  
 					
+					  insuranceID2 = rs.getInt("Insurance_ID");
+					  txtGroupNum2.setText(rs.getString("GroupNumber"));
+					  txtPlanStart2.setText(rs.getString("PlanStartDate"));	 
+					  txtPlanEnd2.setText(rs.getString("PlanEndDate"));
+					  companyBox2.setSelectedItem(companyNamesFromID.get(rs.getInt("Company_ID")));
+					  txtPhoneNum2.setText(phoneNumbers.get(rs.getString("Name")));
+					  txttype1.setText(companyType.get(rs.getString("Name")));
+					  first = false;
+	  
+				  }
+					  
+		
 			}	
 			
 
