@@ -86,12 +86,26 @@ public class MainMenu extends JFrame {
 		
 		
 		if (isAdministrator == true) {
+			JPanel panel_10 = new JPanel();
+			panel_10.setBackground(Color.WHITE);
+			panel.add(panel_10, "cell 0 11 2 1,grow");
+			panel_10.setLayout(new BorderLayout(0, 0));
+			JButton btnCreateNewEmployee = new JButton("Create New Employee");
+			btnCreateNewEmployee.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
+			btnCreateNewEmployee.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent argo0) {
+					dispose();
+					CreateAccountFrame create = new CreateAccountFrame();
+					create.setVisible(true);
+				}
+			});
+			panel_10.add(btnCreateNewEmployee, BorderLayout.CENTER);
 		}
 		
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1, "cell 2 3 3 2,grow");
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+			
 		createPatientBtn = new JButton("Create Patient");
 		createPatientBtn.setFont(new Font("Mongolian Baiti", Font.PLAIN, 18));
 		createPatientBtn.addActionListener(new ActionListener() {
@@ -211,20 +225,7 @@ public class MainMenu extends JFrame {
 			}
 		});
 		
-		JPanel panel_10 = new JPanel();
-		panel_10.setBackground(Color.WHITE);
-		panel.add(panel_10, "cell 0 11 2 1,grow");
-		panel_10.setLayout(new BorderLayout(0, 0));
-		JButton btnCreateNewEmployee = new JButton("Create New Employee");
-		btnCreateNewEmployee.setFont(new Font("Mongolian Baiti", Font.PLAIN, 14));
-		btnCreateNewEmployee.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent argo0) {
-				dispose();
-				CreateAccountFrame create = new CreateAccountFrame();
-				create.setVisible(true);
-			}
-		});
-		panel_10.add(btnCreateNewEmployee, BorderLayout.CENTER);
+		
 		//panel_9.add(btnInsuranceInformation, BorderLayout.CENTER);
 		
 		JPanel panel_7 = new JPanel();
