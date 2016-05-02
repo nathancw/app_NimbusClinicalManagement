@@ -95,7 +95,6 @@ public class NimbusDAO {
 	public ResultSet getInsuranceDetails(int patientID){
 		
 		
-		
 		String sqlQuery = "Select a.Patient_ID,a.EffectiveDate,a.Company_ID,a.GroupNumber,a.PlanStartDate,a.PlanEndDate,b.Name,b.AAddress,b.City,b.CState,b.Zip,b.Phone,b.TType "
 				+ " from [NCMSE].[NCM].[Insurance] a " + 
 				"inner join NCMSE.NCM.Insurance_Company b on a.Company_ID = b.Company_ID "
@@ -123,8 +122,8 @@ public class NimbusDAO {
 public ResultSet getPatientDetails(int id, String firstName, String lastName, String dateofbirth){
 		
 		Date dob;
-		//Set to nulls so it doesnt affect the query. We shouldn't ever place any nulls in the database. This is lazy but much
-		//quicker than building dyanamic queries.
+		
+		
 		if((firstName.isEmpty())){
 			firstName = null;
 		}
