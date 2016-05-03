@@ -19,7 +19,7 @@ import java.awt.Font;
 
 public class PatientInformationFrame extends JFrame {
 
-	String directoryList[] = {"Basic Information","Patient History","Appointments","Billing History","Insurance"};
+	String directoryList[] = {"Basic Information","Appointments","Billing History","Insurance"};
 	private JPanel contentPane;
 	private JPanel contentPanel;	
 	private JPanel bufferPanel;
