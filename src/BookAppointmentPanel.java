@@ -231,8 +231,8 @@ public class BookAppointmentPanel extends JPanel {
 		specialtytextField.setColumns(10);
 		specialtytextField.setEditable(false);
 		
-		chckbxSendEmail = new JCheckBox("Send Email");
-		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");
+		/*chckbxSendEmail = new JCheckBox("Send Email");
+		TextFieldsPanel.add(chckbxSendEmail, "cell 3 3,alignx left");*/
 		
 		chckbxChckedIn = new JCheckBox("Checked In?");
 		TextFieldsPanel.add(chckbxChckedIn, "cell 3 4,alignx left");
