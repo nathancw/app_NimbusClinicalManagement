@@ -221,7 +221,7 @@ public class BillingPanel extends JPanel {
 					JOptionPane.showMessageDialog(new JFrame(), "Changes Saved Successfully in database.");
 				}
 				else
-					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. An error occurred.");
+					JOptionPane.showMessageDialog(new JFrame(), "Changes not saved successfully. Please check fields.");
 				setAllUneditable();
 			}
 		});
@@ -422,6 +422,14 @@ public class BillingPanel extends JPanel {
 		String amount = amountField.getText().substring(1,amountField.getText().length()).replace(",","");
 		int procedure_ID = procedureIDs.get(procedureBox.getSelectedItem());
 		
+		
+		if(datePaidField.getText().length()!=10 || chargeDateField.getText().length()!=10 || dateIssuedField.getText().length()!=10)
+			return false;
+		
+		
+		
+		
+		
 		int paid;
 		if(rdbtnYes.isSelected())
 			paid = 1;
@@ -429,9 +437,10 @@ public class BillingPanel extends JPanel {
 			paid = 0;
 
 		String datePaid;
-	
+		
 		boolean updated = false;
 		try{
+			System.out.println("Date paid field: " + datePaidField.getText() + " length :" + datePaidField.getText().length());
 			///NEED ERROR CHECKING WHEN UPDATING. Dates can be all messed up
 			if(paid == 1 && datePaidField.getText().substring(6,10).equals("2999")){
 				Calendar today = Calendar.getInstance();
